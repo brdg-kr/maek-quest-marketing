@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+:root {
+  --background: #04060b;
+  --foreground: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(103, 232, 249, 0.12), transparent 28rem),
+    var(--background);
+  color: var(--foreground);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #a5f3fc;
+  outline-offset: 4px;
+}
+
+::selection {
+  background: rgba(165, 243, 252, 0.24);
+  color: #ffffff;
+}
+
+.section-label {
+  margin-bottom: 18px;
+  width: fit-content;
+  color: #a5f3fc;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.section-title {
+  color: #ffffff;
+  font-size: clamp(2.35rem, 5vw, 4.8rem);
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.35rem;
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #f8ffff 0%, #c7f6ff 52%, #8ab8ff 100%);
+  color: #05111f;
+  box-shadow:
+    0 18px 60px rgba(125, 211, 252, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.btn-secondary {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.045);
+  color: #f8fafc;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-1px);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(165, 243, 252, 0.38);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.hero-machine canvas {
+  min-height: 100%;
+  width: 100%;
+}
+
+.hero-static-core {
+  position: absolute;
+  inset: 9%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at center, rgba(125, 211, 252, 0.24), transparent 24%),
+    radial-gradient(circle at center, rgba(59, 130, 246, 0.14), transparent 46%);
+}
+
+.hero-static-core__ring,
+.hero-static-core__beam,
+.hero-static-core__core {
+  position: absolute;
+  display: block;
+}
+
+.hero-static-core__ring {
+  border: 1px solid rgba(191, 247, 255, 0.34);
+  border-radius: 999px;
+  box-shadow: 0 0 46px rgba(34, 211, 238, 0.16);
+}
+
+.hero-static-core__ring--outer {
+  height: 74%;
+  width: 74%;
+}
+
+.hero-static-core__ring--middle {
+  height: 52%;
+  width: 52%;
+  transform: rotateX(58deg) rotateZ(18deg);
+}
+
+.hero-static-core__ring--inner {
+  height: 30%;
+  width: 30%;
+  transform: rotateX(72deg) rotateZ(-22deg);
+}
+
+.hero-static-core__beam {
+  height: 1px;
+  width: 42%;
+  background: linear-gradient(90deg, transparent, rgba(191, 247, 255, 0.78), transparent);
+}
+
+.hero-static-core__beam--left {
+  left: 0;
+  top: 49%;
+}
+
+.hero-static-core__beam--right {
+  right: 0;
+  top: 51%;
+}
+
+.hero-static-core__beam--top {
+  left: 29%;
+  top: 18%;
+  transform: rotate(90deg);
+}
+
+.hero-static-core__beam--bottom {
+  bottom: 18%;
+  left: 29%;
+  transform: rotate(90deg);
+}
+
+.hero-static-core__core {
+  height: 9rem;
+  width: 9rem;
+  transform: rotate(45deg);
+  border: 1px solid rgba(224, 251, 255, 0.8);
+  background: rgba(14, 165, 233, 0.13);
+  box-shadow:
+    inset 0 0 36px rgba(125, 211, 252, 0.2),
+    0 0 70px rgba(34, 211, 238, 0.3);
+}
+
+@media (max-width: 640px) {
+  .section-title {
+    font-size: clamp(2.15rem, 12vw, 3.25rem);
+  }
+
+  .hero-static-core__core {
+    height: 6.2rem;
+    width: 6.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
