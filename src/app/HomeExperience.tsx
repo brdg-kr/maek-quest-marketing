@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useMemo, useState } from "react";
-import type { CSSProperties, PointerEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties, PointerEvent, ReactNode } from "react";
+import { MaekLogo } from "./components/MaekLogo";
 
 type Hotspot = {
   id: string;
@@ -173,11 +174,66 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
+function FadeInOnView({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+
+    if (!node) {
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: "0px 0px -12% 0px",
+        threshold: 0.14,
+      },
+    );
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`${className} transition-opacity duration-[850ms] ease-out ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+      style={{ transitionDelay: isVisible ? `${delay}ms` : "0ms" }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function SystemStackSection() {
   return (
     <section className="px-4 pb-16 pt-10 sm:px-6 md:px-8 md:pb-20 md:pt-16" aria-labelledby="system-stack-title">
       <div className="mx-auto max-w-[1440px]">
-        <div className="border-t border-[#0a2a57]/20 pt-8 md:pt-10">
+        <FadeInOnView className="border-t border-[#0a2a57]/20 pt-8 md:pt-10">
           <div className="mb-6 flex items-end justify-between gap-5">
             <h2 id="system-stack-title" className="text-xl font-semibold uppercase tracking-[0.08em] text-[#061d48] md:text-2xl">
               System Flow
@@ -223,9 +279,9 @@ function SystemStackSection() {
               </article>
             ))}
           </div>
-        </div>
+        </FadeInOnView>
 
-        <div className="mt-8 border-t border-[#0a2a57]/18 pt-7 md:mt-9">
+        <FadeInOnView className="mt-8 border-t border-[#0a2a57]/18 pt-7 md:mt-9" delay={120}>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:divide-x lg:divide-[#0a2a57]/16">
             {benefitBlocks.map((item) => (
               <div key={item.title} className="flex items-center gap-4 text-[#061d48] lg:px-5 first:lg:pl-0 last:lg:pr-0">
@@ -244,13 +300,13 @@ function SystemStackSection() {
               </div>
             ))}
           </div>
-        </div>
+        </FadeInOnView>
       </div>
     </section>
   );
 }
 
-export function PageFiveExperience() {
+export function HomeExperience() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [pointer, setPointer] = useState<PointerPosition>({ x: 40, y: 48 });
@@ -281,15 +337,10 @@ export function PageFiveExperience() {
   return (
     <main className="min-h-screen overflow-hidden bg-white text-[#07100c]">
       <section aria-labelledby="page-five-title" className="relative isolate px-4 py-5 sm:px-6 lg:px-8">
-        <div className="mx-auto flex w-full max-w-[1536px] flex-col gap-4">
+        <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4">
           <header className="flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#10251a]/58">
-            <a href="/" className="flex items-center gap-3" aria-label="MAEK home">
-              <span className="grid h-8 w-8 place-items-center bg-[#07100c] text-[0.62rem] text-white">
-                M
-              </span>
-              <span>MAEK</span>
-            </a>
-            <span className="hidden text-right sm:block">Evidence Pipeline / 05</span>
+            <MaekLogo />
+            <span className="hidden text-right sm:block">Evidence Intelligence System</span>
           </header>
 
           <div className="md:hidden">
@@ -332,15 +383,6 @@ export function PageFiveExperience() {
                   setIsCardVisible(false);
                 }}
               >
-                <div
-                  aria-hidden="true"
-                  className={`absolute inset-0 z-10 bg-[linear-gradient(110deg,rgba(255,255,255,0.72),rgba(255,255,255,0.94),rgba(236,249,241,0.7))] transition-opacity duration-700 ${
-                    imageLoaded ? "opacity-0" : "opacity-100"
-                  }`}
-                >
-                  <span className="absolute inset-y-0 -left-1/2 w-1/2 animate-[maek-shimmer_1.8s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/90 to-transparent" />
-                </div>
-
                 <Image
                   src={imageSrc}
                   alt="MAEK system diagram showing source materials becoming a dataset package, knowledge graph, and knowledge-in-use outputs."
@@ -349,8 +391,8 @@ export function PageFiveExperience() {
                   priority
                   sizes="(min-width: 1280px) 1440px, 96vw"
                   onLoad={() => setImageLoaded(true)}
-                  className={`h-auto w-full transition duration-[1400ms] ease-out ${
-                    imageLoaded ? "scale-100 opacity-100 blur-0" : "scale-[1.012] opacity-0 blur-sm"
+                  className={`h-auto w-full transition-opacity duration-[850ms] ease-out ${
+                    imageLoaded ? "opacity-100" : "opacity-0"
                   }`}
                 />
 
@@ -401,7 +443,7 @@ export function PageFiveExperience() {
                 ) : null}
               </div>
 
-              <div className="grid gap-3 px-1 pt-3 sm:px-4 sm:pt-4 lg:grid-cols-[minmax(18rem,0.58fr)_minmax(0,0.42fr)] lg:items-end lg:px-10">
+              <FadeInOnView className="grid gap-3 pt-3 sm:pt-4 lg:grid-cols-[minmax(18rem,0.58fr)_minmax(0,0.42fr)] lg:items-end" delay={90}>
                 <h1
                   id="page-five-title-desktop"
                   className="max-w-4xl text-[clamp(2rem,2.65vw,3.5rem)] font-semibold leading-[0.99] tracking-normal text-[#07100c]"
@@ -412,7 +454,7 @@ export function PageFiveExperience() {
                   One package carries the evidence chain from raw files to graph-backed outputs: briefs, evidence Q&A,
                   comparisons, and reports.
                 </p>
-              </div>
+              </FadeInOnView>
 
               {activeHotspot ? (
                 <section
@@ -440,16 +482,14 @@ export function PageFiveExperience() {
 
       <SystemStackSection />
 
-      <style jsx global>{`
-        @keyframes maek-shimmer {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(320%);
-          }
-        }
-      `}</style>
+      <footer className="border-t border-[#0a2a57]/14 px-4 py-8 text-[#34473d] sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <MaekLogo />
+          <p>Source-grounded intelligence systems for professional workflows.</p>
+          <p className="text-[#34473d]/70">© 2026 MAEK. All rights reserved.</p>
+        </div>
+      </footer>
+
     </main>
   );
 }

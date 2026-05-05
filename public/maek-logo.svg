@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="765" height="230" viewBox="0 0 765 230" role="img" aria-labelledby="title desc">
+  <title id="title">MAEK logo — original aligned SVG corrected A</title>
+  <desc id="desc">Clean vector redraw of the original MAEK logo with refined alignment on the left symbol and corrected A design.</desc>
+  <defs>
+    <style>
+      .maek-fill { fill: #30415D; }
+    </style>
+  </defs>
+  <g class="maek-fill" transform="translate(24 20)" shape-rendering="geometricPrecision">
+    <rect x="107" y="0" width="26" height="26" />
+    <rect x="22" y="26" width="70" height="15" />
+    <rect x="0" y="53" width="92" height="16" />
+    <rect x="22" y="81" width="70" height="15" />
+
+    <path d="M130 78 L130 190 L142 190 L143 102 L191 167 L202 167 L251 100 L252 190 L273 190 L272 78 L255 78 L203 148 L149 78 Z" />
+    <path fill-rule="evenodd" d="M 356.1 78.0 L 374.4 78.0 L 432.2 190.0 L 301.5 190.0 Z M 359.8 98.0 L 385.0 143.1 L 336.2 143.1 Z M 328.7 158.2 L 392.8 158.2 L 408.4 190.0 L 314.1 190.0 Z" />
+    <path d="M461 78 L461 190 L562 190 L565 180 L484 180 L482 178 L483 138 L545 138 L548 131 L548 128 L483 128 L482 89 L484 87 L558 87 L560 83 L560 78 Z" />
+    <path d="M598 78 L598 190 L619 190 L619 145 L626 139 L688 190 L717 190 L713 185 L643 129 L708 78 L690 78 L620 134 L619 78 Z" />
+  </g>
+</svg>
