@@ -494,7 +494,7 @@ export function HomeExperience() {
           <header className="flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#10251a]/58">
             <MaekLogo />
             <nav className="flex items-center gap-4 text-right" aria-label="Primary navigation">
-              <a href="/ai-stage-map" className="transition hover:text-[#087a45]">
+              <a href="/" className="transition hover:text-[#087a45]">
                 {copy.navStageMap}
               </a>
             </nav>

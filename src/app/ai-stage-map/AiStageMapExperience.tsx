@@ -7,8 +7,7 @@ import { MaekLogo } from "../components/MaekLogo";
 
 const stageMapCopy = {
   en: {
-    navHome: "MAEK",
-    heroEyebrow: "AI Adoption Stage Map",
+    navSystemFlow: "System Flow",
     heroTitle: "Where is your company in the AI transition?",
     heroLead: "This change is not a vague future. It is a sequence already unfolding inside companies.",
     heroBody:
@@ -29,6 +28,7 @@ const stageMapCopy = {
     maekTitle: "The next stage combines a brain, a data query engine, and vibe coding governance.",
     maekBody:
       "MAEK organizes scattered documents and data into AI-ready knowledge, then connects them to app-ready data interfaces that employee-built apps can use. IT keeps control over security, permissions, audit, and operations.",
+    maekLinkLabel: "Open system flow",
     figureAlt:
       "MAEK system flow connecting source materials, dataset package, knowledge graph, and knowledge in use.",
     competitors: [
@@ -107,8 +107,7 @@ const stageMapCopy = {
     ],
   },
   ko: {
-    navHome: "MAEK",
-    heroEyebrow: "AI Adoption Stage Map",
+    navSystemFlow: "시스템 흐름",
     heroTitle: "당신 회사는 AI 전환의 어느 단계에 있습니까?",
     heroLead: "이 변화는 막연한 미래가 아니라 기업 안에서 이미 벌어지는 순서입니다.",
     heroBody:
@@ -129,6 +128,7 @@ const stageMapCopy = {
     maekTitle: "다음 단계는 브레인, 데이터조회엔진, 바이브코딩의 결합입니다.",
     maekBody:
       "MAEK은 흩어진 문서와 데이터를 AI-ready 지식으로 정리하고, 직원이 만든 앱이 사용할 수 있는 app-ready 데이터 인터페이스로 연결합니다. 전산팀은 보안, 권한, 감사, 운영을 통제합니다.",
+    maekLinkLabel: "시스템 흐름 열기",
     figureAlt:
       "원천 자료, 데이터셋 패키지, 지식 그래프, 지식 활용을 연결하는 MAEK 시스템 흐름.",
     competitors: [
@@ -218,10 +218,10 @@ export function AiStageMapExperience() {
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5">
           <MaekLogo />
           <a
-            href="/"
+            href="/system-flow"
             className="text-xs font-semibold uppercase tracking-[0.18em] text-[#10251a]/58 transition hover:text-[#087a45]"
           >
-            {copy.navHome}
+            {copy.navSystemFlow}
           </a>
         </div>
       </section>
@@ -229,10 +229,7 @@ export function AiStageMapExperience() {
       <section className="px-4 pb-12 pt-10 sm:px-6 md:pb-16 md:pt-14 lg:px-8">
         <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[minmax(0,0.58fr)_minmax(26rem,0.42fr)] lg:items-end">
           <div>
-            <p className="font-mono text-sm font-semibold uppercase tracking-[0.18em] text-[#087a45]">
-              {copy.heroEyebrow}
-            </p>
-            <h1 className="mt-5 max-w-5xl text-[clamp(2.6rem,6.4vw,6.8rem)] font-semibold leading-[0.95] tracking-normal text-[#07100c]">
+            <h1 className="max-w-5xl text-[clamp(2.6rem,6.4vw,6.8rem)] font-semibold leading-[0.95] tracking-normal text-[#07100c]">
               {copy.heroTitle}
             </h1>
           </div>
@@ -338,9 +335,18 @@ export function AiStageMapExperience() {
             <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#087a45]">
               {copy.maekEyebrow}
             </p>
-            <h2 id="maek-title" className="mt-3 text-3xl font-semibold leading-tight text-[#061d48] md:text-5xl">
-              {copy.maekTitle}
-            </h2>
+            <div className="mt-3 flex items-start gap-4">
+              <h2 id="maek-title" className="text-3xl font-semibold leading-tight text-[#061d48] md:text-5xl">
+                {copy.maekTitle}
+              </h2>
+              <a
+                href="/system-flow"
+                aria-label={copy.maekLinkLabel}
+                className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#087a45]/35 bg-white text-2xl font-semibold leading-none text-[#087a45] shadow-[0_10px_30px_rgba(8,122,69,0.13)] transition hover:border-[#087a45] hover:bg-[#087a45] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#087a45]/45"
+              >
+                <span aria-hidden="true">&gt;</span>
+              </a>
+            </div>
             <p className="mt-5 text-base leading-7 text-[#34473d]">{copy.maekBody}</p>
             <div className="mt-7 grid gap-3 text-sm font-semibold text-[#061d48] sm:grid-cols-3">
               <p className="rounded-[6px] border border-[#d7dee9] bg-white p-4">Brain</p>

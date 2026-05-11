@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { HomeExperience } from "./HomeExperience";
+import { AiStageMapExperience } from "./ai-stage-map/AiStageMapExperience";
 
 export const metadata: Metadata = {
-  title: "Source Material Becomes Defensible Intelligence",
+  title: "Where is your company in the AI transition?",
   description:
-    "A focused MAEK marketing page showing how source materials become a dataset package, knowledge graph, and defensible work outputs.",
+    "A stage map for diagnosing AI adoption pressure, vibe coding growth, data connection bottlenecks, and MAEK's transition structure.",
   alternates: {
     canonical: "/",
   },
 };
 
 export default function Home() {
-  return <HomeExperience />;
+  return <AiStageMapExperience />;
 }
