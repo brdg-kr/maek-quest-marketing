@@ -31,7 +31,6 @@ const stageMapCopy = {
       "MAEK organizes scattered documents and data into AI-ready knowledge, then connects them to app-ready data interfaces that employee-built apps can use. IT keeps control over security, permissions, audit, and operations.",
     figureAlt:
       "MAEK system flow connecting source materials, dataset package, knowledge graph, and knowledge in use.",
-    footerText: "AI transition stage diagnostic page",
     competitors: [
       {
         name: "Our company",
@@ -132,7 +131,6 @@ const stageMapCopy = {
       "MAEK은 흩어진 문서와 데이터를 AI-ready 지식으로 정리하고, 직원이 만든 앱이 사용할 수 있는 app-ready 데이터 인터페이스로 연결합니다. 전산팀은 보안, 권한, 감사, 운영을 통제합니다.",
     figureAlt:
       "원천 자료, 데이터셋 패키지, 지식 그래프, 지식 활용을 연결하는 MAEK 시스템 흐름.",
-    footerText: "AI 전환 단계 진단 페이지",
     competitors: [
       {
         name: "우리 회사",
@@ -365,11 +363,9 @@ export function AiStageMapExperience() {
       </section>
 
       <footer className="border-t border-[#0a2a57]/14 px-4 py-8 text-[#34473d] sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-[1440px] gap-4 text-sm lg:grid-cols-[auto_minmax(0,1fr)_auto_auto] lg:items-center">
-          <MaekLogo />
-          <p>{copy.footerText}</p>
-          <LanguageToggle />
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[#34473d]/70">© 2026 MAEK. All rights reserved.</p>
+          <LanguageToggle />
         </div>
       </footer>
     </main>

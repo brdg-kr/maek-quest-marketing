@@ -39,7 +39,6 @@ const homeCopy = {
       "One package carries the evidence chain from raw files to graph-backed outputs: briefs, evidence Q&A, comparisons, and reports.",
     diagramAlt:
       "MAEK system diagram showing source materials becoming a dataset package, knowledge graph, and knowledge-in-use outputs.",
-    footerText: "Source-grounded intelligence systems for professional workflows.",
     mobileSequence: [
       {
         title: "Source Materials",
@@ -185,7 +184,6 @@ const homeCopy = {
     desktopHeroBody:
       "하나의 패키지가 원본 파일에서 그래프 기반 결과물까지 증거 체인을 이어 줍니다: 브리프, 근거 Q&A, 비교, 보고서.",
     diagramAlt: "원천 자료가 데이터셋 패키지, 지식 그래프, 활용 결과로 이어지는 MAEK 시스템 다이어그램.",
-    footerText: "전문 업무를 위한 출처 기반 지능 시스템.",
     mobileSequence: [
       {
         title: "원천 자료",
@@ -641,11 +639,9 @@ export function HomeExperience() {
       <SystemStackSection copy={copy.system} />
 
       <footer className="border-t border-[#0a2a57]/14 px-4 py-8 text-[#34473d] sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-[1440px] gap-4 text-sm lg:grid-cols-[auto_minmax(0,1fr)_auto_auto] lg:items-center">
-          <MaekLogo />
-          <p>{copy.footerText}</p>
-          <LanguageToggle />
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[#34473d]/70">© 2026 MAEK. All rights reserved.</p>
+          <LanguageToggle />
         </div>
       </footer>
 
