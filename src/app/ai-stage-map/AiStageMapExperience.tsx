@@ -338,7 +338,13 @@ export function AiStageMapExperience() {
             <h2 id="maek-title" className="mt-3 text-3xl font-semibold leading-tight text-[#061d48] md:text-5xl">
               <a
                 href="/system-flow"
-                className="underline decoration-[#087a45]/55 decoration-2 underline-offset-8 transition hover:text-[#087a45] hover:decoration-[#087a45] focus:outline-none focus:ring-2 focus:ring-[#087a45]/35"
+                className="transition hover:text-[#087a45] focus:outline-none focus:ring-2 focus:ring-[#087a45]/35"
+                style={{
+                  textDecorationLine: "underline",
+                  textDecorationColor: "rgba(8, 122, 69, 0.72)",
+                  textDecorationThickness: "0.06em",
+                  textUnderlineOffset: "0.13em",
+                }}
               >
                 {copy.maekTitle}
               </a>
