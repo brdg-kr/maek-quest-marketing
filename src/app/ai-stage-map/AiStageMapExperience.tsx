@@ -226,7 +226,7 @@ export function AiStageMapExperience() {
         </div>
       </section>
 
-      <section className="px-4 pb-12 pt-10 sm:px-6 md:pb-16 md:pt-14 lg:px-8">
+      <section className="px-4 pb-20 pt-16 sm:px-6 md:min-h-[30rem] md:pb-24 md:pt-20 lg:flex lg:min-h-[34rem] lg:items-center lg:px-8">
         <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[minmax(0,0.58fr)_minmax(26rem,0.42fr)] lg:items-end">
           <div>
             <h1 className="max-w-5xl text-[clamp(2.6rem,6.4vw,6.8rem)] font-semibold leading-[0.95] tracking-normal text-[#07100c]">
@@ -335,18 +335,14 @@ export function AiStageMapExperience() {
             <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#087a45]">
               {copy.maekEyebrow}
             </p>
-            <div className="mt-3 flex items-start gap-4">
-              <h2 id="maek-title" className="text-3xl font-semibold leading-tight text-[#061d48] md:text-5xl">
-                {copy.maekTitle}
-              </h2>
+            <h2 id="maek-title" className="mt-3 text-3xl font-semibold leading-tight text-[#061d48] md:text-5xl">
               <a
                 href="/system-flow"
-                aria-label={copy.maekLinkLabel}
-                className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#087a45]/35 bg-white text-2xl font-semibold leading-none text-[#087a45] shadow-[0_10px_30px_rgba(8,122,69,0.13)] transition hover:border-[#087a45] hover:bg-[#087a45] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#087a45]/45"
+                className="underline decoration-[#087a45]/55 decoration-2 underline-offset-8 transition hover:text-[#087a45] hover:decoration-[#087a45] focus:outline-none focus:ring-2 focus:ring-[#087a45]/35"
               >
-                <span aria-hidden="true">&gt;</span>
+                {copy.maekTitle}
               </a>
-            </div>
+            </h2>
             <p className="mt-5 text-base leading-7 text-[#34473d]">{copy.maekBody}</p>
             <div className="mt-7 grid gap-3 text-sm font-semibold text-[#061d48] sm:grid-cols-3">
               <p className="rounded-[6px] border border-[#d7dee9] bg-white p-4">Brain</p>
@@ -355,15 +351,21 @@ export function AiStageMapExperience() {
             </div>
           </div>
           <figure className="overflow-hidden rounded-[6px] border border-[#d7dee9] bg-white">
-            <Image
-              src="/images/maek-system-flow-cropped.png"
-              alt={copy.figureAlt}
-              width={1536}
-              height={790}
-              sizes="(min-width: 1024px) 54vw, 100vw"
-              className="h-auto w-full"
-              loading="eager"
-            />
+            <a
+              href="/system-flow"
+              aria-label={copy.maekLinkLabel}
+              className="block transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#087a45]/45"
+            >
+              <Image
+                src="/images/maek-system-flow-cropped.png"
+                alt={copy.figureAlt}
+                width={1536}
+                height={790}
+                sizes="(min-width: 1024px) 54vw, 100vw"
+                className="h-auto w-full"
+                loading="eager"
+              />
+            </a>
           </figure>
         </div>
       </section>
