@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     description:
       "Source-grounded intelligence systems for professional workflows.",
   },
+  icons: {
+    icon: "/maek-logo.svg",
+  },
 };
 
 export const viewport: Viewport = {
