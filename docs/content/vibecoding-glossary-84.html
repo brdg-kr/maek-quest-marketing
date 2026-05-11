@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>바이브 코딩 UI 용어집 84</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --ink: #17181c;
+      --muted: #636a75;
+      --line: #dfe3ea;
+      --accent: #176b87;
+      --accent-soft: #e4f3f7;
+      --shadow: 0 14px 32px rgba(20, 29, 40, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(246, 247, 249, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 220px;
+    }
+
+    .brand strong {
+      font-size: 16px;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .search {
+      position: relative;
+      flex: 1;
+      max-width: 520px;
+    }
+
+    .search input {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      font-size: 14px;
+      padding: 0 14px 0 38px;
+      outline: none;
+    }
+
+    .search::before {
+      content: "⌕";
+      position: absolute;
+      left: 14px;
+      top: 8px;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .count {
+      min-width: 96px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 740px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .source-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .source-card h2 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .source-card p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .category-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 22px 0 28px;
+    }
+
+    .category-bar button {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 7px 12px;
+    }
+
+    .category-bar button.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .term-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 220px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 18px;
+      box-shadow: 0 4px 18px rgba(20, 29, 40, 0.04);
+      cursor: pointer;
+      transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+    }
+
+    .term-card:hover,
+    .term-card:focus-visible {
+      border-color: rgba(23, 107, 135, 0.55);
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .term-card.hidden {
+      display: none;
+    }
+
+    .term-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #0f596f;
+      font-size: 12px;
+      padding: 4px 8px;
+      white-space: nowrap;
+    }
+
+    .term-card h2 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.25;
+    }
+
+    .alias {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .desc {
+      margin: 0;
+      color: #343941;
+      font-size: 14px;
+    }
+
+    .prompt {
+      margin-top: auto;
+      border-left: 3px solid var(--accent);
+      background: #f4fafb;
+      color: #26353b;
+      font-size: 13px;
+      padding: 10px 12px;
+    }
+
+    .open-detail {
+      align-self: flex-start;
+      min-height: 34px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+      padding: 7px 11px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      background: rgba(12, 18, 24, 0.48);
+      padding: 24px;
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .detail-modal {
+      display: flex;
+      flex-direction: column;
+      width: min(760px, 100%);
+      max-height: min(780px, calc(100vh - 48px));
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      padding: 22px 24px 18px;
+    }
+
+    .detail-header h2 {
+      margin: 6px 0 4px;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .detail-header .alias {
+      font-size: 14px;
+    }
+
+    .close-detail {
+      display: inline-grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .detail-body {
+      display: grid;
+      gap: 16px;
+      overflow: auto;
+      padding: 22px 24px 24px;
+    }
+
+    .detail-section {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      padding: 16px;
+    }
+
+    .detail-section h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+
+    .detail-section p {
+      margin: 0;
+      color: #303741;
+      font-size: 14px;
+    }
+
+    .detail-section ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #303741;
+      font-size: 14px;
+    }
+
+    .detail-prompt {
+      border-left: 3px solid var(--accent);
+      background: #eef8fb;
+    }
+
+    .keyword-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .keyword-list span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: #303741;
+      font-size: 13px;
+      padding: 5px 9px;
+    }
+
+    .prompt-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .prompt-list li {
+      border-radius: 8px;
+      background: #ffffff;
+      color: #26353b;
+      font-size: 14px;
+      padding: 11px 12px;
+    }
+
+    .detail-tip {
+      border-color: #d8e8b9;
+      background: #fbfef4;
+    }
+
+    .related-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .related-list button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 5px 9px;
+    }
+
+    .empty {
+      display: none;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .empty.visible {
+      display: block;
+    }
+
+    @media (max-width: 920px) {
+      .topbar,
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .search {
+        max-width: none;
+      }
+
+      .count {
+        text-align: left;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <strong>바이브 코딩 UI 용어집</strong>
+        <span>84개 항목 한국어 재작성판</span>
+      </div>
+      <label class="search">
+        <input id="searchInput" type="search" placeholder="용어, 영어 alias, 카테고리 검색" autocomplete="off" />
+      </label>
+      <div id="resultCount" class="count">84 / 84</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1>AI에게 화면을 정확히 설명하기 위한 UI 단어장</h1>
+        <p>
+          원본 사이트의 84개 용어 목록을 기준으로, 설명과 프롬프트는 사내 업무앱 제작 문맥에 맞춰 새로 작성했다.
+          목표는 사용자가 원하는 화면의 이름을 알고, 그 이름으로 AI에게 정확히 요청할 수 있게 만드는 것이다.
+        </p>
+      </div>
+      <aside class="source-card">
+        <h2>작성 기준</h2>
+        <p>
+          항목명과 카테고리 수는 원본 데이터 기준으로 맞추고, 본문 설명은 한국어로 다시 썼다.
+          이 파일은 복제본이 아니라 내부 제품화를 위한 재구성 콘텐츠다.
+        </p>
+      </aside>
+    </section>
+
+    <nav id="categoryBar" class="category-bar" aria-label="카테고리 필터"></nav>
+    <section id="termsGrid" class="grid" aria-live="polite"></section>
+    <div id="emptyState" class="empty">검색 결과가 없습니다. 다른 키워드나 카테고리를 선택하세요.</div>
+  </main>
+
+  <div id="detailBackdrop" class="modal-backdrop" hidden>
+    <article class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="detail-header">
+        <div>
+          <span id="detailCategory" class="badge"></span>
+          <h2 id="detailTitle"></h2>
+          <div id="detailAlias" class="alias"></div>
+        </div>
+        <button id="closeDetail" class="close-detail" type="button" aria-label="상세 닫기">×</button>
+      </div>
+      <div id="detailBody" class="detail-body"></div>
+    </article>
+  </div>
+
+  <script>
+    const TERMS = [
+      { category: "페이지 구조", title: "헤더", alias: "Header", description: "화면 최상단에서 서비스명, 주요 메뉴, 검색, 사용자 메뉴를 제공하는 영역.", prompt: "상단에 로고, 주요 메뉴, 검색창, 사용자 메뉴가 있는 고정 헤더를 만들어줘." },
+      { category: "페이지 구조", title: "푸터", alias: "Footer", description: "화면 하단에서 도움말, 정책, 연락처, 버전 정보를 정리하는 영역.", prompt: "하단 푸터에 도움말, 개인정보 처리방침, 문의 링크, 버전 정보를 넣어줘." },
+      { category: "페이지 구조", title: "사이드바", alias: "Sidebar", description: "관리 화면에서 주요 메뉴를 세로로 배치해 반복 작업을 빠르게 이동하게 하는 영역.", prompt: "왼쪽에 앱 목록, 배포, 로그, 설정으로 이동하는 사이드바를 만들어줘." },
+      { category: "페이지 구조", title: "섹션", alias: "Section", description: "한 화면을 의미 있는 단위로 나누는 콘텐츠 블록.", prompt: "대시보드를 상태 요약, 최근 활동, 상세 목록 섹션으로 나눠줘." },
+      { category: "페이지 구조", title: "히어로 섹션", alias: "Hero Section", description: "페이지 첫 화면에서 목적과 핵심 행동을 가장 먼저 보여주는 큰 소개 영역.", prompt: "템플릿 소개 페이지 상단에 제목, 설명, 시작하기 버튼이 있는 히어로 섹션을 만들어줘." },
+      { category: "페이지 구조", title: "컨테이너", alias: "Container", description: "본문이 너무 넓어지지 않도록 최대 폭과 좌우 여백을 잡는 투명한 틀.", prompt: "본문을 최대 1180px 컨테이너 안에 넣고 화면이 좁아지면 좌우 여백을 유지해줘." },
+      { category: "페이지 구조", title: "CTA", alias: "Call To Action", description: "사용자가 다음 행동을 바로 실행하도록 유도하는 버튼이나 문구.", prompt: "빈 상태 화면에 새 앱 만들기 CTA 버튼을 강조해서 배치해줘." },
+
+      { category: "내비게이션", title: "내비게이션 바", alias: "Navigation Bar / Navbar", description: "주요 화면으로 이동하는 링크를 한 줄로 제공하는 메뉴 영역.", prompt: "상단 내비게이션 바에 대시보드, 앱, 템플릿, 설정 메뉴를 넣어줘." },
+      { category: "내비게이션", title: "햄버거 메뉴", alias: "Hamburger Menu", description: "작은 화면에서 메뉴를 접어 두고 버튼으로 열 수 있게 하는 패턴.", prompt: "모바일에서는 상단 메뉴를 햄버거 버튼으로 접고, 클릭하면 drawer로 열리게 해줘." },
+      { category: "내비게이션", title: "브레드크럼", alias: "Breadcrumb", description: "현재 위치가 어떤 상위 경로 아래인지 보여주는 계층 표시.", prompt: "앱 상세 화면 상단에 워크스페이스 > 앱 목록 > 현재 앱 형태의 브레드크럼을 넣어줘." },
+      { category: "내비게이션", title: "페이지네이션", alias: "Pagination", description: "긴 목록을 여러 페이지로 나누고 번호로 이동하게 하는 컨트롤.", prompt: "테이블 하단에 이전, 다음, 페이지 번호가 있는 페이지네이션을 추가해줘." },
+      { category: "내비게이션", title: "탭", alias: "Tab", description: "같은 화면 안에서 관련된 여러 내용을 전환하는 메뉴.", prompt: "앱 상세 화면을 개요, 배포 이력, 로그, 설정 탭으로 나눠줘." },
+      { category: "내비게이션", title: "앵커 링크", alias: "Anchor Link", description: "긴 페이지 안의 특정 섹션으로 바로 이동하는 링크.", prompt: "문서 페이지 상단에 설치, 설정, 배포, 문제 해결 섹션으로 이동하는 앵커 링크를 넣어줘." },
+
+      { category: "UI 파츠", title: "버튼", alias: "Button", description: "저장, 생성, 배포처럼 사용자의 명령을 실행하는 기본 요소.", prompt: "주요 버튼, 보조 버튼, 위험 버튼 스타일을 구분해서 만들어줘." },
+      { category: "UI 파츠", title: "카드", alias: "Card", description: "제목, 설명, 상태, 액션을 하나의 덩어리로 묶어 보여주는 박스.", prompt: "앱 목록을 카드 그리드로 보여주고 각 카드에 상태, 소유자, 최근 배포 시간을 넣어줘." },
+      { category: "UI 파츠", title: "모달", alias: "Modal / Dialog", description: "현재 화면 위에 뜨는 집중형 창으로 확인, 입력, 상세 보기에 사용한다.", prompt: "삭제 버튼을 누르면 영향 범위와 확인 입력이 있는 모달을 띄워줘." },
+      { category: "UI 파츠", title: "드롭다운", alias: "Dropdown", description: "클릭하면 선택지나 추가 액션 목록이 펼쳐지는 메뉴.", prompt: "행 오른쪽에 수정, 복제, 보관, 삭제 액션을 담은 드롭다운 메뉴를 넣어줘." },
+      { category: "UI 파츠", title: "아코디언", alias: "Accordion", description: "제목만 보이다가 클릭하면 상세 내용이 펼쳐지는 접힘 패턴.", prompt: "FAQ 항목을 아코디언으로 만들고 첫 번째 항목만 기본으로 열어줘." },
+      { category: "UI 파츠", title: "툴팁", alias: "Tooltip", description: "마우스를 올리거나 포커스했을 때 짧은 보조 설명을 보여준다.", prompt: "아이콘 버튼마다 기능을 설명하는 툴팁을 붙여줘." },
+      { category: "UI 파츠", title: "토스트 알림", alias: "Toast / Snackbar", description: "작업 성공이나 실패를 화면 가장자리에서 잠깐 알려주는 메시지.", prompt: "저장 완료, 배포 시작, 실패 상황을 토스트 알림으로 표시해줘." },
+      { category: "UI 파츠", title: "배지", alias: "Badge", description: "상태, 수량, 등급을 짧은 텍스트와 색상으로 표시하는 작은 라벨.", prompt: "앱 상태를 운영중, 배포중, 실패, 보관 배지로 표시해줘." },
+      { category: "UI 파츠", title: "아바타", alias: "Avatar", description: "사용자나 팀을 사진, 이니셜, 색상 원형으로 표현하는 요소.", prompt: "앱 소유자와 승인자를 아바타와 이름으로 함께 표시해줘." },
+      { category: "UI 파츠", title: "태그", alias: "Tag / Chip", description: "카테고리, 기술스택, 데이터 등급 같은 메타정보를 작게 붙이는 요소.", prompt: "각 앱 카드에 Next.js, 내부망, 개인정보 없음 같은 태그를 붙여줘." },
+      { category: "UI 파츠", title: "진행 바", alias: "Progress Bar", description: "빌드, 배포, 업로드처럼 진행률이 있는 작업의 상태를 보여준다.", prompt: "배포 단계별 진행률을 progress bar와 단계 텍스트로 보여줘." },
+      { category: "UI 파츠", title: "스피너 / 로딩", alias: "Spinner / Loading", description: "짧은 대기 시간 동안 처리가 진행 중임을 알려주는 표시.", prompt: "API 응답을 기다리는 동안 버튼 안에 작은 로딩 스피너를 보여줘." },
+      { category: "UI 파츠", title: "캐러셀 / 슬라이더", alias: "Carousel / Slider", description: "여러 이미지나 카드를 좌우로 넘기며 보는 패턴.", prompt: "템플릿 미리보기 이미지를 좌우 버튼으로 넘기는 캐러셀로 만들어줘." },
+      { category: "UI 파츠", title: "구분선", alias: "Divider / Separator", description: "관련 없는 정보나 섹션을 시각적으로 나누는 선.", prompt: "설정 화면에서 일반 설정, 권한, 위험 작업 사이에 구분선을 넣어줘." },
+      { category: "UI 파츠", title: "스켈레톤", alias: "Skeleton Screen", description: "데이터가 로딩되는 동안 실제 레이아웃과 비슷한 회색 자리표시자를 보여준다.", prompt: "앱 목록 로딩 중에는 카드 형태의 스켈레톤 UI를 보여줘." },
+
+      { category: "폼", title: "텍스트 입력", alias: "Input / Text Field", description: "이름, 이메일, 검색어처럼 한 줄 값을 입력받는 필드.", prompt: "앱 이름 입력 필드에 라벨, 예시 placeholder, 유효성 메시지를 넣어줘." },
+      { category: "폼", title: "텍스트 영역", alias: "Textarea", description: "설명, 메모, 프롬프트처럼 긴 문장을 입력하는 필드.", prompt: "앱 설명을 입력하는 textarea를 만들고 글자 수 카운터를 붙여줘." },
+      { category: "폼", title: "체크박스", alias: "Checkbox", description: "여러 선택지를 독립적으로 켜고 끌 수 있는 입력 요소.", prompt: "알림 받을 이벤트를 체크박스 목록으로 선택하게 해줘." },
+      { category: "폼", title: "라디오 버튼", alias: "Radio Button", description: "서로 배타적인 선택지 중 하나만 고르게 하는 입력 요소.", prompt: "배포 방식을 자동, 승인 후 배포, 수동 중 하나로 선택하는 라디오 그룹을 만들어줘." },
+      { category: "폼", title: "셀렉트 박스", alias: "Select / Dropdown", description: "미리 정해진 옵션 중 하나를 펼쳐서 선택하는 입력 요소.", prompt: "템플릿, 팀, 데이터 등급을 선택하는 셀렉트 박스를 만들어줘." },
+      { category: "폼", title: "토글 스위치", alias: "Toggle Switch", description: "설정을 즉시 켜거나 끄는 ON/OFF 스위치.", prompt: "자동 배포 사용 여부를 토글 스위치로 제어하게 해줘." },
+      { category: "폼", title: "라벨", alias: "Label", description: "입력 필드가 무엇을 의미하는지 알려주는 짧은 제목.", prompt: "모든 입력 필드 위에 명확한 라벨을 넣고 필수 항목은 표시해줘." },
+      { category: "폼", title: "플레이스홀더", alias: "Placeholder", description: "입력 전 필드 안에 보이는 예시나 힌트 문구.", prompt: "도메인 입력 필드에 예시로 inventory.apps.company.internal을 보여줘." },
+      { category: "폼", title: "유효성 검사", alias: "Validation", description: "입력값이 비어 있거나 형식이 맞지 않을 때 즉시 알려주는 검사.", prompt: "앱 이름은 영문 소문자, 숫자, 하이픈만 허용하고 오류 메시지를 바로 보여줘." },
+
+      { category: "인터랙션", title: "호버", alias: "Hover", description: "마우스를 올렸을 때 색상, 그림자, 설명이 바뀌는 상태.", prompt: "카드에 hover하면 살짝 떠오르고 오른쪽 상단 액션 버튼이 보이게 해줘." },
+      { category: "인터랙션", title: "클릭 / 탭", alias: "Click / Tap", description: "마우스 클릭이나 터치로 버튼, 링크, 카드를 실행하는 기본 조작.", prompt: "앱 카드를 클릭하면 상세 페이지로 이동하고, 버튼 클릭은 별도 액션으로 처리해줘." },
+      { category: "인터랙션", title: "스크롤", alias: "Scroll", description: "긴 페이지나 테이블을 위아래 또는 좌우로 이동하는 조작.", prompt: "긴 로그 영역은 내부 스크롤로 만들고 페이지 헤더는 고정해줘." },
+      { category: "인터랙션", title: "트랜지션", alias: "Transition", description: "색상, 위치, 크기 변화가 갑자기 바뀌지 않도록 부드럽게 연결하는 효과.", prompt: "버튼 hover와 drawer 열림에 150ms 정도의 자연스러운 transition을 적용해줘." },
+      { category: "인터랙션", title: "애니메이션", alias: "Animation", description: "요소가 이동하거나 나타나는 등 시간에 따라 변화하는 시각 효과.", prompt: "배포 시작 시 단계 카드가 순서대로 나타나는 가벼운 애니메이션을 넣어줘." },
+      { category: "인터랙션", title: "포커스", alias: "Focus", description: "현재 키보드나 입력 대상이 어디인지 표시하는 상태.", prompt: "키보드 접근성을 위해 모든 입력과 버튼에 명확한 focus ring을 넣어줘." },
+      { category: "인터랙션", title: "드래그 앤 드롭", alias: "Drag & Drop", description: "요소나 파일을 끌어서 위치를 바꾸거나 업로드하는 조작.", prompt: "파일 업로드 영역에 드래그 앤 드롭을 지원하고 업로드 전 파일 목록을 보여줘." },
+      { category: "인터랙션", title: "스와이프", alias: "Swipe", description: "모바일에서 손가락으로 좌우 이동해 항목을 넘기거나 액션을 노출하는 조작.", prompt: "모바일 이슈 목록에서 왼쪽으로 스와이프하면 완료 액션이 나타나게 해줘." },
+
+      { category: "레이아웃", title: "플렉스박스", alias: "Flexbox", description: "한 방향으로 요소를 정렬하고 간격을 맞추기 좋은 CSS 레이아웃 방식.", prompt: "상단 툴바의 검색창, 필터, 버튼을 flexbox로 정렬해줘." },
+      { category: "레이아웃", title: "그리드", alias: "CSS Grid", description: "행과 열을 기준으로 카드나 대시보드를 배치하는 CSS 레이아웃 방식.", prompt: "앱 카드 목록을 반응형 CSS Grid로 구성해줘." },
+      { category: "레이아웃", title: "반응형", alias: "Responsive Design", description: "PC, 태블릿, 모바일 화면 폭에 맞춰 레이아웃이 바뀌는 설계.", prompt: "데스크톱에서는 3열 카드, 태블릿은 2열, 모바일은 1열로 보여줘." },
+      { category: "레이아웃", title: "브레이크포인트", alias: "Breakpoint", description: "레이아웃이 전환되는 화면 폭 기준값.", prompt: "768px 이하에서는 사이드바를 drawer로 바꾸고, 1024px 이상에서는 고정 사이드바를 보여줘." },
+      { category: "레이아웃", title: "마진", alias: "Margin", description: "요소 바깥쪽 간격으로 섹션과 카드 사이 거리를 조절한다.", prompt: "카드 사이에는 16px margin 대신 grid gap을 쓰고 섹션 사이에는 40px 여백을 줘." },
+      { category: "레이아웃", title: "패딩", alias: "Padding", description: "요소 안쪽 여백으로 텍스트와 테두리 사이의 숨 쉴 공간을 만든다.", prompt: "카드 안쪽 padding은 20px, 버튼 padding은 위아래 10px 좌우 14px로 맞춰줘." },
+      { category: "레이아웃", title: "갭", alias: "Gap", description: "flex나 grid의 자식 요소 사이 간격을 일관되게 주는 속성.", prompt: "폼 필드 사이에는 12px gap, 카드 그리드에는 16px gap을 적용해줘." },
+      { category: "레이아웃", title: "z-index", alias: "z-index", description: "모달, 드롭다운, 툴팁처럼 겹치는 요소의 앞뒤 순서를 정한다.", prompt: "헤더, 드롭다운, 모달의 z-index 계층을 충돌 없이 정리해줘." },
+
+      { category: "문자 / 텍스트", title: "폰트", alias: "Font / Font Family", description: "화면의 글꼴 계열로 제품의 인상과 가독성을 좌우한다.", prompt: "한국어 가독성이 좋은 sans-serif 폰트 스택을 설정해줘." },
+      { category: "문자 / 텍스트", title: "폰트 크기", alias: "Font Size", description: "텍스트의 크기로 정보의 중요도와 밀도를 조절한다.", prompt: "대시보드 카드 제목, 본문, 보조 설명의 font size 계층을 명확히 잡아줘." },
+      { category: "문자 / 텍스트", title: "글자 두께", alias: "Font Weight", description: "제목, 라벨, 값의 강조 정도를 표현하는 글자 굵기.", prompt: "섹션 제목은 700, 카드 제목은 600, 보조 텍스트는 400 weight로 설정해줘." },
+      { category: "문자 / 텍스트", title: "행간", alias: "Line Height", description: "여러 줄 텍스트의 줄 사이 간격으로 읽기 편안함을 만든다.", prompt: "설명 문단은 line-height 1.6으로 설정하고 테이블 셀은 더 촘촘하게 유지해줘." },
+      { category: "문자 / 텍스트", title: "자간", alias: "Letter Spacing", description: "글자 사이 간격으로 UI에서는 기본값에 가깝게 쓰는 것이 안전하다.", prompt: "일반 UI 텍스트는 letter spacing을 0으로 두고 숫자 배지는 너무 벌어지지 않게 해줘." },
+      { category: "문자 / 텍스트", title: "텍스트 정렬", alias: "Text Align", description: "텍스트를 왼쪽, 가운데, 오른쪽 중 어디에 맞출지 정한다.", prompt: "테이블에서 텍스트 컬럼은 왼쪽, 숫자 컬럼은 오른쪽 정렬해줘." },
+      { category: "문자 / 텍스트", title: "제목", alias: "Heading", description: "페이지와 섹션의 구조를 나타내는 제목 계층.", prompt: "페이지에는 h1 하나만 쓰고 섹션 제목은 h2, 카드 제목은 h3로 계층을 맞춰줘." },
+      { category: "문자 / 텍스트", title: "말줄임", alias: "Text Truncation / Ellipsis", description: "긴 텍스트가 레이아웃을 깨지 않도록 끝을 줄여 표시하는 처리.", prompt: "앱 이름과 설명이 길면 한 줄 또는 두 줄 말줄임으로 처리하고 전체 텍스트는 tooltip에 보여줘." },
+
+      { category: "색 / 장식", title: "배경색", alias: "Background Color", description: "페이지, 섹션, 카드의 영역감을 만드는 기본 색상.", prompt: "전체 배경은 연한 회색, 카드와 폼은 흰색 배경으로 구분해줘." },
+      { category: "색 / 장식", title: "그라데이션", alias: "Gradient", description: "색이 부드럽게 변하는 장식 효과로 강조 영역에 제한적으로 쓴다.", prompt: "중요한 CTA 배너에만 절제된 그라데이션 배경을 적용해줘." },
+      { category: "색 / 장식", title: "그림자", alias: "Box Shadow / Drop Shadow", description: "요소가 배경 위에 떠 있는 느낌을 만드는 그림자 효과.", prompt: "모달과 드롭다운에는 그림자를 주고 테이블에는 과한 그림자를 쓰지 말아줘." },
+      { category: "색 / 장식", title: "테두리", alias: "Border", description: "요소의 경계와 그룹을 시각적으로 구분하는 선.", prompt: "카드와 입력 필드에 1px 연한 회색 border를 적용해줘." },
+      { category: "색 / 장식", title: "모서리 둥글기", alias: "Border Radius", description: "버튼, 카드, 입력 필드의 모서리 곡률을 정하는 스타일.", prompt: "업무용 UI에 맞게 카드와 버튼 border radius는 8px 이하로 유지해줘." },
+      { category: "색 / 장식", title: "투명도", alias: "Opacity", description: "비활성, 보조, 배경 요소의 시각적 강도를 낮추는 속성.", prompt: "비활성 버튼은 opacity만 낮추지 말고 disabled 스타일과 설명도 함께 넣어줘." },
+      { category: "색 / 장식", title: "배경 흐림", alias: "Backdrop Blur / Glassmorphism", description: "뒤쪽 배경을 흐리게 해 오버레이나 고정 헤더의 층을 표현하는 효과.", prompt: "상단 sticky header에만 약한 backdrop blur를 적용하고 본문 카드에는 쓰지 말아줘." },
+
+      { category: "미디어", title: "이미지", alias: "Image (img)", description: "사진, 스크린샷, 첨부 미리보기를 화면에 보여주는 요소.", prompt: "첨부 이미지 썸네일을 일정한 비율로 보여주고 클릭하면 크게 볼 수 있게 해줘." },
+      { category: "미디어", title: "동영상", alias: "Video", description: "교육, 시연, 녹화 자료를 재생하는 미디어 요소.", prompt: "온보딩 페이지에 재생/일시정지 컨트롤이 있는 데모 영상 영역을 넣어줘." },
+      { category: "미디어", title: "아이콘", alias: "Icon", description: "작은 그림으로 기능, 상태, 카테고리를 빠르게 인식하게 하는 요소.", prompt: "버튼과 메뉴에는 의미에 맞는 아이콘을 붙이고 낯선 아이콘에는 tooltip을 제공해줘." },
+      { category: "미디어", title: "파비콘", alias: "Favicon", description: "브라우저 탭과 북마크에서 사이트를 식별하는 작은 아이콘.", prompt: "생성된 앱마다 기본 favicon을 설정하고 앱 이름으로 탭 제목을 구성해줘." },
+      { category: "미디어", title: "OGP 이미지", alias: "Open Graph Image", description: "링크를 공유했을 때 미리보기로 표시되는 대표 이미지.", prompt: "앱 문서 공유 링크에 사용할 OGP 이미지 메타태그를 설정해줘." },
+      { category: "미디어", title: "이미지 맞춤", alias: "Object Fit", description: "이미지를 정해진 영역에 채우거나 맞추거나 잘라 보이게 하는 방식.", prompt: "카드 썸네일은 object-fit: cover로 일정한 비율을 유지해줘." },
+
+      { category: "개발 기초", title: "컴포넌트", alias: "Component", description: "버튼, 카드, 테이블처럼 재사용 가능한 UI 단위.", prompt: "반복되는 UI는 Button, Card, DataTable 컴포넌트로 분리해줘." },
+      { category: "개발 기초", title: "API", alias: "API (Application Programming Interface)", description: "화면과 서버가 데이터를 주고받기 위해 약속한 인터페이스.", prompt: "앱 목록을 가져오는 API 함수를 분리하고 로딩/에러 상태를 UI에 연결해줘." },
+      { category: "개발 기초", title: "배포", alias: "Deploy", description: "앱을 내부 사용자가 접속할 수 있는 URL에 올리는 과정.", prompt: "배포 버튼을 누르면 배포 진행 상태와 결과를 화면에 표시해줘." },
+      { category: "개발 기초", title: "npm / 패키지", alias: "npm (Node Package Manager)", description: "Node.js 프로젝트에서 외부 라이브러리를 설치하고 관리하는 체계.", prompt: "필요한 UI 라이브러리가 있다면 package.json 의존성에 추가하고 사용 위치를 정리해줘." },
+      { category: "개발 기초", title: "DOM", alias: "DOM (Document Object Model)", description: "브라우저가 HTML 문서를 요소 트리로 다루는 구조.", prompt: "접근성을 고려해서 실제 버튼은 div가 아니라 button 요소로 만들어줘." },
+      { category: "개발 기초", title: "이벤트", alias: "Event", description: "클릭, 입력, 제출, 로딩 완료처럼 코드가 반응하는 사용자 또는 시스템 동작.", prompt: "폼 submit 이벤트에서 유효성 검사를 실행하고 성공하면 저장 API를 호출해줘." },
+      { category: "개발 기초", title: "CSS 변수", alias: "CSS Custom Properties / Variables", description: "색상, 간격, 크기 같은 디자인 값을 재사용하기 위한 CSS 값.", prompt: "주요 색상, border radius, spacing 값을 CSS 변수로 정의해줘." },
+      { category: "개발 기초", title: "CSS 클래스", alias: "CSS Class", description: "HTML 요소에 스타일이나 상태를 연결하기 위해 붙이는 이름.", prompt: "상태별 스타일을 success, warning, danger 같은 명확한 class로 분리해줘." },
+      { category: "개발 기초", title: "다크 모드", alias: "Dark Mode", description: "어두운 배경과 밝은 텍스트를 사용하는 대체 색상 테마.", prompt: "사용자 설정에 따라 라이트/다크 모드를 전환할 수 있게 CSS 변수를 구성해줘." },
+      { category: "개발 기초", title: "접근성", alias: "Accessibility (a11y)", description: "키보드, 스크린리더, 색 대비를 고려해 더 많은 사용자가 쓸 수 있게 하는 품질 기준.", prompt: "모든 폼 라벨, 버튼 이름, focus 상태, 색 대비를 접근성 기준에 맞게 점검해줘." }
+    ];
+
+    const categories = ["전체", ...Array.from(new Set(TERMS.map((term) => term.category)))];
+    const categoryBar = document.getElementById("categoryBar");
+    const grid = document.getElementById("termsGrid");
+    const input = document.getElementById("searchInput");
+    const count = document.getElementById("resultCount");
+    const empty = document.getElementById("emptyState");
+    const detailBackdrop = document.getElementById("detailBackdrop");
+    const detailCategory = document.getElementById("detailCategory");
+    const detailTitle = document.getElementById("detailTitle");
+    const detailAlias = document.getElementById("detailAlias");
+    const detailBody = document.getElementById("detailBody");
+    const closeDetail = document.getElementById("closeDetail");
+    let activeCategory = "전체";
+    let lastFocusedElement = null;
+
+    const CATEGORY_DETAIL = {
+      "페이지 구조": {
+        when: "화면의 큰 뼈대를 설명하거나 AI에게 페이지 구성을 먼저 잡게 할 때 사용한다.",
+        caution: "구조 요소는 너무 많이 겹치면 화면 목적이 흐려지므로 한 화면의 주 역할을 먼저 정해야 한다.",
+        visual: ["화면에서 차지하는 위치가 명확해야 한다.", "내용과 주변 여백이 같이 설계되어야 한다.", "모바일에서 접히거나 쌓이는 방식을 함께 지정한다."]
+      },
+      "내비게이션": {
+        when: "사용자가 현재 위치를 이해하고 다른 화면으로 빠르게 이동해야 할 때 사용한다.",
+        caution: "이동 경로가 너무 많으면 사용자가 헤매므로 핵심 메뉴와 보조 메뉴를 분리한다.",
+        visual: ["현재 선택된 메뉴가 표시되어야 한다.", "클릭 가능한 영역이 충분히 커야 한다.", "모바일에서는 drawer, tab, collapse 형태를 함께 고려한다."]
+      },
+      "UI 파츠": {
+        when: "반복되는 화면 요소를 이름 붙여 재사용하거나 AI에게 특정 부품을 만들게 할 때 사용한다.",
+        caution: "같은 역할의 컴포넌트는 색상, 크기, 상태 표현을 일관되게 유지한다.",
+        visual: ["기본 상태, hover, focus, disabled 상태가 필요하다.", "텍스트가 길어져도 레이아웃이 깨지지 않아야 한다.", "컴포넌트 단위로 재사용할 수 있어야 한다."]
+      },
+      "폼": {
+        when: "사용자에게 값을 입력받거나 설정을 변경하게 할 때 사용한다.",
+        caution: "필수값, 오류, 도움말, 저장 결과가 없으면 입력 경험이 불안정해진다.",
+        visual: ["라벨과 입력 영역이 명확히 연결되어야 한다.", "오류 메시지는 입력 필드 근처에 보여준다.", "저장 전후 상태를 버튼과 알림으로 표시한다."]
+      },
+      "인터랙션": {
+        when: "사용자 조작에 대한 반응, 전환, 피드백을 구체적으로 지시할 때 사용한다.",
+        caution: "움직임은 기능 이해를 돕는 수준으로 제한하고, 느리거나 과한 효과는 피한다.",
+        visual: ["상태 변화가 즉시 인지되어야 한다.", "키보드 조작과 터치 조작을 함께 고려한다.", "위험 작업은 추가 확인 단계를 둔다."]
+      },
+      "레이아웃": {
+        when: "요소 간 배치, 간격, 반응형 규칙을 AI에게 정확히 설명할 때 사용한다.",
+        caution: "간격을 margin, padding, gap 중 무엇으로 처리할지 혼용하지 않도록 규칙을 정한다.",
+        visual: ["데스크톱, 태블릿, 모바일 기준을 명시한다.", "반복 요소는 grid나 flex 규칙으로 정렬한다.", "스크롤과 overflow 처리를 함께 지정한다."]
+      },
+      "문자 / 텍스트": {
+        when: "화면의 정보 위계, 가독성, 긴 텍스트 처리를 정해야 할 때 사용한다.",
+        caution: "업무 도구에서는 장식보다 읽기 쉬운 크기, 줄 간격, 대비가 우선이다.",
+        visual: ["제목, 본문, 보조 텍스트의 크기 차이가 분명해야 한다.", "긴 값은 말줄임과 tooltip을 함께 쓴다.", "숫자와 상태값은 스캔하기 쉽게 정렬한다."]
+      },
+      "색 / 장식": {
+        when: "상태, 강조, 영역 구분, 브랜드 인상을 시각적으로 만들 때 사용한다.",
+        caution: "색상만으로 의미를 전달하지 말고 텍스트나 아이콘을 같이 제공한다.",
+        visual: ["상태별 색상 규칙이 있어야 한다.", "테두리와 배경색으로 밀도 높은 화면을 구분한다.", "그림자와 흐림 효과는 레이어가 필요한 곳에만 사용한다."]
+      },
+      "미디어": {
+        when: "이미지, 영상, 아이콘처럼 텍스트 외 자료를 보여주거나 설명을 보강할 때 사용한다.",
+        caution: "첨부 파일과 미리보기는 권한, 용량, 대체 텍스트를 함께 고려한다.",
+        visual: ["고정 비율과 crop 규칙을 정한다.", "로딩 실패 대체 상태를 준비한다.", "아이콘은 의미가 불명확하면 라벨이나 tooltip을 붙인다."]
+      },
+      "개발 기초": {
+        when: "AI가 화면뿐 아니라 코드 구조, 배포, 접근성까지 이해해야 할 때 사용한다.",
+        caution: "용어를 안다고 구현 품질이 보장되지는 않으므로 성공 기준과 검증 방법을 함께 요청한다.",
+        visual: ["재사용 가능한 단위로 나눈다.", "상태와 에러 처리를 포함한다.", "배포와 운영 기준을 UI 안에 반영한다."]
+      }
+    };
+
+    const TERM_EXAMPLES = {
+      "헤더": "관리자 대시보드 상단에서 서비스명, 전역 검색, 알림, 사용자 메뉴를 제공한다.",
+      "푸터": "내부 도구 하단에 지원 연락처, 정책 문서, 버전 정보를 배치한다.",
+      "사이드바": "플랫폼 관리자 화면에서 앱, 템플릿, 배포, 사용자, 설정 메뉴를 세로로 보여준다.",
+      "섹션": "앱 상세 화면을 상태 요약, 배포 이력, 환경변수, 감사로그로 나눈다.",
+      "히어로 섹션": "템플릿 소개 화면에서 어떤 업무앱을 만들 수 있는지 첫 화면에 보여준다.",
+      "컨테이너": "문서 본문이나 설정 화면이 넓은 모니터에서도 읽기 편한 폭을 유지하게 한다.",
+      "CTA": "빈 앱 목록에서 새 앱 만들기 버튼을 가장 눈에 띄는 행동으로 제공한다.",
+      "데이터 테이블": "재고, 사용자, 앱, 로그처럼 많은 레코드를 비교하고 관리한다.",
+      "모달": "앱 삭제, 운영 배포, 권한 변경처럼 집중 확인이 필요한 행동에 사용한다.",
+      "배지": "배포 성공, 실패, 승인 대기, 개인정보 포함 여부를 짧게 표시한다.",
+      "진행 바": "빌드, 테스트, 배포, 보안 검사 단계의 진행률을 보여준다.",
+      "스켈레톤": "앱 목록을 불러오는 동안 최종 카드 레이아웃과 비슷한 placeholder를 보여준다.",
+      "유효성 검사": "앱 slug, 도메인, 이메일, 필수 필드가 잘못됐을 때 즉시 알려준다.",
+      "드래그 앤 드롭": "CSV 파일 업로드나 칸반 카드 상태 변경에 사용한다.",
+      "z-index": "모달이 드롭다운보다 뒤에 깔리는 문제를 방지하기 위해 레이어 우선순위를 정한다.",
+      "접근성": "키보드 사용자도 앱 생성, 검색, 배포 확인을 완료할 수 있게 만든다."
+    };
+
+    const KEYWORD_HINTS = {
+      "헤더": ["header", "top bar", "masthead", "sticky header", "app header"],
+      "푸터": ["footer", "bottom bar", "site footer", "legal links"],
+      "사이드바": ["sidebar", "side navigation", "left nav", "admin menu"],
+      "섹션": ["section", "content block", "page block"],
+      "히어로 섹션": ["hero", "hero section", "above the fold"],
+      "컨테이너": ["container", "wrapper", "max width"],
+      "CTA": ["cta", "call to action", "primary action"],
+      "내비게이션 바": ["navbar", "navigation bar", "top navigation"],
+      "햄버거 메뉴": ["hamburger", "mobile menu", "menu button"],
+      "브레드크럼": ["breadcrumb", "path navigation", "hierarchy"],
+      "페이지네이션": ["pagination", "page numbers", "next previous"],
+      "탭": ["tab", "tabs", "tab navigation"],
+      "모달": ["modal", "dialog", "overlay", "popup"],
+      "드롭다운": ["dropdown", "select menu", "menu"],
+      "토스트 알림": ["toast", "snackbar", "notification"],
+      "텍스트 입력": ["input", "text field", "form field"],
+      "유효성 검사": ["validation", "error message", "form error"],
+      "플렉스박스": ["flexbox", "display flex", "flex layout"],
+      "그리드": ["grid", "css grid", "card grid"],
+      "말줄임": ["ellipsis", "truncate", "text overflow"],
+      "배경 흐림": ["backdrop blur", "glassmorphism", "blurred background"],
+      "접근성": ["accessibility", "a11y", "keyboard navigation", "screen reader"]
+    };
+
+    const PROMPT_EXAMPLES = {
+      "헤더": [
+        "헤더 왼쪽에는 로고를 두고, 오른쪽에는 내비게이션 링크 3개와 Contact 버튼을 배치해줘.",
+        "스크롤해도 상단에 고정되는 sticky header로 만들고, 스크롤 후에는 배경색과 그림자가 생기게 해줘."
+      ]
+    };
+
+    const TERM_TIPS = {
+      "헤더": "sticky header, transparent header, scroll 시 색이 바뀌는 header처럼 변형을 같이 말하면 AI가 위치, 배경, 그림자, 고정 동작을 더 정확히 구현한다."
+    };
+
+    const CATEGORY_TIPS = {
+      "페이지 구조": "위치와 변형을 같이 말하면 구현이 훨씬 정확해진다. 예: sticky, compact, full-width, centered, dashboard style.",
+      "내비게이션": "데스크톱과 모바일에서 어떻게 바뀌는지 같이 지정한다. 예: desktop sidebar, mobile drawer, active item highlight.",
+      "UI 파츠": "기본 상태만 말하지 말고 hover, focus, disabled, loading 같은 상태도 함께 요청한다.",
+      "폼": "라벨, 필수 여부, placeholder, validation, 저장 후 피드백까지 한 번에 말해야 실제 업무 화면에 가깝다.",
+      "인터랙션": "어떤 행동이 trigger이고 어떤 변화가 feedback인지 명확히 말한다.",
+      "레이아웃": "간격 단위와 breakpoint를 같이 지정하면 AI가 임의로 배치하는 일을 줄일 수 있다.",
+      "문자 / 텍스트": "폰트 크기, weight, line-height, truncation 규칙을 함께 말하면 밀도 높은 업무 화면이 안정된다.",
+      "색 / 장식": "색상은 의미와 함께 지정한다. 예: success green, warning yellow, danger red, neutral gray.",
+      "미디어": "비율, crop 방식, loading 실패 상태, 대체 텍스트까지 지정하면 미리보기 품질이 좋아진다.",
+      "개발 기초": "화면 요구와 함께 코드 구조, 상태 처리, 접근성, 검증 기준을 같이 요청한다."
+    };
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+
+    function getRelatedTerms(term) {
+      return TERMS
+        .filter((candidate) => candidate.category === term.category && candidate.alias !== term.alias)
+        .slice(0, 4);
+    }
+
+    function uniqueList(items) {
+      const seen = new Set();
+      return items
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .filter((item) => {
+          const key = item.toLowerCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+    }
+
+    function makeKeywords(term) {
+      const aliasParts = term.alias
+        .replace(/[()]/g, " ")
+        .split(/[/,|]/)
+        .flatMap((part) => part.split(/\s{2,}/))
+        .map((part) => part.trim().toLowerCase());
+      return uniqueList([
+        ...(KEYWORD_HINTS[term.title] || []),
+        term.alias.toLowerCase(),
+        ...aliasParts,
+        term.title,
+        term.category
+      ]).slice(0, 8);
+    }
+
+    function makePromptExamples(term) {
+      if (PROMPT_EXAMPLES[term.title]) {
+        return PROMPT_EXAMPLES[term.title];
+      }
+      return [
+        term.prompt,
+        `${term.title}(${term.alias})을 ${term.category} 문맥에 맞게 만들어줘. 업무용 화면이라 너무 장식적으로 만들지 말고, 기본 상태와 예외 상태까지 같이 보여줘.`
+      ];
+    }
+
+    function makeDetail(term) {
+      return {
+        description: term.description,
+        keywords: makeKeywords(term),
+        promptExamples: makePromptExamples(term),
+        tip: TERM_TIPS[term.title] || CATEGORY_TIPS[term.category],
+        related: getRelatedTerms(term)
+      };
+    }
+
+    function openTermDetail(term) {
+      const detail = makeDetail(term);
+      lastFocusedElement = document.activeElement;
+      detailCategory.textContent = term.category;
+      detailTitle.textContent = term.title;
+      detailAlias.textContent = term.alias;
+      detailBody.innerHTML = `
+        <section class="detail-section">
+          <h3>Description</h3>
+          <p>${escapeHtml(detail.description)}</p>
+        </section>
+        <section class="detail-section">
+          <h3>Aliases &amp; Search Keywords</h3>
+          <div class="keyword-list">
+            ${detail.keywords.map((keyword) => `<span>${escapeHtml(keyword)}</span>`).join("")}
+          </div>
+        </section>
+        <section class="detail-section detail-prompt">
+          <h3>Prompt to the AI</h3>
+          <ul class="prompt-list">
+            ${detail.promptExamples.map((prompt) => `<li>"${escapeHtml(prompt)}"</li>`).join("")}
+          </ul>
+        </section>
+        <section class="detail-section detail-tip">
+          <h3>Tip</h3>
+          <p>${escapeHtml(detail.tip)}</p>
+        </section>
+        <section class="detail-section">
+          <h3>같이 알면 좋은 용어</h3>
+          <div class="related-list">
+            ${detail.related.map((item) => `<button type="button" data-alias="${escapeHtml(item.alias)}">${escapeHtml(item.title)}</button>`).join("")}
+          </div>
+        </section>
+      `;
+      detailBackdrop.hidden = false;
+      document.body.style.overflow = "hidden";
+      closeDetail.focus();
+    }
+
+    function closeTermDetail() {
+      detailBackdrop.hidden = true;
+      document.body.style.overflow = "";
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+      }
+    }
+
+    function renderCategories() {
+      categoryBar.innerHTML = "";
+      categories.forEach((category) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = category;
+        button.className = category === activeCategory ? "active" : "";
+        button.addEventListener("click", () => {
+          activeCategory = category;
+          renderCategories();
+          renderTerms();
+        });
+        categoryBar.appendChild(button);
+      });
+    }
+
+    function matches(term, query) {
+      if (!query) return true;
+      const detail = makeDetail(term);
+      const haystack = `${term.category} ${term.title} ${term.alias} ${term.description} ${term.prompt} ${detail.keywords.join(" ")} ${detail.promptExamples.join(" ")} ${detail.tip}`.toLowerCase();
+      return haystack.includes(query);
+    }
+
+    function renderTerms() {
+      const query = input.value.trim().toLowerCase();
+      const visible = TERMS.filter((term) => {
+        const categoryOk = activeCategory === "전체" || term.category === activeCategory;
+        return categoryOk && matches(term, query);
+      });
+
+      grid.innerHTML = "";
+      visible.forEach((term, index) => {
+        const card = document.createElement("article");
+        card.className = "term-card";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", `${term.title} 상세 보기`);
+        card.innerHTML = `
+          <div class="term-head">
+            <div>
+              <h2>${index + 1}. ${term.title}</h2>
+              <div class="alias">${term.alias}</div>
+            </div>
+            <span class="badge">${term.category}</span>
+          </div>
+          <p class="desc">${term.description}</p>
+          <div class="prompt"><strong>AI 지시 예:</strong> ${term.prompt}</div>
+          <span class="open-detail">상세 보기</span>
+        `;
+        card.addEventListener("click", () => openTermDetail(term));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openTermDetail(term);
+          }
+        });
+        grid.appendChild(card);
+      });
+
+      count.textContent = `${visible.length} / ${TERMS.length}`;
+      empty.classList.toggle("visible", visible.length === 0);
+    }
+
+    input.addEventListener("input", renderTerms);
+    closeDetail.addEventListener("click", closeTermDetail);
+    detailBackdrop.addEventListener("click", (event) => {
+      if (event.target === detailBackdrop) {
+        closeTermDetail();
+      }
+    });
+    detailBody.addEventListener("click", (event) => {
+      const relatedButton = event.target.closest("[data-alias]");
+      if (!relatedButton) return;
+      const related = TERMS.find((term) => term.alias === relatedButton.dataset.alias);
+      if (related) {
+        openTermDetail(related);
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !detailBackdrop.hidden) {
+        closeTermDetail();
+      }
+    });
+    renderCategories();
+    renderTerms();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>내부 업무앱 UI 패턴 사전 108</title>
+  <link rel="icon" href="data:," />
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --surface: #ffffff;
+      --surface-2: #eef1f5;
+      --ink: #17191f;
+      --muted: #636b78;
+      --line: #dfe3ea;
+      --accent: #0f6b5f;
+      --accent-soft: #e3f4f0;
+      --danger: #c84b4b;
+      --warning: #b7791f;
+      --shadow: 0 14px 36px rgba(22, 28, 36, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(245, 246, 248, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(260px, 540px) auto;
+      align-items: center;
+      gap: 18px;
+      width: min(1240px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .brand span,
+    .count {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .search {
+      position: relative;
+    }
+
+    .search::before {
+      content: "Search";
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .search input {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      padding: 0 14px 0 64px;
+      outline: none;
+    }
+
+    .search input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 107, 95, 0.12);
+    }
+
+    .count {
+      min-width: 92px;
+      text-align: right;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 28px;
+      width: min(1240px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 30px 0 56px;
+    }
+
+    aside {
+      position: sticky;
+      top: 84px;
+      align-self: start;
+      max-height: calc(100vh - 104px);
+      overflow: auto;
+      padding-right: 6px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(32px, 4.8vw, 56px);
+      line-height: 1.06;
+      letter-spacing: 0;
+    }
+
+    .intro p,
+    .note p {
+      margin: 14px 0 0;
+      color: var(--muted);
+    }
+
+    .note {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .note h2 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .category-nav {
+      display: grid;
+      gap: 4px;
+    }
+
+    .category-nav button,
+    .chip-bar button {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .category-nav button {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      min-height: 36px;
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .category-nav button.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .category-nav span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .chip-bar {
+      display: none;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 20px;
+    }
+
+    .chip-bar button {
+      min-height: 34px;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+    }
+
+    .chip-bar button.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .section-head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .pattern-card {
+      display: grid;
+      grid-template-rows: 142px 1fr;
+      min-height: 286px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 1px 2px rgba(22, 28, 36, 0.04);
+      overflow: hidden;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .pattern-card:hover,
+    .pattern-card:focus {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+      outline: none;
+    }
+
+    .preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      padding: 16px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0)),
+        var(--surface-2);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 14px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .card-title {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .card-title strong {
+      font-size: 16px;
+    }
+
+    .card-title span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .desc {
+      flex: 1;
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag,
+    .keyword-list span {
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 11px;
+      padding: 3px 7px;
+    }
+
+    .open-detail {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .empty {
+      display: none;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+      padding: 28px;
+      text-align: center;
+    }
+
+    .empty.visible {
+      display: block;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(20, 24, 30, 0.42);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .modal {
+      width: min(760px, 100%);
+      max-height: min(780px, 92vh);
+      overflow: auto;
+      border-radius: 10px;
+      background: var(--surface);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+    }
+
+    .modal-head {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      padding: 18px 20px;
+    }
+
+    .modal-head h2 {
+      margin: 2px 0 0;
+      font-size: 24px;
+    }
+
+    .modal-alias {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+    .modal-body {
+      display: grid;
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .detail-preview {
+      min-height: 190px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-2);
+    }
+
+    .detail-section {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .detail-section h3 {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .detail-section p {
+      margin: 0;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .keyword-list,
+    .related-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .prompt-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .prompt-list li {
+      margin: 5px 0;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .related-list button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--accent);
+      cursor: pointer;
+      padding: 6px 10px;
+    }
+
+    .mini {
+      width: min(230px, 100%);
+      color: var(--ink);
+      font-size: 11px;
+    }
+
+    .mini-panel,
+    .mini-card,
+    .mini-phone {
+      border: 1px solid #cbd2dc;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 3px 10px rgba(22, 28, 36, 0.06);
+    }
+
+    .mini-panel {
+      padding: 10px;
+    }
+
+    .mini-card {
+      padding: 9px;
+    }
+
+    .mini-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mini-line {
+      height: 7px;
+      border-radius: 999px;
+      background: #d8dee8;
+    }
+
+    .mini-line.dark {
+      background: var(--accent);
+    }
+
+    .mini-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 5px 10px;
+    }
+
+    .mini-button.secondary {
+      border: 1px solid #cbd2dc;
+      background: #fff;
+      color: var(--muted);
+    }
+
+    .mini-input {
+      height: 26px;
+      border: 1px solid #cbd2dc;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--muted);
+      padding: 5px 8px;
+    }
+
+    .mini-phone {
+      width: 128px;
+      min-height: 150px;
+      margin: 0 auto;
+      padding: 10px;
+      border-radius: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .count {
+        text-align: left;
+      }
+
+      main {
+        display: block;
+      }
+
+      aside {
+        display: none;
+      }
+
+      .chip-bar {
+        display: flex;
+      }
+
+      .intro {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pattern-card {
+        min-height: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <strong>내부 업무앱 UI 패턴 사전</strong>
+        <span>UI Design Dictionary 108개 패턴 한국어 재작성판</span>
+      </div>
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="패턴명, 영어명, 태그, 사용 상황 검색" />
+      </div>
+      <div id="resultCount" class="count">108 / 108</div>
+    </div>
+  </header>
+
+  <main>
+    <aside>
+      <nav id="sideNav" class="category-nav" aria-label="카테고리"></nav>
+    </aside>
+
+    <div>
+      <section class="intro">
+        <div>
+          <h1>화면 이름을 몰라도 찾을 수 있는 UI 패턴 도감</h1>
+          <p>원본 사이트의 108개 UI 패턴 구조를 읽고, 내부 개발 플랫폼과 사내 업무앱 제작 문맥에 맞춰 다시 쓴 콘텐츠다. 목표는 복제가 아니라, 코딩하는 사람과 요청하는 사람이 같은 컴포넌트 이름으로 대화하게 만드는 것이다.</p>
+        </div>
+        <div class="note">
+          <h2>작성 기준</h2>
+          <p>패턴명, 분류, 태그 수는 원본 기준으로 맞추고, 설명과 사용 상황, AI 프롬프트, 팁은 한국어 업무앱 문맥으로 새로 작성했다.</p>
+        </div>
+      </section>
+
+      <nav id="chipBar" class="chip-bar" aria-label="카테고리 필터"></nav>
+      <div id="content"></div>
+      <div id="emptyState" class="empty">검색 조건에 맞는 UI 패턴이 없습니다.</div>
+    </div>
+  </main>
+
+  <div id="detailBackdrop" class="modal-backdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="modal-head">
+        <div>
+          <div id="detailCategory" class="eyebrow"></div>
+          <h2 id="detailTitle"></h2>
+          <div id="detailAlias" class="modal-alias"></div>
+        </div>
+        <button id="closeDetail" class="modal-close" type="button" aria-label="상세 닫기">×</button>
+      </div>
+      <div id="detailBody" class="modal-body"></div>
+    </section>
+  </div>
+
+  <script>
+    const CATEGORIES = [
+      { key: "Navigation", ko: "내비게이션", tip: "이동 경로, 현재 위치, 모바일 전환 방식을 같이 말해야 실제 앱에서 길을 잃지 않는다." },
+      { key: "Layout", ko: "레이아웃", tip: "데스크톱, 태블릿, 모바일에서 열 수와 고정 영역이 어떻게 바뀌는지 함께 지정한다." },
+      { key: "Forms & Input", ko: "폼과 입력", tip: "라벨, 도움말, 필수값, 오류 메시지, 저장 후 피드백을 한 묶음으로 요청한다." },
+      { key: "Data Display", ko: "데이터 표시", tip: "정렬, 필터, 빈 상태, 로딩 상태, 권한 없는 상태까지 함께 설계해야 업무 화면이 완성된다." },
+      { key: "Feedback", ko: "피드백", tip: "사용자 행동 뒤에 무엇이 성공했고 무엇을 다시 해야 하는지 즉시 알려줘야 한다." },
+      { key: "Content", ko: "콘텐츠 구성", tip: "마케팅형 섹션이라도 내부 플랫폼에서는 정보 탐색과 의사결정 흐름을 우선한다." },
+      { key: "Actions", ko: "액션", tip: "기본, 보조, 위험, 비활성, 로딩 상태를 구분하면 버튼과 메뉴가 안전해진다." },
+      { key: "Mobile", ko: "모바일 패턴", tip: "엄지 조작, 하단 영역, 작은 화면에서의 정보 밀도를 함께 고려한다." },
+      { key: "Social & Communication", ko: "소셜/커뮤니케이션", tip: "실시간성, 작성자, 시간, 답글, 알림 범위를 명확히 지정한다." },
+      { key: "Onboarding & Guidance", ko: "온보딩/가이드", tip: "처음 쓰는 사용자가 다음 행동을 알 수 있게 단계와 완료 기준을 보여준다." },
+      { key: "Media", ko: "미디어", tip: "비율, 재생 컨트롤, 대체 텍스트, 로딩 실패 상태를 함께 지정한다." },
+      { key: "Commerce", ko: "커머스", tip: "가격, 수량, 옵션, 리뷰, 결제 전 확인을 명확히 보여줘야 한다." },
+      { key: "Advanced Patterns", ko: "고급 패턴", tip: "성능, 접근성, 단축키, 반응형 기준처럼 구현 품질에 직접 영향을 주는 조건을 포함한다." },
+      { key: "Authentication", ko: "인증", tip: "보안, 오류, 비밀번호 규칙, 소셜 로그인, 계정 복구 흐름을 함께 설계한다." },
+      { key: "Error & System", ko: "오류/시스템", tip: "문제 원인, 현재 상태, 사용자가 할 수 있는 복구 행동을 한 화면에 둔다." }
+    ];
+
+    const PATTERNS = [
+      { cat: "Navigation", ko: "햄버거 메뉴", en: "Hamburger Menu", desc: "좁은 화면에서 여러 메뉴를 접어 두고 버튼으로 여닫는 내비게이션 패턴.", use: "모바일이나 좁은 사이드 패널에서 메뉴가 많지만 첫 화면을 넓게 써야 할 때.", tags: ["Mobile", "Responsive"] },
+      { cat: "Navigation", ko: "탭 바", en: "Tab Bar", desc: "모바일 화면 하단에 주요 영역을 고정해 빠르게 전환하게 하는 메뉴.", use: "사용자가 앱의 핵심 영역 3개에서 5개를 반복적으로 오갈 때.", tags: ["Mobile", "iOS", "Android"] },
+      { cat: "Navigation", ko: "브레드크럼", en: "Breadcrumb", desc: "현재 화면이 어느 상위 경로 아래에 있는지 보여주는 계층형 위치 표시.", use: "워크스페이스, 프로젝트, 앱, 설정처럼 단계가 깊은 관리 화면에서.", tags: ["Web", "Hierarchy"] },
+      { cat: "Navigation", ko: "사이드바 내비게이션", en: "Sidebar Navigation", desc: "데스크톱 화면 왼쪽에 주요 메뉴를 고정해 반복 이동을 빠르게 하는 구조.", use: "관리자 콘솔, 내부 플랫폼, 운영 대시보드처럼 메뉴가 많은 제품에서.", tags: ["Desktop", "Admin"] },
+      { cat: "Navigation", ko: "메가 메뉴", en: "Mega Menu", desc: "많은 링크를 큰 패널 안에서 그룹별로 보여주는 확장형 메뉴.", use: "서비스, 템플릿, 문서, 리소스가 많아 단순 드롭다운으로 부족할 때.", tags: ["Web", "EC", "Large Site"] },
+      { cat: "Navigation", ko: "페이지네이션", en: "Pagination", desc: "긴 목록을 여러 페이지로 나누고 번호 또는 이전/다음으로 이동하게 하는 방식.", use: "데이터 양이 많고 사용자가 특정 페이지나 범위로 이동해야 할 때.", tags: ["Web", "List"] },
+      { cat: "Navigation", ko: "무한 스크롤", en: "Infinite Scroll", desc: "목록 끝에 도달하면 다음 데이터를 자동으로 불러오는 탐색 방식.", use: "피드, 알림, 활동 로그처럼 계속 훑어보는 콘텐츠에서.", tags: ["Mobile", "SNS", "Feed"] },
+      { cat: "Navigation", ko: "고정 헤더", en: "Sticky Header", desc: "스크롤해도 화면 상단에 남아 검색, 메뉴, 주요 액션을 유지하는 헤더.", use: "긴 목록이나 문서를 보면서 전역 검색과 주요 버튼을 계속 써야 할 때.", tags: ["Web", "Mobile"] },
+      { cat: "Navigation", ko: "드로어", en: "Drawer", desc: "화면 가장자리에서 밀려 나오는 패널로 메뉴, 필터, 상세 정보를 담는다.", use: "현재 화면을 유지한 채 보조 탐색이나 설정을 열어야 할 때.", tags: ["Mobile", "Responsive"] },
+      { cat: "Navigation", ko: "커맨드 팔레트", en: "Command Palette", desc: "키보드로 명령, 화면, 문서를 검색하고 바로 실행하는 빠른 실행 창.", use: "기능이 많은 개발자 도구나 내부 플랫폼에서 숙련 사용자의 이동을 줄일 때.", tags: ["Desktop", "Productivity"] },
+      { cat: "Navigation", ko: "세그먼트 컨트롤", en: "Segmented Control", desc: "작은 버튼 묶음으로 서로 배타적인 보기나 필터를 전환하는 컨트롤.", use: "일/주/월, 카드/테이블, 전체/내 항목처럼 가까운 선택지를 바꿀 때.", tags: ["iOS", "Mobile", "Filter"] },
+      { cat: "Navigation", ko: "탭", en: "Tabs", desc: "같은 화면 안에서 관련 내용을 탭 제목으로 나누어 전환하는 구조.", use: "앱 상세 화면을 개요, 배포, 로그, 설정처럼 묶어 보여줄 때.", tags: ["Web", "Desktop", "Mobile"] },
+      { cat: "Navigation", ko: "스텝퍼/마법사", en: "Stepper / Wizard", desc: "복잡한 작업을 여러 단계로 나누고 진행 위치를 보여주는 흐름.", use: "앱 생성, 배포 설정, 승인 요청처럼 순서가 중요한 작업에서.", tags: ["Form", "EC", "Onboarding"] },
+      { cat: "Navigation", ko: "앵커 내비게이션", en: "Anchor Navigation", desc: "긴 페이지의 특정 섹션으로 바로 이동하게 하는 내부 링크 목록.", use: "문서, 보고서, 설정 페이지처럼 한 화면 안에 섹션이 많은 경우.", tags: ["LP", "Web", "Long-form"] },
+
+      { cat: "Layout", ko: "그리드 레이아웃", en: "Grid Layout", desc: "카드나 패널을 행과 열 기준으로 정렬하는 기본 배치 방식.", use: "템플릿 갤러리, 앱 목록, 지표 카드처럼 반복 요소가 많을 때.", tags: ["Web", "Basic", "Responsive"] },
+      { cat: "Layout", ko: "메이슨리 레이아웃", en: "Masonry Layout", desc: "높이가 다른 카드나 이미지를 벽돌처럼 빈 공간 없이 쌓는 배치.", use: "스크린샷, 참고 이미지, 아이디어 보드처럼 카드 높이가 제각각일 때.", tags: ["Web", "Image", "Pinterest"] },
+      { cat: "Layout", ko: "카드 레이아웃", en: "Card Layout", desc: "독립적인 정보를 카드 단위로 나누어 훑어보기 좋게 배치하는 구조.", use: "앱, 템플릿, 업무 요청, 지표처럼 하나씩 비교해야 하는 항목에서.", tags: ["Web", "Mobile", "Basic"] },
+      { cat: "Layout", ko: "분할 화면", en: "Split Screen", desc: "화면을 두 영역으로 나누어 목록과 상세, 입력과 미리보기를 함께 보여준다.", use: "선택한 항목의 상세를 즉시 확인하거나 편집 결과를 옆에서 봐야 할 때.", tags: ["LP", "Web", "Desktop"] },
+      { cat: "Layout", ko: "히어로 섹션", en: "Hero Section", desc: "페이지 첫 화면에서 목적, 핵심 메시지, 주요 행동을 강하게 보여주는 영역.", use: "템플릿 소개, 사내 도구 안내, 새 기능 진입 화면에서.", tags: ["LP", "Web", "Marketing"] },
+      { cat: "Layout", ko: "벤토 그리드", en: "Bento Grid", desc: "서로 다른 크기의 카드로 기능과 정보를 조밀하게 구성하는 현대적 대시보드 배치.", use: "여러 기능, 지표, 예시를 한 화면에서 리듬 있게 보여주고 싶을 때.", tags: ["Web", "Modern", "Dashboard"] },
+      { cat: "Layout", ko: "홀리 그레일 레이아웃", en: "Holy Grail Layout", desc: "헤더, 푸터, 좌우 사이드바, 본문으로 이루어진 전통적인 웹 레이아웃.", use: "문서형 서비스나 관리자 화면처럼 기본 골격이 명확해야 할 때.", tags: ["Web", "Classic", "Desktop"] },
+      { cat: "Layout", ko: "풀 블리드", en: "Full Bleed", desc: "이미지나 배경 영역을 컨테이너 폭을 넘어 화면 끝까지 확장하는 표현.", use: "보고서 표지, 시각 자료, 미디어 중심 섹션에서 넓은 인상을 줄 때.", tags: ["Web", "LP", "Photo"] },
+      { cat: "Layout", ko: "고정 사이드바", en: "Sticky Sidebar", desc: "본문 스크롤 중에도 보조 메뉴나 요약 패널이 옆에 머무르는 구조.", use: "긴 설정, 문서, 상품 상세, 필터 패널을 계속 참조해야 할 때.", tags: ["Web", "Blog", "EC"] },
+
+      { cat: "Forms & Input", ko: "텍스트 필드", en: "Text Field", desc: "이름, 이메일, 검색어처럼 한 줄 값을 입력받는 가장 기본적인 필드.", use: "짧고 명확한 값을 입력하거나 수정할 때.", tags: ["Form", "Basic"] },
+      { cat: "Forms & Input", ko: "텍스트 영역", en: "Textarea", desc: "설명, 요청 사항, 메모처럼 여러 줄 문장을 입력받는 필드.", use: "프롬프트, 업무 설명, 승인 사유처럼 긴 텍스트가 필요한 경우.", tags: ["Form", "Basic"] },
+      { cat: "Forms & Input", ko: "셀렉트/드롭다운", en: "Select / Dropdown", desc: "정해진 옵션 중 하나를 펼쳐서 선택하게 하는 입력 요소.", use: "팀, 역할, 환경, 템플릿처럼 목록에서 하나를 골라야 할 때.", tags: ["Form", "Basic"] },
+      { cat: "Forms & Input", ko: "체크박스", en: "Checkbox", desc: "여러 선택지를 독립적으로 켜고 끌 수 있는 입력 방식.", use: "알림 종류, 권한 범위, 포함할 데이터처럼 복수 선택이 필요할 때.", tags: ["Form", "Basic"] },
+      { cat: "Forms & Input", ko: "라디오 버튼", en: "Radio Button", desc: "서로 배타적인 선택지 중 하나만 고르게 하는 입력 방식.", use: "배포 방식, 결제 방식, 공개 범위처럼 하나의 정책만 선택해야 할 때.", tags: ["Form", "Basic"] },
+      { cat: "Forms & Input", ko: "토글 스위치", en: "Toggle Switch", desc: "설정을 즉시 켜거나 끄는 ON/OFF 형태의 컨트롤.", use: "자동 배포, 알림 수신, 다크 모드처럼 즉시 적용되는 설정에서.", tags: ["Form", "Mobile", "Settings"] },
+      { cat: "Forms & Input", ko: "슬라이더/범위 입력", en: "Slider / Range", desc: "연속적인 값이나 범위를 손잡이로 조절하는 입력 컨트롤.", use: "가격 범위, 우선순위, 임계값, 비율을 감각적으로 조정할 때.", tags: ["Form", "Filter"] },
+      { cat: "Forms & Input", ko: "날짜 선택기", en: "Date Picker", desc: "날짜나 기간을 캘린더 형태로 선택하게 하는 입력 패턴.", use: "예약, 보고 기간, 배포 예정일, 마감일을 지정할 때.", tags: ["Form", "Booking"] },
+      { cat: "Forms & Input", ko: "파일 업로드", en: "File Upload", desc: "파일을 선택하거나 끌어와 첨부하게 하는 입력 영역.", use: "CSV 가져오기, 이미지 첨부, 문서 등록, 증빙 파일 업로드에서.", tags: ["Form", "Web"] },
+      { cat: "Forms & Input", ko: "검색 바", en: "Search Bar", desc: "목록이나 데이터 안에서 사용자가 원하는 항목을 찾게 하는 입력 영역.", use: "앱, 사용자, 로그, 문서, 템플릿을 빠르게 필터링할 때.", tags: ["Basic", "Web", "Mobile"] },
+      { cat: "Forms & Input", ko: "자동완성", en: "Autocomplete", desc: "입력 중 관련 후보를 제안해 선택을 빠르게 만드는 패턴.", use: "사용자, 팀, 주소, 태그처럼 정확한 값을 찾아 입력해야 할 때.", tags: ["Form", "Search"] },
+      { cat: "Forms & Input", ko: "태그 입력", en: "Tag Input", desc: "여러 값을 칩 형태로 추가하고 삭제할 수 있는 입력 방식.", use: "기술스택, 담당 팀, 분류, 키워드를 여러 개 등록할 때.", tags: ["Form", "Tag"] },
+      { cat: "Forms & Input", ko: "OTP 입력", en: "OTP Input", desc: "인증번호를 자리별로 나누어 빠르게 입력하게 하는 보안 입력 패턴.", use: "2단계 인증, 휴대폰 인증, 이메일 인증번호 확인에서.", tags: ["Form", "Auth", "Security"] },
+      { cat: "Forms & Input", ko: "비밀번호 강도 표시", en: "Password Strength Meter", desc: "비밀번호가 얼마나 안전한지 시각적으로 알려주는 보조 표시.", use: "회원가입이나 비밀번호 변경에서 약한 비밀번호를 줄이고 싶을 때.", tags: ["Form", "Security"] },
+      { cat: "Forms & Input", ko: "컬러 피커", en: "Color Picker", desc: "색상을 직접 선택하거나 코드로 입력하게 하는 디자인 도구형 입력.", use: "브랜드 색, 태그 색, 상태 색상, 테마 설정을 편집할 때.", tags: ["Form", "Design Tool"] },
+      { cat: "Forms & Input", ko: "인라인 편집", en: "Inline Edit", desc: "목록이나 상세 화면에서 별도 폼 없이 값을 바로 수정하는 패턴.", use: "이름, 설명, 상태 같은 작은 값을 빠르게 고쳐야 할 때.", tags: ["Form", "Advanced"] },
+      { cat: "Forms & Input", ko: "멀티스텝 폼", en: "Multi-step Form", desc: "긴 입력 과정을 여러 단계로 나누어 부담을 줄이는 폼 구조.", use: "앱 생성, 온보딩, 결제, 승인 요청처럼 입력량이 많은 경우.", tags: ["Form", "UX"] },
+
+      { cat: "Data Display", ko: "테이블", en: "Table", desc: "행과 열로 많은 데이터를 정렬, 비교, 관리하는 표시 방식.", use: "사용자, 앱, 로그, 주문, 재고처럼 정확한 값 비교가 중요할 때.", tags: ["Data", "Admin"] },
+      { cat: "Data Display", ko: "리스트 뷰", en: "List View", desc: "항목을 세로로 나열해 제목, 보조 정보, 액션을 함께 보여준다.", use: "모바일 목록, 알림, 작업, 최근 활동처럼 순서대로 훑는 데이터에서.", tags: ["Data", "Basic", "Mobile"] },
+      { cat: "Data Display", ko: "트리 뷰", en: "Tree View", desc: "폴더나 조직처럼 부모-자식 관계가 있는 데이터를 접고 펼쳐 보여준다.", use: "문서 구조, 권한 그룹, 조직도, 파일 탐색에서.", tags: ["Data", "Hierarchy"] },
+      { cat: "Data Display", ko: "타임라인", en: "Timeline", desc: "이벤트를 시간 순서로 배치해 이력과 흐름을 이해하게 한다.", use: "배포 이력, 승인 단계, 변경 로그, 고객 접점 기록에서.", tags: ["Data", "History"] },
+      { cat: "Data Display", ko: "칸반 보드", en: "Kanban Board", desc: "작업을 상태 컬럼별 카드로 배치해 진행 상황을 관리하는 보드.", use: "요청, 버그, 승인, 운영 작업을 상태별로 옮기며 관리할 때.", tags: ["Task", "Project"] },
+      { cat: "Data Display", ko: "지표 카드", en: "Stat Card", desc: "중요 숫자와 변화량을 작은 카드로 요약해 보여주는 대시보드 요소.", use: "매출, 요청 수, 배포 성공률, 처리 시간처럼 핵심 수치를 볼 때.", tags: ["Dashboard", "Data"] },
+      { cat: "Data Display", ko: "배지", en: "Badge", desc: "상태, 수량, 위험도, 등급을 짧은 라벨로 표시하는 요소.", use: "운영중, 실패, 승인 대기, 신규, 위험 같은 상태를 빠르게 표시할 때.", tags: ["UI Part", "Notification"] },
+      { cat: "Data Display", ko: "태그/칩", en: "Tag / Chip", desc: "분류나 속성을 작은 pill 형태로 붙여 필터와 인식을 돕는다.", use: "기술스택, 카테고리, 환경, 담당 팀, 데이터 등급을 표시할 때.", tags: ["UI Part", "Category"] },
+      { cat: "Data Display", ko: "아바타", en: "Avatar", desc: "사용자나 팀을 사진, 이니셜, 색상 원형으로 표현하는 요소.", use: "담당자, 승인자, 작성자, 리뷰어를 빠르게 구분해야 할 때.", tags: ["UI Part", "User"] },
+      { cat: "Data Display", ko: "진행 바", en: "Progress Bar", desc: "업로드, 빌드, 배포처럼 진행률이 있는 작업의 상태를 보여준다.", use: "사용자가 기다리는 작업의 완료 정도와 남은 단계를 알고 싶을 때.", tags: ["UI Part", "Progress"] },
+      { cat: "Data Display", ko: "스켈레톤 화면", en: "Skeleton Screen", desc: "데이터 로딩 중 최종 레이아웃과 비슷한 자리표시자를 보여준다.", use: "카드나 목록 로딩이 짧지만 빈 화면처럼 보이면 안 될 때.", tags: ["Loading", "UX"] },
+      { cat: "Data Display", ko: "빈 상태", en: "Empty State", desc: "목록이나 결과가 없을 때 이유와 다음 행동을 알려주는 상태 화면.", use: "아직 앱이 없거나 검색 결과가 없거나 권한이 없어 데이터가 비어 있을 때.", tags: ["UX", "State"] },
+      { cat: "Data Display", ko: "차트/그래프", en: "Chart / Graph", desc: "숫자의 추세, 비교, 비율을 시각적으로 이해하게 하는 데이터 표현.", use: "운영 지표, 사용량, 비용, 성과 변화를 한눈에 봐야 할 때.", tags: ["Data", "Dashboard"] },
+
+      { cat: "Feedback", ko: "토스트/스낵바", en: "Toast / Snackbar", desc: "작업 결과를 화면 가장자리에서 잠깐 알려주는 가벼운 알림.", use: "저장 완료, 복사 완료, 배포 시작처럼 사용자가 흐름을 멈추지 않아도 되는 피드백에서.", tags: ["Notification", "Lightweight"] },
+      { cat: "Feedback", ko: "모달/다이얼로그", en: "Modal / Dialog", desc: "현재 화면 위에 집중 창을 띄워 확인, 입력, 상세 정보를 처리한다.", use: "삭제, 권한 변경, 배포 승인처럼 사용자의 집중과 확인이 필요할 때.", tags: ["Overlay", "Critical"] },
+      { cat: "Feedback", ko: "알림 배너", en: "Alert / Banner", desc: "화면 상단이나 섹션 안에서 중요한 상태나 안내를 강조한다.", use: "장애, 권한 부족, 마감 임박, 정책 변경처럼 눈에 띄어야 할 때.", tags: ["Notification", "Important"] },
+      { cat: "Feedback", ko: "툴팁", en: "Tooltip", desc: "아이콘이나 짧은 라벨에 마우스를 올리면 보조 설명을 보여준다.", use: "공간이 좁아 설명을 항상 보이기 어렵거나 아이콘 의미가 불명확할 때.", tags: ["Help", "Micro-interaction"] },
+      { cat: "Feedback", ko: "팝오버", en: "Popover", desc: "작은 패널을 띄워 상세 정보나 간단한 컨트롤을 제공한다.", use: "필터, 사용자 카드, 도움말, 빠른 설정처럼 모달보다 가벼운 내용에서.", tags: ["Overlay", "Info"] },
+      { cat: "Feedback", ko: "로딩 스피너", en: "Loading Spinner", desc: "짧은 대기 상태를 회전 표시로 알려주는 기본 로딩 표현.", use: "버튼 클릭 후 몇 초 이내에 완료될 작업을 기다릴 때.", tags: ["Loading", "Basic"] },
+      { cat: "Feedback", ko: "확인 다이얼로그", en: "Confirmation Dialog", desc: "되돌리기 어렵거나 영향이 큰 작업을 실행 전 다시 확인한다.", use: "삭제, 운영 배포, 권한 회수, 데이터 초기화 같은 위험 행동에서.", tags: ["Safety", "Confirm"] },
+      { cat: "Feedback", ko: "알림 패널", en: "Notification Panel", desc: "여러 알림을 모아 읽고 처리할 수 있는 패널.", use: "승인 요청, 배포 결과, 시스템 경고, 멘션을 한곳에서 관리할 때.", tags: ["Notification", "Overlay"] },
+
+      { cat: "Content", ko: "아코디언", en: "Accordion", desc: "제목만 보이다가 클릭하면 상세 내용이 펼쳐지는 접힘 구조.", use: "FAQ, 정책 설명, 로그 그룹처럼 필요할 때만 자세히 볼 내용에서.", tags: ["Content", "FAQ"] },
+      { cat: "Content", ko: "캐러셀/슬라이더", en: "Carousel / Slider", desc: "여러 카드나 이미지를 좌우로 넘겨 보게 하는 콘텐츠 패턴.", use: "샘플 앱 스크린샷, 추천 템플릿, 교육 콘텐츠를 제한된 공간에 보여줄 때.", tags: ["Content", "Image", "Mobile"] },
+      { cat: "Content", ko: "라이트박스", en: "Lightbox", desc: "이미지나 미디어를 화면 위에 크게 띄워 집중해서 보게 한다.", use: "첨부 이미지, 스크린샷, 도면, 증빙 자료를 확대 확인할 때.", tags: ["Image", "Overlay"] },
+      { cat: "Content", ko: "가격표", en: "Pricing Table", desc: "요금제나 옵션을 열로 비교해 선택을 돕는 표 형식 섹션.", use: "SaaS 요금, 내부 서비스 등급, 지원 범위 비교를 보여줄 때.", tags: ["Marketing", "LP", "SaaS"] },
+      { cat: "Content", ko: "고객 후기", en: "Testimonial", desc: "사용자 발언이나 사례를 인용해 신뢰를 만드는 콘텐츠 블록.", use: "도구 도입 사례, 내부 사용자 추천, 성공 사례를 소개할 때.", tags: ["Marketing", "LP", "Trust"] },
+      { cat: "Content", ko: "CTA 섹션", en: "CTA Section", desc: "사용자가 다음 행동으로 이동하도록 메시지와 버튼을 모은 강조 영역.", use: "새 앱 만들기, 템플릿 사용, 문의, 배포 시작 같은 핵심 행동으로 이끌 때.", tags: ["Marketing", "LP", "Conversion"] },
+      { cat: "Content", ko: "FAQ 섹션", en: "FAQ Section", desc: "반복 질문과 답변을 모아 사용자의 불안을 줄이는 섹션.", use: "도입 전 질문, 사용 제한, 보안 정책, 비용 조건을 설명할 때.", tags: ["Support", "LP"] },
+      { cat: "Content", ko: "기능 소개 섹션", en: "Feature Section", desc: "제품이나 템플릿의 핵심 기능을 카드나 행으로 나누어 설명한다.", use: "내부 도구의 주요 가치와 기능 범위를 빠르게 이해시킬 때.", tags: ["LP", "Marketing"] },
+      { cat: "Content", ko: "비교표", en: "Comparison Table", desc: "여러 옵션의 차이를 항목별로 비교해 의사결정을 돕는 표.", use: "템플릿 비교, 권한 등급, 플랜 차이, 도구 대안을 설명할 때.", tags: ["Marketing", "Decision"] },
+
+      { cat: "Actions", ko: "버튼", en: "Button", desc: "저장, 생성, 배포, 승인처럼 사용자의 명령을 실행하는 기본 요소.", use: "화면에서 사용자가 의도한 행동을 명확히 시작해야 할 때.", tags: ["Basic", "Form"] },
+      { cat: "Actions", ko: "플로팅 액션 버튼", en: "FAB", desc: "모바일 화면 위에 떠 있는 주요 액션 버튼.", use: "새 글, 새 작업, 빠른 추가처럼 한 화면의 대표 행동이 분명할 때.", tags: ["Mobile", "Material Design"] },
+      { cat: "Actions", ko: "컨텍스트 메뉴", en: "Context Menu", desc: "선택한 항목에 맞는 액션을 오른쪽 클릭이나 더보기 메뉴로 보여준다.", use: "테이블 행, 카드, 파일, 작업 항목에 여러 보조 액션이 있을 때.", tags: ["Desktop", "Operation"] },
+      { cat: "Actions", ko: "액션 시트", en: "Action Sheet", desc: "모바일 하단에서 선택 가능한 행동 목록을 보여주는 패널.", use: "공유, 삭제, 신고, 복사처럼 현재 항목에 대한 선택지를 모바일에서 보여줄 때.", tags: ["Mobile", "iOS"] },
+      { cat: "Actions", ko: "분할 버튼", en: "Split Button", desc: "기본 액션과 추가 액션 메뉴를 하나의 버튼 안에 함께 제공한다.", use: "저장과 다른 이름으로 저장, 배포와 예약 배포처럼 기본 행동과 변형이 있을 때.", tags: ["Desktop", "Advanced"] },
+      { cat: "Actions", ko: "버튼 그룹", en: "Button Group", desc: "관련 버튼을 한 줄에 묶어 같은 기능군임을 보여준다.", use: "보기 전환, 정렬 방식, 편집 도구처럼 가까운 액션을 모을 때.", tags: ["UI Part", "Basic"] },
+      { cat: "Actions", ko: "스와이프 액션", en: "Swipe Actions", desc: "모바일 목록 항목을 밀어 숨겨진 액션을 노출한다.", use: "읽음 처리, 삭제, 보관, 완료 같은 빠른 행 액션에서.", tags: ["Mobile", "Gesture"] },
+      { cat: "Actions", ko: "당겨서 새로고침", en: "Pull to Refresh", desc: "모바일 화면을 아래로 당겨 데이터를 다시 불러오는 제스처.", use: "피드, 알림, 주문 목록처럼 최신 상태 확인이 잦은 화면에서.", tags: ["Mobile", "Gesture"] },
+
+      { cat: "Mobile", ko: "바텀 시트", en: "Bottom Sheet", desc: "모바일 화면 하단에서 올라오는 패널로 선택지나 상세 정보를 담는다.", use: "필터, 공유, 간단한 설정, 항목 상세를 현재 화면 위에 보여줄 때.", tags: ["Mobile", "Overlay"] },
+      { cat: "Mobile", ko: "스토리", en: "Stories", desc: "짧은 세로 콘텐츠를 전체 화면으로 연속 소비하게 하는 모바일 패턴.", use: "교육 카드, 업데이트 소개, 현장 사진처럼 빠르게 넘겨보는 콘텐츠에서.", tags: ["SNS", "Video"] },
+      { cat: "Mobile", ko: "앱 바", en: "App Bar", desc: "모바일 화면 상단에서 제목, 뒤로가기, 주요 액션을 제공하는 바.", use: "모바일 앱의 각 화면에서 현재 위치와 핵심 조작을 보여줄 때.", tags: ["Mobile", "Navigation"] },
+      { cat: "Mobile", ko: "스피드 다이얼", en: "Speed Dial", desc: "하나의 떠 있는 버튼에서 여러 빠른 액션이 펼쳐지는 패턴.", use: "작성, 스캔, 업로드, 생성처럼 자주 쓰는 액션을 한곳에 모을 때.", tags: ["Mobile", "Material Design"] },
+
+      { cat: "Social & Communication", ko: "채팅 UI", en: "Chat UI", desc: "메시지를 대화 흐름으로 보여주고 입력창으로 답변하게 하는 인터페이스.", use: "지원 상담, AI 어시스턴트, 실시간 협업, 운영 채팅에서.", tags: ["Message", "Realtime"] },
+      { cat: "Social & Communication", ko: "댓글 스레드", en: "Comment Thread", desc: "댓글과 답글을 계층적으로 보여주는 커뮤니케이션 구조.", use: "리뷰, 승인 의견, 문서 피드백, 이슈 토론에서.", tags: ["Community", "Comment"] },
+      { cat: "Social & Communication", ko: "이모지 반응", en: "Emoji Reactions", desc: "짧은 감정이나 동의를 이모지 버튼으로 빠르게 표현하게 한다.", use: "댓글, 공지, 피드, 채팅에서 가벼운 반응을 수집할 때.", tags: ["Social", "Micro-interaction"] },
+      { cat: "Social & Communication", ko: "피드 카드", en: "Feed Card", desc: "작성자, 본문, 미디어, 반응을 카드 단위로 묶은 피드 항목.", use: "활동 로그, 공지, 업데이트, 커뮤니티 게시물을 시간순으로 보여줄 때.", tags: ["SNS", "Feed"] },
+      { cat: "Social & Communication", ko: "멘션", en: "@Mention", desc: "사용자나 팀을 @로 호출해 연결하고 알림을 보내는 입력 보조 패턴.", use: "댓글, 승인 요청, 작업 지시에서 특정 사람을 지정해야 할 때.", tags: ["Social", "Input Assist"] },
+
+      { cat: "Onboarding & Guidance", ko: "워크스루", en: "Walkthrough", desc: "새 기능이나 제품 사용법을 단계별 화면으로 안내하는 흐름.", use: "처음 쓰는 사용자가 핵심 기능을 직접 따라 하게 만들 때.", tags: ["Onboarding", "Tutorial"] },
+      { cat: "Onboarding & Guidance", ko: "웰컴 화면", en: "Welcome Screen", desc: "첫 방문 사용자에게 제품 목적과 시작 행동을 알려주는 진입 화면.", use: "계정 생성 직후, 새 워크스페이스 생성 직후, 첫 앱 생성 전에.", tags: ["Onboarding", "Mobile"] },
+      { cat: "Onboarding & Guidance", ko: "진행 체크리스트", en: "Progress Checklist", desc: "사용자가 해야 할 초기 작업을 목록과 완료율로 보여준다.", use: "설정, 연동, 배포 준비처럼 여러 준비 단계를 끝내야 할 때.", tags: ["Onboarding", "Gamification"] },
+
+      { cat: "Media", ko: "비디오 플레이어", en: "Video Player", desc: "영상 재생, 일시정지, 진행 상태를 제어하는 미디어 컴포넌트.", use: "튜토리얼, 데모, 교육 영상, 녹화 리뷰를 제공할 때.", tags: ["Media", "Video"] },
+      { cat: "Media", ko: "오디오 플레이어", en: "Audio Player", desc: "음성 파일이나 녹음을 재생하고 위치를 조절하는 컴포넌트.", use: "회의 녹음, 음성 메모, 교육 오디오, 팟캐스트형 자료에서.", tags: ["Media", "Audio"] },
+      { cat: "Media", ko: "이미지 갤러리", en: "Image Gallery", desc: "여러 이미지를 썸네일과 큰 보기로 탐색하게 하는 패턴.", use: "현장 사진, 첨부 이미지, 디자인 시안, 제품 이미지를 모아 보여줄 때.", tags: ["Image", "Media"] },
+
+      { cat: "Commerce", ko: "상품 카드", en: "Product Card", desc: "상품 이미지, 이름, 가격, 상태, 주요 액션을 카드로 묶어 보여준다.", use: "상품 목록, 템플릿 목록, 내부 서비스 카탈로그에서 항목을 비교할 때.", tags: ["EC", "Product"] },
+      { cat: "Commerce", ko: "쇼핑 카트", en: "Shopping Cart", desc: "선택한 상품, 수량, 가격, 합계를 모아 구매 전 확인하게 한다.", use: "주문, 결제, 신청 항목, 승인 대상 묶음을 최종 확인할 때.", tags: ["EC", "Checkout"] },
+      { cat: "Commerce", ko: "평점/리뷰", en: "Rating / Review", desc: "별점과 후기로 품질, 만족도, 신뢰를 표현하는 패턴.", use: "상품, 템플릿, 내부 도구, 교육 콘텐츠의 평가를 보여줄 때.", tags: ["EC", "Feedback"] },
+
+      { cat: "Advanced Patterns", ko: "다크 모드 토글", en: "Dark Mode Toggle", desc: "라이트/다크 테마를 사용자가 전환하게 하는 설정 컨트롤.", use: "장시간 사용하는 업무 도구에서 개인 선호와 접근성을 지원할 때.", tags: ["Accessibility", "Settings"] },
+      { cat: "Advanced Patterns", ko: "드래그 앤 드롭", en: "Drag & Drop", desc: "항목을 끌어 위치를 바꾸거나 파일을 놓아 업로드하는 상호작용.", use: "정렬, 칸반 이동, 파일 첨부, 대시보드 위젯 배치에서.", tags: ["Interaction", "Advanced"] },
+      { cat: "Advanced Patterns", ko: "가상 스크롤", en: "Virtual Scroll", desc: "화면에 보이는 항목만 렌더링해 대량 목록의 성능을 유지하는 방식.", use: "수천 개 이상의 로그, 행, 메시지, 파일을 부드럽게 보여줘야 할 때.", tags: ["Performance", "Data"] },
+      { cat: "Advanced Patterns", ko: "반응형 브레이크포인트", en: "Responsive Breakpoints", desc: "화면 폭에 따라 열 수, 메뉴 방식, 밀도를 바꾸는 기준점.", use: "데스크톱, 태블릿, 모바일에서 같은 기능을 안정적으로 제공해야 할 때.", tags: ["Responsive", "Basic", "CSS"] },
+      { cat: "Advanced Patterns", ko: "마이크로 인터랙션", en: "Micro-interactions", desc: "호버, 클릭, 완료 같은 작은 순간에 의미 있는 움직임이나 피드백을 주는 패턴.", use: "상태 변화를 눈치채게 하되 업무 흐름을 방해하지 않아야 할 때.", tags: ["Animation", "UX"] },
+      { cat: "Advanced Patterns", ko: "키보드 단축키 목록", en: "Keyboard Shortcuts", desc: "사용 가능한 단축키를 모달이나 패널로 보여주는 보조 화면.", use: "숙련 사용자가 반복 작업을 빠르게 처리하는 생산성 도구에서.", tags: ["Accessibility", "Power User"] },
+
+      { cat: "Authentication", ko: "로그인 폼", en: "Login Form", desc: "이메일, 비밀번호, 소셜 계정 등으로 사용자를 인증하는 폼.", use: "내부 시스템 접근 전 사용자를 확인하고 오류나 복구 경로를 제공해야 할 때.", tags: ["Auth", "Form"] },
+      { cat: "Authentication", ko: "회원가입 폼", en: "Sign Up Form", desc: "새 계정을 만들기 위해 필요한 정보를 입력받는 폼.", use: "신규 사용자 등록, 초대 수락, 워크스페이스 가입 흐름에서.", tags: ["Auth", "Form"] },
+
+      { cat: "Error & System", ko: "404 페이지", en: "404 Page", desc: "요청한 페이지를 찾을 수 없을 때 보여주는 오류 화면.", use: "잘못된 URL, 삭제된 문서, 권한 밖 링크에 접근했을 때.", tags: ["Error", "Web"] },
+      { cat: "Error & System", ko: "오류 상태", en: "Error State", desc: "API 실패나 작업 실패를 설명하고 재시도 같은 복구 행동을 제공한다.", use: "데이터 로딩 실패, 저장 실패, 네트워크 오류가 발생했을 때.", tags: ["Error", "UX"] },
+      { cat: "Error & System", ko: "점검 페이지", en: "Maintenance Page", desc: "시스템 점검 중임을 알리고 예상 복구 시간이나 대체 경로를 안내한다.", use: "계획 점검, 장애 대응, 배포 중단 상태에서.", tags: ["System", "Web"] },
+      { cat: "Error & System", ko: "쿠키 배너", en: "Cookie Banner", desc: "쿠키 사용과 추적 동의를 사용자에게 요청하는 법적 안내 배너.", use: "외부 공개 웹사이트나 분석 도구를 사용하는 서비스에서.", tags: ["Legal", "Web"] }
+    ];
+
+    const content = document.getElementById("content");
+    const sideNav = document.getElementById("sideNav");
+    const chipBar = document.getElementById("chipBar");
+    const input = document.getElementById("searchInput");
+    const resultCount = document.getElementById("resultCount");
+    const emptyState = document.getElementById("emptyState");
+    const detailBackdrop = document.getElementById("detailBackdrop");
+    const detailCategory = document.getElementById("detailCategory");
+    const detailTitle = document.getElementById("detailTitle");
+    const detailAlias = document.getElementById("detailAlias");
+    const detailBody = document.getElementById("detailBody");
+    const closeDetail = document.getElementById("closeDetail");
+    let activeCategory = "전체";
+    let lastFocusedElement = null;
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+
+    function categoryInfo(key) {
+      return CATEGORIES.find((category) => category.key === key);
+    }
+
+    function categoryLabel(key) {
+      const category = categoryInfo(key);
+      return category ? category.ko : key;
+    }
+
+    function slug(value) {
+      return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    function unique(items) {
+      const seen = new Set();
+      return items.filter((item) => {
+        const normalized = item.toLowerCase();
+        if (seen.has(normalized)) return false;
+        seen.add(normalized);
+        return true;
+      });
+    }
+
+    function keywordsFor(item) {
+      return unique([
+        item.ko,
+        item.en,
+        ...item.en.split(/[ /&-]+/).filter(Boolean),
+        categoryLabel(item.cat),
+        item.cat,
+        ...item.tags
+      ]).slice(0, 10);
+    }
+
+    function promptFor(item) {
+      return [
+        `${item.ko}(${item.en}) 패턴을 내부 업무앱 화면에 맞게 만들어줘. 사용 상황은 "${item.use}"이고, 기본 상태와 빈 상태, 오류 상태까지 같이 보여줘.`,
+        `${categoryLabel(item.cat)} 영역에서 ${item.ko}를 사용해줘. 너무 장식적으로 만들지 말고 업무자가 반복해서 쓰기 편한 밀도와 반응형 동작을 포함해줘.`
+      ];
+    }
+
+    function relatedFor(item) {
+      return PATTERNS
+        .filter((candidate) => candidate.cat === item.cat && candidate.en !== item.en)
+        .slice(0, 4);
+    }
+
+    function previewFor(item) {
+      const name = item.en.toLowerCase();
+      const title = escapeHtml(item.ko);
+      if (name.includes("breadcrumb")) {
+        return `<div class="mini mini-row"><span>홈</span><span>/</span><span>앱</span><span>/</span><strong>설정</strong></div>`;
+      }
+      if (name.includes("hamburger")) {
+        return `<div class="mini mini-panel"><div class="mini-row" style="justify-content:space-between"><strong>Logo</strong><div style="display:grid;gap:3px"><span class="mini-line dark" style="width:20px"></span><span class="mini-line dark" style="width:20px"></span><span class="mini-line dark" style="width:20px"></span></div></div></div>`;
+      }
+      if (name.includes("tab") || name.includes("segmented")) {
+        return `<div class="mini mini-panel"><div class="mini-row"><span class="mini-button">전체</span><span class="mini-button secondary">내 항목</span><span class="mini-button secondary">보관</span></div></div>`;
+      }
+      if (name.includes("sidebar") || name.includes("drawer")) {
+        return `<div class="mini" style="display:grid;grid-template-columns:72px 1fr;height:96px"><div class="mini-panel" style="border-radius:8px 0 0 8px;display:grid;align-content:start;gap:7px"><span class="mini-line dark"></span><span class="mini-line"></span><span class="mini-line"></span><span class="mini-line"></span></div><div class="mini-panel" style="border-left:0;border-radius:0 8px 8px 0"></div></div>`;
+      }
+      if (name.includes("command") || name.includes("search")) {
+        return `<div class="mini mini-panel"><div class="mini-input">검색 또는 명령 실행</div><div style="display:grid;gap:5px;margin-top:8px"><span class="mini-line dark" style="width:72%"></span><span class="mini-line" style="width:56%"></span><span class="mini-line" style="width:64%"></span></div></div>`;
+      }
+      if (item.cat === "Forms & Input" || item.cat === "Authentication") {
+        return `<div class="mini mini-panel" style="display:grid;gap:7px"><label>${title}</label><div class="mini-input">값을 입력</div><div class="mini-row"><span class="mini-button">저장</span><span class="mini-button secondary">취소</span></div></div>`;
+      }
+      if (name.includes("table") || name.includes("list") || name.includes("virtual")) {
+        return `<div class="mini mini-panel" style="display:grid;gap:5px"><div class="mini-row"><span class="mini-line dark" style="width:38%"></span><span class="mini-line" style="width:22%"></span></div><span class="mini-line"></span><span class="mini-line"></span><span class="mini-line"></span><span class="mini-line"></span></div>`;
+      }
+      if (name.includes("chart")) {
+        return `<div class="mini mini-panel mini-row" style="align-items:end;height:96px"><span style="width:18%;height:34px;background:var(--accent);border-radius:5px"></span><span style="width:18%;height:58px;background:#7aa99f;border-radius:5px"></span><span style="width:18%;height:44px;background:#9db8b2;border-radius:5px"></span><span style="width:18%;height:72px;background:#477c72;border-radius:5px"></span></div>`;
+      }
+      if (item.cat === "Data Display") {
+        return `<div class="mini mini-card"><div class="eyebrow">${escapeHtml(item.en)}</div><strong style="font-size:24px">42</strong><div class="mini-line dark" style="width:52%;margin-top:8px"></div><div class="tags" style="margin-top:8px"><span class="tag">운영중</span></div></div>`;
+      }
+      if (item.cat === "Feedback" || item.cat === "Error & System") {
+        return `<div class="mini mini-panel" style="text-align:center"><strong>${title}</strong><p style="margin:8px 0;color:var(--muted);font-size:11px">상태를 확인하고 다음 행동을 선택</p><span class="mini-button">확인</span></div>`;
+      }
+      if (item.cat === "Actions") {
+        return `<div class="mini mini-row" style="justify-content:center"><span class="mini-button">${title}</span><span class="mini-button secondary">더보기</span></div>`;
+      }
+      if (item.cat === "Mobile") {
+        return `<div class="mini-phone"><div class="mini-line dark" style="width:58%;margin-bottom:10px"></div><div class="mini-card" style="height:76px"></div><div class="mini-row" style="justify-content:space-around;margin-top:12px"><span class="mini-line" style="width:18px"></span><span class="mini-line dark" style="width:18px"></span><span class="mini-line" style="width:18px"></span></div></div>`;
+      }
+      if (item.cat === "Social & Communication") {
+        return `<div class="mini mini-panel" style="display:grid;gap:8px"><div class="mini-row"><span class="mini-card" style="width:70%;border-radius:14px">요청 확인했습니다</span></div><div class="mini-row" style="justify-content:end"><span class="mini-card" style="width:62%;border-radius:14px;background:var(--accent-soft)">배포 진행할게요</span></div></div>`;
+      }
+      if (item.cat === "Media") {
+        return `<div class="mini mini-panel"><div style="height:76px;border-radius:8px;background:#d8dee8;display:flex;align-items:center;justify-content:center"><span class="mini-button">재생</span></div><div class="mini-line dark" style="width:70%;margin-top:10px"></div></div>`;
+      }
+      if (item.cat === "Commerce") {
+        return `<div class="mini mini-card"><div style="height:52px;border-radius:6px;background:#d8dee8;margin-bottom:8px"></div><strong>${title}</strong><div class="mini-row" style="justify-content:space-between;margin-top:8px"><span>₩12,000</span><span class="mini-button">담기</span></div></div>`;
+      }
+      if (item.cat === "Advanced Patterns") {
+        return `<div class="mini mini-panel"><div class="mini-row" style="justify-content:space-between"><strong>${title}</strong><span class="tag">고급</span></div><div style="display:grid;gap:6px;margin-top:10px"><span class="mini-line dark" style="width:82%"></span><span class="mini-line" style="width:66%"></span><span class="mini-line" style="width:74%"></span></div></div>`;
+      }
+      return `<div class="mini mini-card"><div class="eyebrow">${escapeHtml(item.cat)}</div><strong>${title}</strong><p style="margin:8px 0 0;color:var(--muted);font-size:11px">${escapeHtml(item.en)}</p></div>`;
+    }
+
+    function matches(item, query) {
+      if (!query) return true;
+      const haystack = [
+        item.cat,
+        categoryLabel(item.cat),
+        item.ko,
+        item.en,
+        item.desc,
+        item.use,
+        ...item.tags,
+        ...keywordsFor(item)
+      ].join(" ").toLowerCase();
+      return haystack.includes(query);
+    }
+
+    function renderNav() {
+      const categories = [{ key: "전체", ko: "전체", count: PATTERNS.length }].concat(
+        CATEGORIES.map((category) => ({
+          ...category,
+          count: PATTERNS.filter((item) => item.cat === category.key).length
+        }))
+      );
+
+      const buttons = categories.map((category) => `
+        <button type="button" data-category="${escapeHtml(category.key)}" class="${category.key === activeCategory ? "active" : ""}">
+          ${escapeHtml(category.ko)}
+          <span>${category.count}</span>
+        </button>
+      `).join("");
+
+      sideNav.innerHTML = buttons;
+      chipBar.innerHTML = buttons;
+
+      document.querySelectorAll("[data-category]").forEach((button) => {
+        button.addEventListener("click", () => {
+          activeCategory = button.dataset.category;
+          renderNav();
+          renderContent();
+        });
+      });
+    }
+
+    function renderContent() {
+      const query = input.value.trim().toLowerCase();
+      let visibleTotal = 0;
+      const sections = CATEGORIES.map((category) => {
+        const items = PATTERNS.filter((item) => {
+          const categoryOk = activeCategory === "전체" || item.cat === activeCategory;
+          return categoryOk && item.cat === category.key && matches(item, query);
+        });
+        if (!items.length) return "";
+        visibleTotal += items.length;
+        return `
+          <section class="section" id="${slug(category.key)}">
+            <div class="section-head">
+              <h2>${escapeHtml(category.ko)}</h2>
+              <span>${items.length} patterns</span>
+            </div>
+            <div class="grid">
+              ${items.map((item) => {
+                const index = PATTERNS.indexOf(item);
+                return `
+                  <article class="pattern-card" role="button" tabindex="0" aria-label="${escapeHtml(item.ko)} 상세 보기" data-index="${index}">
+                    <div class="preview">${previewFor(item)}</div>
+                    <div class="card-body">
+                      <div class="eyebrow">${escapeHtml(category.ko)}</div>
+                      <div class="card-title">
+                        <strong>${escapeHtml(item.ko)}</strong>
+                        <span>${escapeHtml(item.en)}</span>
+                      </div>
+                      <p class="desc">${escapeHtml(item.desc)}</p>
+                      <div class="tags">${item.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>
+                      <span class="open-detail">상세 보기</span>
+                    </div>
+                  </article>
+                `;
+              }).join("")}
+            </div>
+          </section>
+        `;
+      }).join("");
+
+      content.innerHTML = sections;
+      emptyState.classList.toggle("visible", visibleTotal === 0);
+      resultCount.textContent = `${visibleTotal} / ${PATTERNS.length}`;
+
+      document.querySelectorAll(".pattern-card").forEach((card) => {
+        card.addEventListener("click", () => openDetail(PATTERNS[Number(card.dataset.index)]));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openDetail(PATTERNS[Number(card.dataset.index)]);
+          }
+        });
+      });
+    }
+
+    function openDetail(item) {
+      const category = categoryInfo(item.cat);
+      lastFocusedElement = document.activeElement;
+      detailCategory.textContent = category.ko;
+      detailTitle.textContent = item.ko;
+      detailAlias.textContent = item.en;
+      const related = relatedFor(item);
+      detailBody.innerHTML = `
+        <div class="preview detail-preview">${previewFor(item)}</div>
+        <section class="detail-section">
+          <h3>Description</h3>
+          <p>${escapeHtml(item.desc)}</p>
+        </section>
+        <section class="detail-section">
+          <h3>When to Use</h3>
+          <p>${escapeHtml(item.use)}</p>
+        </section>
+        <section class="detail-section">
+          <h3>Aliases &amp; Search Keywords</h3>
+          <div class="keyword-list">${keywordsFor(item).map((keyword) => `<span>${escapeHtml(keyword)}</span>`).join("")}</div>
+        </section>
+        <section class="detail-section">
+          <h3>Prompt to the AI</h3>
+          <ul class="prompt-list">${promptFor(item).map((prompt) => `<li>"${escapeHtml(prompt)}"</li>`).join("")}</ul>
+        </section>
+        <section class="detail-section">
+          <h3>Tip</h3>
+          <p>${escapeHtml(category.tip)}</p>
+        </section>
+        <section class="detail-section">
+          <h3>같이 알면 좋은 패턴</h3>
+          <div class="related-list">${related.map((target) => `<button type="button" data-related="${escapeHtml(target.en)}">${escapeHtml(target.ko)}</button>`).join("")}</div>
+        </section>
+      `;
+      detailBackdrop.hidden = false;
+      document.body.style.overflow = "hidden";
+      closeDetail.focus();
+    }
+
+    function closeTermDetail() {
+      detailBackdrop.hidden = true;
+      document.body.style.overflow = "";
+      if (lastFocusedElement && document.contains(lastFocusedElement)) {
+        lastFocusedElement.focus();
+      }
+    }
+
+    input.addEventListener("input", renderContent);
+    closeDetail.addEventListener("click", closeTermDetail);
+    detailBackdrop.addEventListener("click", (event) => {
+      if (event.target === detailBackdrop) closeTermDetail();
+    });
+    detailBody.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-related]");
+      if (!button) return;
+      const related = PATTERNS.find((item) => item.en === button.dataset.related);
+      if (related) openDetail(related);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !detailBackdrop.hidden) closeTermDetail();
+    });
+
+    renderNav();
+    renderContent();
+  </script>
+</body>
+</html>

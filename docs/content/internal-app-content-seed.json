@@ -1,0 +1,215 @@
+{
+  "content_version": "0.1.0",
+  "locale": "ko-KR",
+  "purpose": "Seed content for an internal AI app factory: sample apps, UI patterns, workflow patterns, and copyable prompts.",
+  "source_inspiration": [
+    {
+      "name": "Vibe Coding Glossary",
+      "url": "https://vibecoding-glossary.pages.dev/",
+      "internalized_as": "AI에게 지시할 수 있는 UI/레이아웃/개발 용어 사전"
+    },
+    {
+      "name": "UI Design Dictionary",
+      "url": "https://ui-design-dictionary.pages.dev/",
+      "internalized_as": "컴포넌트 이름과 화면 예시를 연결하는 시각 패턴 사전"
+    }
+  ],
+  "sample_apps": [
+    {
+      "id": "inventory-dashboard",
+      "title": "재고 현황 대시보드",
+      "category": "operations",
+      "description": "품목별 재고, 안전재고 미달, 최근 입출고 이력을 한 화면에서 보는 내부 업무앱.",
+      "core_patterns": ["table", "stat-card", "status-badge", "filter-bar", "csv-export"],
+      "starter_prompt": "Next.js로 재고 현황 대시보드를 만들어줘. 상단에는 총 품목 수, 안전재고 미달 수, 오늘 입고/출고 건수 stat card를 배치하고, 아래에는 검색/카테고리/상태 필터가 있는 재고 테이블을 넣어줘. 상태는 정상, 부족, 초과 배지로 표시하고 CSV 내보내기 버튼도 포함해줘."
+    },
+    {
+      "id": "approval-request-tracker",
+      "title": "결재 요청 관리",
+      "category": "approval",
+      "description": "현업 요청, 승인자, 상태, 기한, 반려 사유를 관리하는 결재형 업무앱.",
+      "core_patterns": ["stepper", "timeline", "modal", "comment-thread", "audit-log"],
+      "starter_prompt": "내부 결재 요청 관리 앱을 만들어줘. 요청 목록 테이블, 상태별 탭, 요청 상세 drawer, 승인/반려 modal, 결재 timeline, 댓글 영역을 포함해줘. 각 요청에는 요청자, 승인자, 상태, 기한, 마지막 변경 시간을 표시해줘."
+    },
+    {
+      "id": "field-inspection-report",
+      "title": "현장 점검 리포트",
+      "category": "field",
+      "description": "현장 사진, 점검 항목, 이상 여부, 조치 상태를 모바일 중심으로 입력하는 앱.",
+      "core_patterns": ["mobile-form", "file-upload", "checkbox", "photo-gallery", "offline-draft"],
+      "starter_prompt": "모바일 현장 점검 리포트 앱을 만들어줘. 점검 장소, 담당자, 사진 업로드, 체크리스트, 이상 항목 메모, 조치 상태를 입력할 수 있게 하고, 저장 전에는 확인 modal을 띄워줘. 점검 완료 후에는 요약 카드와 사진 갤러리를 보여줘."
+    },
+    {
+      "id": "customer-issue-board",
+      "title": "고객 이슈 보드",
+      "category": "support",
+      "description": "고객 문의와 장애를 접수, 분류, 담당자 배정, 처리 상태로 관리하는 보드.",
+      "core_patterns": ["kanban-board", "priority-badge", "assignee-avatar", "search-bar", "notification-panel"],
+      "starter_prompt": "고객 이슈 보드를 만들어줘. 접수, 확인중, 처리중, 완료 컬럼을 가진 kanban board를 만들고, 각 카드에는 고객명, 우선순위, 담당자, 마지막 업데이트 시간을 보여줘. 검색과 우선순위 필터, 새 이슈 등록 modal도 포함해줘."
+    },
+    {
+      "id": "meeting-room-booking",
+      "title": "회의실 예약",
+      "category": "workspace",
+      "description": "회의실별 예약 시간, 참석자, 장비 필요 여부를 관리하는 예약 앱.",
+      "core_patterns": ["calendar", "date-picker", "segmented-control", "empty-state", "conflict-alert"],
+      "starter_prompt": "회의실 예약 앱을 만들어줘. 날짜 선택, 회의실 목록, 시간대 그리드, 예약 상세 modal을 포함해줘. 이미 예약된 시간은 비활성화하고, 충돌이 있으면 alert banner로 알려줘."
+    },
+    {
+      "id": "purchase-request-portal",
+      "title": "구매 요청 포털",
+      "category": "finance",
+      "description": "구매 품목, 예산, 첨부 견적서, 승인 상태를 관리하는 내부 포털.",
+      "core_patterns": ["multi-step-form", "file-upload", "approval-flow", "comparison-table", "audit-log"],
+      "starter_prompt": "구매 요청 포털을 만들어줘. 1단계 품목 입력, 2단계 견적서 첨부, 3단계 결재선 선택, 4단계 검토 화면으로 나누고, 제출 후에는 결재 상태 timeline을 보여줘."
+    },
+    {
+      "id": "employee-onboarding-checklist",
+      "title": "신규 입사자 온보딩 체크리스트",
+      "category": "hr",
+      "description": "입사 준비 항목, 담당 부서, 완료 여부, 지연 항목을 관리하는 HR 앱.",
+      "core_patterns": ["progress-checklist", "owner-avatar", "status-badge", "accordion", "notification-panel"],
+      "starter_prompt": "신규 입사자 온보딩 체크리스트 앱을 만들어줘. 계정 생성, 장비 지급, 보안 교육, 부서 소개 같은 항목을 카드와 체크리스트로 보여주고, 담당자와 완료 상태를 표시해줘. 지연 항목은 경고 배지로 강조해줘."
+    },
+    {
+      "id": "asset-lending-system",
+      "title": "사내 자산 대여 관리",
+      "category": "asset",
+      "description": "노트북, 장비, 비품의 대여 가능 여부, 대여자, 반납 예정일을 관리하는 앱.",
+      "core_patterns": ["table", "qr-search", "date-picker", "confirmation-dialog", "history-timeline"],
+      "starter_prompt": "사내 자산 대여 관리 앱을 만들어줘. 자산 목록 테이블, 대여 가능/대여중/점검중 상태 배지, QR 또는 자산번호 검색, 대여/반납 modal, 대여 이력 timeline을 포함해줘."
+    },
+    {
+      "id": "kpi-report-builder",
+      "title": "KPI 리포트 빌더",
+      "category": "analytics",
+      "description": "팀별 KPI 지표를 카드, 차트, 표로 구성해 주간 리포트를 만드는 앱.",
+      "core_patterns": ["chart", "stat-card", "tabs", "export-pdf", "comment-thread"],
+      "starter_prompt": "KPI 리포트 빌더를 만들어줘. 팀별 탭, 핵심 지표 stat card, 추이 차트, 상세 테이블, 코멘트 입력 영역을 포함하고 PDF 내보내기 버튼을 넣어줘."
+    },
+    {
+      "id": "deployment-control-center",
+      "title": "내부 앱 배포 관제",
+      "category": "platform",
+      "description": "생성된 앱의 배포 상태, 최근 빌드, 소유자, 장애 여부를 관리하는 플랫폼 관리자 화면.",
+      "core_patterns": ["app-catalog", "deployment-history", "health-check", "rollback-action", "audit-log"],
+      "starter_prompt": "내부 앱 배포 관제 대시보드를 만들어줘. 앱 카탈로그 테이블, 상태 필터, 최근 배포 이력, health check 결과, rollback 버튼, 앱 소유자 표시, 감사로그 drawer를 포함해줘."
+    }
+  ],
+  "component_dictionary_seed": [
+    {
+      "id": "data-table",
+      "title": "데이터 테이블",
+      "aliases": ["Table", "Grid"],
+      "category": "data-display",
+      "what_it_is": "행과 열로 많은 업무 데이터를 정렬해서 보여주는 기본 컴포넌트.",
+      "when_to_use": "재고, 요청, 사용자, 로그처럼 비교와 필터링이 필요한 목록에 사용한다.",
+      "visual_notes": ["헤더 행", "정렬 가능한 컬럼", "상태 배지", "행별 액션 버튼", "페이지네이션"],
+      "prompt": "검색, 필터, 정렬, 페이지네이션이 있는 데이터 테이블을 만들어줘. 각 행 오른쪽에는 상세보기와 수정 액션을 넣고, 상태 컬럼은 색상 배지로 표시해줘.",
+      "governance_notes": ["개인정보 컬럼은 기본 숨김 처리", "엑셀/CSV 다운로드는 권한 체크 필요"]
+    },
+    {
+      "id": "approval-flow",
+      "title": "승인 흐름",
+      "aliases": ["Approval Flow", "Review Flow"],
+      "category": "workflow",
+      "what_it_is": "요청이 제출, 검토, 승인, 반려, 완료 상태를 지나가는 업무 흐름.",
+      "when_to_use": "구매 요청, 배포 승인, 권한 요청, 정책 예외 신청에 사용한다.",
+      "visual_notes": ["현재 단계 강조", "승인자 표시", "반려 사유", "변경 이력"],
+      "prompt": "제출됨, 검토중, 승인됨, 반려됨, 완료 상태를 가진 승인 흐름 UI를 만들어줘. 현재 단계는 강조하고, 각 단계에는 담당자와 처리 시간을 표시해줘.",
+      "governance_notes": ["승인/반려는 감사로그에 남김", "운영 배포 승인에는 권한 검증 필요"]
+    },
+    {
+      "id": "audit-log",
+      "title": "감사로그",
+      "aliases": ["Audit Log", "Activity Log"],
+      "category": "operations",
+      "what_it_is": "누가, 언제, 무엇을 변경했는지 기록하는 운영 로그.",
+      "when_to_use": "앱 생성, 배포, 권한 변경, 설정 변경, 데이터 삭제 같은 추적이 필요한 기능에 사용한다.",
+      "visual_notes": ["시간순 목록", "사용자", "액션", "대상", "변경 전후"],
+      "prompt": "감사로그 패널을 만들어줘. 시간, 사용자, 액션, 대상, 결과, IP를 표시하고, 날짜/사용자/액션 유형으로 필터링할 수 있게 해줘.",
+      "governance_notes": ["삭제 불가 로그로 취급", "민감 데이터 값은 마스킹"]
+    },
+    {
+      "id": "status-badge",
+      "title": "상태 배지",
+      "aliases": ["Status Badge", "Badge"],
+      "category": "data-display",
+      "what_it_is": "짧은 텍스트와 색상으로 현재 상태를 빠르게 구분하는 표시 요소.",
+      "when_to_use": "배포 성공/실패, 승인 대기, 처리중, 만료, 위험 같은 상태를 표시할 때 사용한다.",
+      "visual_notes": ["짧은 상태명", "일관된 색상", "툴팁 설명"],
+      "prompt": "상태 배지를 만들어줘. 성공은 초록, 대기는 노랑, 실패는 빨강, 보관은 회색으로 표시하고 각 상태에 tooltip 설명을 붙여줘.",
+      "governance_notes": ["색상만으로 의미를 전달하지 말고 텍스트도 함께 제공"]
+    },
+    {
+      "id": "empty-state",
+      "title": "빈 상태",
+      "aliases": ["Empty State"],
+      "category": "feedback",
+      "what_it_is": "아직 데이터가 없을 때 사용자가 다음 행동을 알 수 있게 보여주는 화면.",
+      "when_to_use": "앱 목록, 요청 목록, 검색 결과, 로그가 비어 있을 때 사용한다.",
+      "visual_notes": ["간결한 제목", "원인 설명", "주요 액션 버튼"],
+      "prompt": "빈 상태 화면을 만들어줘. 데이터가 없는 이유를 한 문장으로 설명하고, 새 항목 만들기 버튼과 검색 초기화 보조 버튼을 제공해줘.",
+      "governance_notes": ["권한 부족과 실제 데이터 없음은 서로 다른 메시지로 구분"]
+    },
+    {
+      "id": "deployment-history",
+      "title": "배포 이력",
+      "aliases": ["Deployment History", "Release Timeline"],
+      "category": "platform",
+      "what_it_is": "앱이 언제 어떤 버전으로 배포되었는지 보여주는 시간순 기록.",
+      "when_to_use": "내부 앱 운영 화면, 장애 분석, 롤백 판단에 사용한다.",
+      "visual_notes": ["버전", "커밋", "배포자", "환경", "결과", "롤백 액션"],
+      "prompt": "배포 이력 timeline을 만들어줘. 각 항목에는 버전, 커밋 메시지, 배포자, 환경, 성공/실패 상태, 배포 시간을 표시하고 실패 항목은 오류 로그 보기 버튼을 넣어줘.",
+      "governance_notes": ["운영 환경 롤백은 확인 dialog와 권한 검증 필요"]
+    },
+    {
+      "id": "filter-bar",
+      "title": "필터 바",
+      "aliases": ["Filter Bar", "Search Filters"],
+      "category": "navigation",
+      "what_it_is": "목록 상단에서 검색어, 상태, 날짜, 담당자 등을 좁히는 컨트롤 묶음.",
+      "when_to_use": "표나 카드 목록이 20개 이상이거나 상태가 여러 개인 경우 사용한다.",
+      "visual_notes": ["검색 입력", "상태 셀렉트", "날짜 범위", "필터 초기화"],
+      "prompt": "목록 상단에 필터 바를 만들어줘. 검색 입력, 상태 드롭다운, 담당자 선택, 날짜 범위 선택, 필터 초기화 버튼을 한 줄에 배치하고 모바일에서는 두 줄로 줄바꿈해줘.",
+      "governance_notes": ["필터 조건은 URL query에 보존하면 공유와 새로고침에 유리"]
+    },
+    {
+      "id": "risk-confirmation-dialog",
+      "title": "위험 작업 확인창",
+      "aliases": ["Confirmation Dialog", "Danger Dialog"],
+      "category": "safety",
+      "what_it_is": "삭제, 운영 배포, 권한 변경처럼 되돌리기 어려운 행동 전에 확인을 받는 모달.",
+      "when_to_use": "데이터 삭제, 앱 중지, 운영 배포, 토큰 재발급, 권한 부여에 사용한다.",
+      "visual_notes": ["위험 설명", "영향 범위", "확인 입력", "취소 버튼"],
+      "prompt": "위험 작업 확인 dialog를 만들어줘. 어떤 영향이 있는지 명확히 설명하고, 사용자가 앱 이름을 입력해야 실행 버튼이 활성화되도록 해줘.",
+      "governance_notes": ["확인 후에도 서버에서 권한 재검증", "작업 결과를 감사로그에 기록"]
+    }
+  ],
+  "workflow_dictionary_seed": [
+    {
+      "id": "app-owner",
+      "title": "앱 소유자",
+      "description": "내부 앱의 운영 책임자. 문의, 장애, 권한, 폐기 판단의 기준점이 된다.",
+      "prompt": "앱 상세 화면에 앱 소유자 카드와 소유자 변경 요청 버튼을 추가해줘. 소유자에는 이름, 팀, 이메일, 마지막 확인 시간을 표시해줘."
+    },
+    {
+      "id": "data-classification",
+      "title": "데이터 등급",
+      "description": "앱이 다루는 데이터의 민감도를 구분하는 정책 값. 일반, 내부, 기밀, 개인정보 등으로 나눈다.",
+      "prompt": "새 앱 만들기 화면에 데이터 등급 선택 단계를 추가해줘. 등급에 따라 배포 승인 필요 여부와 외부 API 사용 가능 여부를 설명해줘."
+    },
+    {
+      "id": "archive-policy",
+      "title": "앱 보관 정책",
+      "description": "오래 사용하지 않는 앱을 중지하되 이력과 설정은 보존하는 운영 정책.",
+      "prompt": "앱 보관 기능을 만들어줘. 90일 동안 배포나 접속이 없으면 보관 추천 배지를 표시하고, 보관 전 소유자에게 알림을 보내는 UI를 포함해줘."
+    },
+    {
+      "id": "secret-policy",
+      "title": "시크릿 관리",
+      "description": "API 키, 토큰, 비밀번호 같은 민감 값을 코드가 아니라 안전한 환경변수/비밀 저장소에 두는 방식.",
+      "prompt": "앱 환경변수 설정 화면을 만들어줘. 일반 변수와 시크릿 변수를 구분하고, 시크릿 값은 저장 후 다시 노출하지 않게 해줘."
+    }
+  ]
+}
