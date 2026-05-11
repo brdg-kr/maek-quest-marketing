@@ -340,7 +340,12 @@ export function HomeExperience() {
         <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4">
           <header className="flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#10251a]/58">
             <MaekLogo />
-            <span className="hidden text-right sm:block">Evidence Intelligence System</span>
+            <nav className="flex items-center gap-4 text-right" aria-label="Primary navigation">
+              <a href="/ai-stage-map" className="transition hover:text-[#087a45]">
+                AI Stage Map
+              </a>
+              <span className="hidden sm:inline">Evidence Intelligence System</span>
+            </nav>
           </header>
 
           <div className="md:hidden">
