@@ -338,7 +338,6 @@ export function AiStageMapExperience() {
             <h2 id="maek-title" className="mt-3 text-3xl font-semibold leading-tight text-[#061d48] md:text-5xl">
               <a
                 href="/system-flow"
-                className="transition hover:text-[#087a45] focus:outline-none focus:ring-2 focus:ring-[#087a45]/35"
                 style={{
                   textDecorationLine: "underline",
                   textDecorationColor: "rgba(8, 122, 69, 0.72)",
