@@ -344,7 +344,6 @@ export function HomeExperience() {
               <a href="/ai-stage-map" className="transition hover:text-[#087a45]">
                 AI Stage Map
               </a>
-              <span className="hidden sm:inline">Evidence Intelligence System</span>
             </nav>
           </header>
 
