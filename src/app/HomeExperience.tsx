@@ -31,6 +31,7 @@ const imageSrc = "/images/maek-system-flow-cropped.png";
 
 const homeCopy = {
   en: {
+    navHome: "Home",
     navStageMap: "AI Stage Map",
     mobileHeroTitle: "Source material becomes defensible intelligence.",
     mobileHeroBody: "One package carries the evidence chain from raw files to graph-backed outputs.",
@@ -177,6 +178,7 @@ const homeCopy = {
     },
   },
   ko: {
+    navHome: "홈",
     navStageMap: "AI 단계 지도",
     mobileHeroTitle: "원천 자료가 검증 가능한 지능이 됩니다.",
     mobileHeroBody: "하나의 패키지가 원본 파일에서 그래프 기반 결과까지 증거 흐름을 유지합니다.",
@@ -495,6 +497,9 @@ export function HomeExperience() {
             <MaekLogo />
             <nav className="flex items-center gap-4 text-right" aria-label="Primary navigation">
               <a href="/" className="transition hover:text-[#087a45]">
+                {copy.navHome}
+              </a>
+              <a href="/ai-stage-map" className="transition hover:text-[#087a45]">
                 {copy.navStageMap}
               </a>
             </nav>

@@ -15,7 +15,7 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 const storageKey = "maek-locale";
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
+  const [locale, setLocaleState] = useState<Locale>("ko");
 
   useEffect(() => {
     const storedLocale = window.localStorage.getItem(storageKey);
