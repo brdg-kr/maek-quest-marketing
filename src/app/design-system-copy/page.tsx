@@ -3,43 +3,38 @@ import Image from "next/image";
 import { MaekLogo } from "../components/MaekLogo";
 
 export const metadata: Metadata = {
-  title: "Editorial Intelligence Design System",
+  title: "Editorial Intelligence Design System Copy",
   description:
     "A MAEK subpage defining an editorial, OpenAI-reference-informed design system for explaining evidence intelligence.",
   alternates: {
-    canonical: "/design-system",
+    canonical: "/design-system-copy",
   },
 };
 
-const adoptionFriction = [
+const referenceSignals = [
   {
-    title: "적용의 막막함",
-    body: [
-      "AI 교육은 들었지만, 막상 보고서·기획·고객 대응·개발 업무에 어떻게 연결해야 할지 모릅니다.",
-      "배운 것은 많은데, 실제 업무로 옮기는 기준이 없습니다.",
-    ],
+    source: "Voice intelligence",
+    pattern: "Article launch",
+    signal:
+      "Centered date, category tags, oversized headline, wide video, article tools, voice demo, tabs, and long-form sections.",
   },
   {
-    title: "팀 안의 격차",
-    body: [
-      "어떤 직원은 AI로 업무 속도를 높이고, 어떤 직원은 아직 첫 프롬프트도 어렵게 느낍니다.",
-      "조직 안에서 AI 활용 수준의 차이가 점점 커집니다.",
-    ],
+    source: "Daybreak",
+    pattern: "Symbolic hero",
+    signal:
+      "White field, huge wordmark, single accent, small pill CTAs, symbolic system graphic, table, tabs, partner proof.",
   },
   {
-    title: "기준의 부재",
-    body: [
-      "리더는 어디까지 도입할지 고민하고, 실무자는 어디까지 믿고 써도 되는지 묻습니다.",
-      "방향은 있지만, 함께 따를 기준은 아직 명확하지 않습니다.",
-    ],
+    source: "Frontier",
+    pattern: "Enterprise platform",
+    signal:
+      "Centered platform statement, customer logo strip, architecture diagram, feature blocks, industry proof, governance copy.",
   },
   {
-    title: "낯선 개발 언어",
-    body: [
-      "footer, header, popup, modal, API key, Next.js.",
-      "어려운 기술 용어는 아닌데도, 익숙하지 않은 단어들이 계속 쏟아지면서 작은 수정 하나에도 긴장하게 됩니다.",
-      "모두가 빠르게 배우고 있지만, 따라가는 것만으로도 이미 많은 에너지를 쓰고 있습니다.",
-    ],
+    source: "Small business stories",
+    pattern: "Editorial story",
+    signal:
+      "Real video, large photo grids, founder quotes, compact prompt-response examples, and generous section spacing.",
   },
 ];
 
@@ -90,20 +85,20 @@ const prompts = [
 
 const principles = [
   {
-    title: "People before tools.",
-    body: "AI 전환의 시작점은 기술이 아니라 사람입니다. 직원들은 낯선 프롬프트와 바이브코딩 사이에서 매일 새로운 방식을 익히고, 리더는 뒤처지지 않기 위해 빠르게 판단해야 합니다. 우리는 조직 구성원이 불안이 아니라 이해를 바탕으로 AI를 사용할 수 있도록 돕습니다.",
+    title: "Human context first.",
+    body: "The page should explain why the work matters before it explains how the system works.",
   },
   {
-    title: "Make AI practical.",
-    body: "AI는 멋진 데모보다 실제 업무에서 작동해야 합니다. 보고서, 기획, 개발, 고객 대응, 운영 업무처럼 반복되는 일 속에서 AI가 어디에 도움이 되는지 찾고, 바로 사용할 수 있는 워크플로우로 바꿉니다.",
+    title: "Proof before polish.",
+    body: "Use reference pages, workflow images, tables, and source-backed examples as the visual material.",
   },
   {
-    title: "Align leaders and teams.",
-    body: "CEO는 방향을 고민하고, 실무자는 기준을 묻습니다. AI를 어디까지 도입할지, 어떤 결과물을 신뢰할지, 누가 검토하고 책임질지를 함께 정리해야 조직이 같은 속도로 움직일 수 있습니다.",
+    title: "Quiet hierarchy.",
+    body: "Large type is useful only when it gives the reader a clear entry point. Section titles should stay calm.",
   },
   {
-    title: "Build calm momentum.",
-    body: "AI 변화는 너무 빠르고, 정보는 너무 많습니다. 우리는 조직이 유행을 따라가기보다 필요한 것부터 작게 시작하고, 검증하고, 확장할 수 있도록 돕습니다. 빠르지만 무리하지 않고, 신중하지만 멈추지 않는 전환을 만듭니다.",
+    title: "Responsive discipline.",
+    body: "Viewport-based type needs a strict maximum so Chrome and the in-app browser do not feel like different designs.",
   },
 ];
 
@@ -183,30 +178,28 @@ export default function DesignSystemPage() {
             </h2>
           </div>
 
-          <div className="mx-auto mt-14 max-w-[860px] text-lg leading-8 text-[#171717]">
+          <div className="mx-auto mt-14 max-w-[760px] text-lg leading-8 text-[#171717]">
             <p>
-              <strong>AI Transformation:</strong> 우리는 AI 도입을 단순히 새로운 도구를 배우는 일이 아니라, 조직이 더
-              빠른 변화 속에서도 흔들리지 않고 일하는 방식을 다시 정리하는 과정으로 봅니다. AI가 복잡해질수록
-              중요한 것은 더 많은 용어를 아는 것이 아니라, 우리 조직에 맞는 기준과 실행 방식을 갖추는 것입니다.
+              <strong>Careers reference:</strong> one centered thesis, long readable principles, real people media,
+              practical cards, structured rows, and a focused final action.
             </p>
-            <ul className="mx-auto mt-8 max-w-[800px] list-disc space-y-5 pl-6 marker:text-[#171717] sm:-translate-x-3">
+            <div className="mt-8 grid gap-5">
               {principles.map((item) => (
-                <li key={item.title} className="pl-2">
-                  <strong className="font-semibold text-[#171717]">{item.title}</strong> {item.body}
-                </li>
+                <p key={item.title} className="text-base leading-7 text-[#30363d]">
+                  <strong className="text-[#171717]">{item.title}</strong> {item.body}
+                </p>
               ))}
-            </ul>
+            </div>
           </div>
 
-          <div className="mx-auto mt-24 max-w-5xl divide-y divide-[#e7e2d9] border-y border-[#e7e2d9]">
-            {adoptionFriction.map((item) => (
-              <article key={item.title} className="grid gap-4 py-6 md:grid-cols-[minmax(0,0.38fr)_minmax(0,0.62fr)]">
-                <h3 className="text-xl font-semibold leading-tight">{item.title}</h3>
-                <div className="grid gap-1 text-base leading-6 text-[#5a6168]">
-                  {item.body.map((line) => (
-                    <p key={line}>{line}</p>
-                  ))}
+          <div className="mx-auto mt-16 max-w-5xl divide-y divide-[#e7e2d9] border-y border-[#e7e2d9]">
+            {referenceSignals.map((item) => (
+              <article key={item.source} className="grid gap-4 py-6 md:grid-cols-[minmax(0,0.38fr)_minmax(0,0.62fr)]">
+                <div>
+                  <p className="text-sm font-semibold text-[#0f766e]">{item.source}</p>
+                  <h3 className="mt-2 text-xl font-semibold leading-tight">{item.pattern}</h3>
                 </div>
+                <p className="text-base leading-7 text-[#5a6168]">{item.signal}</p>
               </article>
             ))}
           </div>

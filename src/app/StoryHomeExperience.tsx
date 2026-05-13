@@ -1,103 +1,110 @@
 import Image from "next/image";
 import { MaekLogo } from "./components/MaekLogo";
 
-const articleNav = [
-  { href: "#morning", label: "대표의 새벽" },
-  { href: "#afternoon", label: "직원의 오후" },
-  { href: "#meeting", label: "회의실의 언어" },
-  { href: "#night", label: "밤의 질문" },
-];
-
-const promptExamples = [
+const deploymentSteps = [
   {
-    label: "고객 문의",
-    prompt: "지난달 반복된 문의를 제품 개선 항목으로 묶어줘.",
-    answer: "문의 42건 중 배송, 가격, 설치 문서를 분리하고 원문 링크를 남깁니다.",
+    index: "01",
+    title: "상황을 먼저 정리",
+    body: "대표의 교육, 직원의 바이브코딩, 회의실의 용어 충돌을 하나의 전환 신호로 묶습니다.",
   },
   {
-    label: "회의록",
-    prompt: "회의록에서 이번 주 실행 항목과 근거 자료를 찾아줘.",
-    answer: "담당자, 마감일, 관련 문서 위치를 함께 보여주고 빠진 결정을 표시합니다.",
+    index: "02",
+    title: "자료와 기준을 고정",
+    body: "답변보다 먼저 출처, 최신성, 권한, 책임자를 보이게 만들어 개인 실험을 팀 자산으로 옮깁니다.",
   },
   {
-    label: "내부 자료",
-    prompt: "이 제안서가 어떤 이전 자료를 기반으로 만들어졌는지 확인해줘.",
-    answer: "출처가 있는 문장과 추정으로 보이는 문장을 분리해 검토 순서를 만듭니다.",
+    index: "03",
+    title: "실행과 검증을 연결",
+    body: "만든 도구가 실제 업무에 쓰일 때 승인, 기록, 재사용 기준이 함께 남도록 설계합니다.",
   },
 ];
 
-const glossaryRows = [
+const workLoopPanels = [
   {
-    term: "RAG",
-    heard: "우리 자료를 붙이면 정확해진다.",
-    question: "어떤 자료를 믿고, 오래된 자료는 어떻게 제외하나.",
-    maek: "자료 출처, 생성 시점, 사용 위치를 함께 남긴다.",
+    title: "AI 교육은 늘어나는데 적용 기준은 없다",
+    body: "CEO는 뒤처지지 않으려 배우지만, 돌아오면 우리 자료와 업무에 어디부터 적용할지 다시 막힙니다.",
+    meta: "Need / 적용 지도",
   },
   {
-    term: "Agent",
-    heard: "사람 대신 알아서 처리한다.",
-    question: "실패했을 때 누가 확인하고 어디서 멈추나.",
-    maek: "자동화보다 먼저 승인 지점과 책임 경계를 만든다.",
+    title: "개인 도구가 팀 업무가 되는 순간",
+    body: "직원이 만든 작은 자동화가 공유되면 속도보다 출처, 권한, 유지 방식이 먼저 필요해집니다.",
+    meta: "Need / 운영 기준",
   },
   {
-    term: "Workflow",
-    heard: "업무를 연결하면 된다.",
-    question: "현업이 바꾼 절차가 시스템에도 반영되나.",
-    maek: "업무 단계를 문서, 데이터, 실행 기록과 함께 묶는다.",
-  },
-  {
-    term: "Vibe coding",
-    heard: "빠르게 만들 수 있다.",
-    question: "개인 도구가 팀 업무가 되면 무엇이 필요하나.",
-    maek: "권한, 유지 방식, 근거 자료를 공식 흐름으로 옮긴다.",
+    title: "용어가 회의보다 앞서간다",
+    body: "RAG, Agent, MCP 같은 단어가 늘수록 같은 문제를 다르게 이해하고 결정이 늦어집니다.",
+    meta: "Need / 공통 언어",
   },
 ];
 
-const relatedPages = [
+const accessRows = [
+  {
+    level: "개인 실험",
+    situation: "바이브코딩, 프롬프트, 작은 업무 자동화",
+    need: "출처 메모, 사용 범위, 실패 시 멈출 기준",
+    output: "개인 도구를 팀에 보여줄 수 있는 초안",
+  },
+  {
+    level: "팀 업무",
+    situation: "문의 정리, 회의록, 견적, 제안서 초안",
+    need: "공유 자료 패키지, 권한, 리뷰 흐름",
+    output: "반복 업무에 붙일 수 있는 검증된 워크플로",
+  },
+  {
+    level: "회사 운영",
+    situation: "고객 응대, 내부 지식, 부서 간 의사결정",
+    need: "감사 기록, 책임자, 업데이트 주기",
+    output: "AI 사용이 회사 기준 안에 들어오는 운영 체계",
+  },
+];
+
+const fieldSignals = [
+  "경쟁사는 한다는데 우리는 어디서 시작해야 하는지 모른다.",
+  "직원이 만든 도구가 좋아 보이지만 회사가 계속 써도 되는지 판단하기 어렵다.",
+  "회의에서는 기술 용어가 늘고, 실제 불편함은 정리되지 않는다.",
+  "AI를 도입했다는 말은 있지만 자료, 권한, 검증은 여전히 흩어져 있다.",
+];
+
+const resources = [
   {
     href: "/design-system",
-    eyebrow: "Design system",
-    title: "차분한 AI 전환 페이지를 위한 시각 언어",
     image: "/images/mobile-knowledge-graph.png",
+    eyebrow: "Design system",
+    title: "흰 배경과 미색 보조면으로 정리한 MAEK 시각 언어",
   },
   {
     href: "/ai-stage-map",
-    eyebrow: "Stage map",
-    title: "회사의 AI 도입 단계를 한 장으로 보기",
     image: "/images/mobile-dataset-package.png",
+    eyebrow: "Stage map",
+    title: "AI 전환의 현재 단계를 업무 기준으로 나누기",
   },
   {
     href: "/system-flow",
-    eyebrow: "System flow",
-    title: "자료에서 실행까지 이어지는 MAEK 구조",
     image: "/images/mobile-knowledge-in-use.png",
+    eyebrow: "System flow",
+    title: "자료에서 실행까지 이어지는 구조 보기",
   },
 ];
 
-function SectionHeading({
-  eyebrow,
-  title,
-}: {
-  eyebrow: string;
-  title: string;
-}) {
+function ArrowIcon() {
   return (
-    <div className="mb-8 border-t border-[#d6d0c7] pt-7">
-      <p className="text-sm font-semibold text-[#6f6a62]">{eyebrow}</p>
-      <h2 className="mt-4 text-[clamp(2.2rem,5vw,4.7rem)] font-semibold leading-[1.02] tracking-normal text-[#161616]">
-        {title}
-      </h2>
-    </div>
+    <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 16 16" fill="none">
+      <path d="M4 12L12 4M6 4h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
+}
+
+function SmallMark({ children }: { children: React.ReactNode }) {
+  return <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#69707a]">{children}</p>;
 }
 
 export function StoryHomeExperience() {
   return (
-    <main className="min-h-screen bg-[#f7f4ee] text-[#171717]">
-      <header className="border-b border-[#d6d0c7] bg-[#f7f4ee]/95 px-4 py-5 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-white text-[#171717]">
+      <header className="sticky top-0 z-20 border-b border-[#e7e2d9] bg-white/92 px-4 py-4 backdrop-blur-md sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5">
           <MaekLogo />
-          <nav className="hidden items-center gap-7 text-sm font-medium text-[#5f5a52] md:flex">
+          <nav className="hidden items-center gap-7 text-sm font-medium text-[#4f555b] md:flex">
             <a href="/stories" className="transition hover:text-[#171717]">
               Stories
             </a>
@@ -109,266 +116,274 @@ export function StoryHomeExperience() {
             </a>
           </nav>
           <a
-            href="/design-system"
-            className="inline-flex min-h-10 items-center rounded-full bg-[#171717] px-4 text-sm font-semibold text-white transition hover:bg-[#33312e]"
+            href="/system-flow"
+            className="inline-flex min-h-10 items-center rounded-full bg-[#171717] px-4 text-sm font-semibold text-white transition hover:bg-[#27313a]"
             style={{ color: "#ffffff" }}
           >
-            디자인 시스템
+            System flow
           </a>
         </div>
       </header>
 
-      <article>
-        <section className="px-4 pb-10 pt-16 sm:px-6 md:pb-14 md:pt-24 lg:px-8">
-          <div className="mx-auto max-w-[1120px] text-center">
-            <p className="text-sm font-semibold text-[#6d675f]">MAEK Stories</p>
-            <div className="mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1 text-sm text-[#787168]">
-              <span>AI transition</span>
-              <span aria-hidden="true">/</span>
-              <span>Workplace story</span>
-              <span aria-hidden="true">/</span>
-              <span>2026</span>
-            </div>
-
-            <h1 className="mx-auto mt-9 max-w-[1040px] text-[clamp(3.2rem,8.6vw,8.8rem)] font-semibold leading-[0.95] tracking-normal text-[#161616]">
-              AI를 배워야 하는 회사의 하루
+      <section className="px-4 pb-12 pt-16 sm:px-6 md:pb-16 md:pt-24 lg:px-8">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="mx-auto max-w-5xl text-center">
+            <p className="text-sm font-semibold text-[#69707a]">MAEK for AI transition</p>
+            <h1 className="mt-8 text-[clamp(5rem,16vw,13.5rem)] font-semibold leading-[0.82] tracking-normal text-[#1f2a44]">
+              MAEK
             </h1>
-            <p className="mx-auto mt-8 max-w-[760px] text-[clamp(1.2rem,2.2vw,1.7rem)] font-medium leading-9 text-[#45413b]">
-              빠르게 지나가는 교육, 툴, 데모 사이에서 대표와 직원은 같은 질문을 반복합니다. 이게 우리 회사에
-              정말 맞는 길인지, 그리고 내일도 버틸 수 있는 방식인지.
+            <p className="mx-auto mt-8 max-w-[760px] text-[clamp(1.25rem,2.2vw,1.9rem)] font-medium leading-9 text-[#27313a]">
+              AI를 배워야 하는 압박을, 회사가 운영할 수 있는 자료와 기준으로 바꾸는 구조.
             </p>
-
-            <div className="mt-9 flex flex-wrap justify-center gap-2 border-y border-[#d6d0c7] py-4">
-              {articleNav.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="rounded-full px-4 py-2 text-sm font-semibold text-[#4d4942] transition hover:bg-[#e9e2d7] hover:text-[#171717]"
-                >
-                  {item.label}
-                </a>
-              ))}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="#field"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#171717] px-5 text-sm font-semibold text-white transition hover:bg-[#27313a]"
+                style={{ color: "#ffffff" }}
+              >
+                현장 이슈 보기
+                <ArrowIcon />
+              </a>
+              <a
+                href="/design-system"
+                className="inline-flex min-h-11 items-center rounded-full bg-[#f3f1ec] px-5 text-sm font-semibold text-[#171717] transition hover:bg-[#e9e4dc]"
+              >
+                디자인 시스템
+              </a>
             </div>
           </div>
-        </section>
 
-        <section className="px-4 pb-14 sm:px-6 md:pb-20 lg:px-8">
-          <figure className="mx-auto max-w-[1320px] overflow-hidden rounded-[8px] border border-[#d6d0c7] bg-[#ebe4d8]">
-            <div className="relative">
+          <div className="mx-auto mt-16 max-w-[1120px]">
+            <div className="relative min-h-[24rem] overflow-hidden rounded-[8px] border border-[#e7e2d9] bg-[#f7f5f0] md:min-h-[34rem]">
+              <div className="absolute left-1/2 top-16 h-64 w-64 -translate-x-1/2 rounded-full bg-[#eaf3ef] ring-1 ring-[#0f766e]/20 md:top-20 md:h-80 md:w-80" />
+              <div className="absolute left-1/2 top-48 h-44 w-[38rem] -translate-x-1/2 bg-gradient-to-b from-white/92 to-[#f7f5f0] md:top-60" />
+              <div className="absolute left-1/2 top-28 grid w-[22rem] -translate-x-1/2 gap-2 text-center text-xs font-semibold text-[#0f766e]/50 md:top-36 md:w-[32rem] md:grid-cols-3">
+                <span>교육</span>
+                <span>바이브코딩</span>
+                <span>용어 충돌</span>
+                <span>자료 분산</span>
+                <span>권한 불명확</span>
+                <span>검증 부재</span>
+              </div>
+              <div className="absolute bottom-8 left-4 right-4 mx-auto max-w-3xl text-center">
+                <h2 className="text-[clamp(2rem,4.2vw,4.1rem)] font-semibold leading-[0.98] tracking-normal">
+                  현장의 불편함을 운영 구조로.
+                </h2>
+                <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#5a6168] md:text-lg md:leading-8">
+                  애환을 그대로 보여주는 것이 아니라, 애환이 생기는 반복 상황과 그 안의 Needs를 정리합니다.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="field" className="border-t border-[#e7e2d9] px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+        <div className="mx-auto max-w-[760px]">
+          <SmallMark>Field premise</SmallMark>
+          <h2 className="mt-5 text-[clamp(2.4rem,5vw,5.5rem)] font-semibold leading-[1] tracking-normal">
+            빠른 도구보다 먼저 필요한 것은 계속 버틸 기준입니다.
+          </h2>
+          <div className="mt-8 grid gap-6 text-lg leading-9 text-[#30363d]">
+            <p>
+              회사 안의 AI 전환은 하나의 극적인 사건이 아니라 반복되는 운영 문제입니다. 교육은 늘어나고,
+              직원은 작은 도구를 만들고, 회의실에는 새로운 용어가 들어오지만 자료와 책임의 기준은 그대로
+              비어 있습니다.
+            </p>
+            <p>
+              MAEK의 홈은 그 불편함을 감성 문장으로 소비하지 않습니다. 어떤 상황이 반복되는지, 그 상황에서
+              어떤 Needs가 생기는지, 그리고 어떤 구조가 있어야 회사가 실제로 쓸 수 있는지 보여줍니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-16 sm:px-6 md:pb-24 lg:px-8">
+        <div className="mx-auto max-w-[1180px]">
+          <h2 className="text-center text-[clamp(2.1rem,4vw,4rem)] font-semibold leading-tight">
+            현장 AI 전환을 배포하는 방법
+          </h2>
+          <div className="mt-10 grid gap-px overflow-hidden rounded-[8px] border border-[#e7e2d9] bg-[#e7e2d9] md:grid-cols-3">
+            {deploymentSteps.map((step) => (
+              <article key={step.index} className="bg-white p-6 md:min-h-[17rem] md:p-8">
+                <p className="font-mono text-sm font-semibold text-[#0f766e]">{step.index}</p>
+                <h3 className="mt-10 text-2xl font-semibold leading-tight">{step.title}</h3>
+                <p className="mt-5 text-base leading-7 text-[#5a6168]">{step.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+        <div className="mx-auto max-w-[1440px] rounded-[8px] bg-[#f3f3f3] px-4 py-12 sm:px-8 md:py-20 lg:px-16">
+          <h2 className="mx-auto max-w-5xl text-center text-[clamp(2.3rem,4.2vw,4.3rem)] font-semibold leading-[1] tracking-normal">
+            MAEK을 업무 루프 안에 배치하기
+          </h2>
+          <div className="mt-12 grid gap-8 lg:grid-cols-[minmax(18rem,0.34fr)_minmax(0,0.66fr)] lg:items-center">
+            <div className="grid gap-px overflow-hidden rounded-[8px] border border-[#d9d9d9] bg-[#d9d9d9]">
+              {workLoopPanels.map((panel, index) => (
+                <article key={panel.title} className={index === 0 ? "bg-white p-6" : "bg-[#f3f3f3] p-6"}>
+                  <p className="text-sm font-semibold text-[#0f766e]">{panel.meta}</p>
+                  <h3 className="mt-4 text-2xl font-semibold leading-tight">{panel.title}</h3>
+                  <p className="mt-4 text-base leading-7 text-[#5a6168]">{panel.body}</p>
+                </article>
+              ))}
+            </div>
+            <figure className="overflow-hidden rounded-[8px] border border-[#d9d9d9] bg-white">
               <Image
                 src="/images/maek-system-flow-cropped.png"
-                alt="Source materials becoming a dataset package, knowledge graph, and knowledge in use."
+                alt="MAEK system flow from source materials to knowledge in use."
                 width={1536}
                 height={790}
                 priority
-                sizes="(min-width: 1024px) 86vw, 100vw"
+                sizes="(min-width: 1024px) 60vw, 100vw"
                 className="h-auto w-full"
               />
-              <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
-                {["자료", "맥락", "판단", "실행"].map((label) => (
-                  <span
-                    key={label}
-                    className="rounded-full bg-[#171717]/80 px-3 py-1 text-xs font-semibold text-white backdrop-blur"
-                    style={{ color: "#ffffff" }}
-                  >
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <figcaption className="border-t border-[#d6d0c7] px-5 py-4 text-sm leading-6 text-[#655f56]">
-              MAEK의 이야기는 기능을 나열하기보다, 회사 안의 흩어진 자료가 어떻게 믿을 수 있는 업무 흐름으로
-              이어지는지 보여주는 데서 시작합니다.
-            </figcaption>
-          </figure>
-        </section>
+              <figcaption className="border-t border-[#d9d9d9] px-5 py-4 text-sm leading-6 text-[#5f6470]">
+                Daybreak의 데모 패널처럼, 여기서는 애환 자체가 아니라 애환이 생기는 업무 루프와 필요한 구조를 보여줍니다.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
 
-        <section className="border-y border-[#d6d0c7] bg-[#fffdf8] px-4 py-12 sm:px-6 md:py-18 lg:px-8">
-          <div className="mx-auto grid w-full max-w-[1120px] gap-10 lg:grid-cols-[12rem_minmax(0,1fr)]">
-            <aside className="hidden lg:block">
-              <div className="sticky top-8">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#81796f]">In this story</p>
-                <nav className="mt-5 grid gap-3 text-sm font-medium text-[#5e584f]">
-                  {articleNav.map((item) => (
-                    <a key={item.href} href={item.href} className="transition hover:text-[#171717]">
-                      {item.label}
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </aside>
-
-            <div className="w-full min-w-0 lg:max-w-[760px]">
-              <p className="text-[clamp(1.45rem,2.8vw,2.35rem)] font-medium leading-[1.28] text-[#24211d]">
-                AI 전환은 발표 자료처럼 한 번에 오지 않습니다. 어느 날 대표가 조용히 교육장 맨 뒤에 앉고,
-                어느 날 직원이 점심시간에 작은 자동화 도구를 만들고, 어느 회의에서는 모르는 단어가 먼저
-                회의실을 차지합니다.
-              </p>
-              <p className="mt-7 text-lg leading-9 text-[#514c44]">
-                그래서 이 홈은 “무엇을 제공한다”보다 “어떤 하루를 이해한다”에서 출발해야 합니다. 제품의
-                자신감보다 현장의 피로를 먼저 인정할 때, 복잡한 도입 이야기도 조금 부드러워집니다.
-              </p>
-
-              <section id="morning" className="scroll-mt-24 pt-16">
-                <SectionHeading eyebrow="01 / Morning" title="대표의 새벽" />
-                <p className="text-lg leading-9 text-[#514c44]">
-                  경쟁사는 이미 AI를 쓴다고 합니다. 고객 응대도, 제안서도, 내부 문서도 바뀌고 있다는데 우리
-                  회사만 늦는 것 같아 새벽 교육을 신청합니다. 강의장에서는 모델 이름, 자동화 사례, 프롬프트
-                  템플릿이 빠르게 지나갑니다.
-                </p>
-                <p className="mt-6 text-lg leading-9 text-[#514c44]">
-                  하지만 돌아오는 길에 남는 질문은 더 단순합니다. 우리 회사의 자료는 어디에 있고, 누가
-                  최신이라고 말할 수 있으며, 직원들이 만든 작은 도구를 어디까지 믿어도 되는가. 대표의 불안은
-                  기술을 모르는 데서만 오지 않습니다. 책임질 수 있는 구조가 아직 보이지 않는 데서 옵니다.
-                </p>
-
-                <figure className="my-12 grid overflow-hidden rounded-[8px] border border-[#d6d0c7] bg-[#f2ede4] md:grid-cols-[0.44fr_0.56fr]">
-                  <div className="p-6 md:p-8">
-                    <p className="font-mono text-sm font-semibold text-[#9b6b35]">07:20</p>
-                    <blockquote className="mt-6 text-[clamp(1.65rem,3vw,2.7rem)] font-semibold leading-[1.12] text-[#171717]">
-                      “배워야 한다는 마음은 있는데, 회사 안에서 어디부터 시작해야 할지 모르겠습니다.”
-                    </blockquote>
+      <section className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="text-[clamp(2.3rem,5vw,5rem)] font-semibold leading-[1] tracking-normal">
+              어느 수준의 구조가 필요한가
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#5a6168]">
+              모든 회사가 처음부터 거대한 AI 시스템을 필요로 하지는 않습니다. 문제는 지금 만든 것이 다음 단계로
+              넘어갈 때 무엇을 갖춰야 하는지 아는 것입니다.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-px overflow-hidden rounded-[8px] border border-[#d8d8d8] bg-[#d8d8d8] md:hidden">
+            {accessRows.map((row) => (
+              <article key={row.level} className="bg-white p-5">
+                <h3 className="text-xl font-semibold">{row.level}</h3>
+                <dl className="mt-5 grid gap-4 text-base leading-7 text-[#30363d]">
+                  <div>
+                    <dt className="text-sm font-semibold text-[#0f766e]">현재 상황</dt>
+                    <dd className="mt-1">{row.situation}</dd>
                   </div>
+                  <div>
+                    <dt className="text-sm font-semibold text-[#0f766e]">Needs</dt>
+                    <dd className="mt-1">{row.need}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-semibold text-[#0f766e]">남겨야 할 결과</dt>
+                    <dd className="mt-1">{row.output}</dd>
+                  </div>
+                </dl>
+              </article>
+            ))}
+          </div>
+          <div className="mt-12 hidden md:block">
+            <table className="w-full border-collapse text-left text-base">
+              <thead>
+                <tr className="border-b border-[#d8d8d8]">
+                  <th className="px-4 py-5 font-semibold">수준</th>
+                  <th className="px-4 py-5 font-semibold">현재 상황</th>
+                  <th className="px-4 py-5 font-semibold">Needs</th>
+                  <th className="px-4 py-5 font-semibold">남겨야 할 결과</th>
+                </tr>
+              </thead>
+              <tbody>
+                {accessRows.map((row) => (
+                  <tr key={row.level} className="border-b border-[#d8d8d8]">
+                    <td className="px-4 py-6 align-top font-semibold">{row.level}</td>
+                    <td className="px-4 py-6 align-top leading-7 text-[#30363d]">{row.situation}</td>
+                    <td className="px-4 py-6 align-top leading-7 text-[#30363d]">{row.need}</td>
+                    <td className="px-4 py-6 align-top leading-7 text-[#30363d]">{row.output}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+        <div className="mx-auto max-w-[1440px] rounded-[8px] bg-[#f3f3f3] px-5 py-14 text-center sm:px-8 md:py-20">
+          <h2 className="text-[clamp(2.3rem,5vw,5rem)] font-semibold leading-[1] tracking-normal">
+            현장이 반복해서 보내는 신호
+          </h2>
+          <div className="mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-2 rounded-full border border-[#d8d8d8] bg-white p-1">
+            {["대표", "일반 직원", "전산/보안", "운영팀"].map((label, index) => (
+              <span
+                key={label}
+                className={index === 0 ? "rounded-full bg-[#f3f3f3] px-5 py-2 text-sm font-semibold" : "px-5 py-2 text-sm font-semibold text-[#5a6168]"}
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+          <div className="mx-auto mt-10 grid max-w-5xl gap-px overflow-hidden rounded-[8px] border border-[#d8d8d8] bg-[#d8d8d8] text-left md:grid-cols-2">
+            {fieldSignals.map((signal) => (
+              <p key={signal} className="bg-white p-6 text-[clamp(1.25rem,2vw,1.9rem)] font-medium leading-tight">
+                {signal}
+              </p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+        <div className="mx-auto max-w-[1320px]">
+          <h2 className="text-center text-[clamp(2.3rem,4.8vw,5rem)] font-semibold leading-[1] tracking-normal">
+            이어서 볼 페이지
+          </h2>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {resources.map((item) => (
+              <a key={item.href} href={item.href} className="group block">
+                <div className="overflow-hidden rounded-[8px] bg-[#f3f3f3]">
                   <Image
-                    src="/images/mobile-source-materials.png"
-                    alt="Mobile interface showing source materials."
+                    src={item.image}
+                    alt=""
                     width={720}
                     height={840}
-                    sizes="(min-width: 768px) 380px, 100vw"
-                    className="h-full min-h-[22rem] w-full object-cover"
+                    loading="eager"
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="aspect-[4/3] w-full object-cover transition duration-300 group-hover:scale-[1.03]"
                   />
-                </figure>
-              </section>
-
-              <section id="afternoon" className="scroll-mt-24 pt-8">
-                <SectionHeading eyebrow="02 / Afternoon" title="직원의 오후" />
-                <p className="text-lg leading-9 text-[#514c44]">
-                  직원은 살아남기 위해 배웁니다. 반복되는 고객 문의를 줄이고, 회의록을 정리하고, 견적서 초안을
-                  빠르게 만들고 싶습니다. 바이브코딩으로 만든 작은 도구는 처음에는 개인용이지만, 어느 순간 팀의
-                  일이 됩니다.
-                </p>
-                <p className="mt-6 text-lg leading-9 text-[#514c44]">
-                  그때부터 필요한 것은 더 빠른 제작만이 아닙니다. 이 답이 어떤 파일에서 왔는지, 누가 수정할 수
-                  있는지, 다음 달에도 같은 방식으로 돌아갈지 확인할 수 있어야 합니다.
-                </p>
-
-                <div className="my-12 border-y border-[#d6d0c7] py-7">
-                  <p className="text-sm font-semibold text-[#6d675f]">Example prompts</p>
-                  <div className="mt-5 grid gap-4">
-                    {promptExamples.map((item) => (
-                      <article key={item.label} className="rounded-[8px] border border-[#d6d0c7] bg-[#f7f4ee] p-5">
-                        <p className="text-sm font-semibold text-[#9b6b35]">{item.label}</p>
-                        <p className="mt-4 text-lg font-medium leading-7 text-[#171717]">“{item.prompt}”</p>
-                        <p className="mt-4 border-t border-[#d6d0c7] pt-4 text-base leading-7 text-[#5b554c]">
-                          {item.answer}
-                        </p>
-                      </article>
-                    ))}
-                  </div>
                 </div>
-              </section>
-
-              <section id="meeting" className="scroll-mt-24 pt-8">
-                <SectionHeading eyebrow="03 / Meeting" title="회의실의 언어" />
-                <p className="text-lg leading-9 text-[#514c44]">
-                  회의에서는 용어가 먼저 들어옵니다. RAG, 에이전트, 워크플로, MCP, 파인튜닝. 각자 들은 말은
-                  많지만 같은 장면을 보고 있지는 않습니다. 누군가는 속도를 말하고, 누군가는 보안을 말하고,
-                  누군가는 현업의 피로를 말합니다.
-                </p>
-                <p className="mt-6 text-lg leading-9 text-[#514c44]">
-                  MAEK의 페이지는 이 단어들을 더 멋지게 포장하는 대신, 회의실에서 실제로 생기는 질문으로
-                  내려놓아야 합니다.
-                </p>
-
-                <div className="my-12 overflow-x-auto rounded-[8px] border border-[#d6d0c7]">
-                  <table className="min-w-[760px] border-collapse bg-[#fffdf8] text-left text-sm">
-                    <thead className="bg-[#ebe4d8] text-[#3b3732]">
-                      <tr>
-                        <th className="w-[7rem] border-b border-[#d6d0c7] px-4 py-4 font-semibold">용어</th>
-                        <th className="border-b border-[#d6d0c7] px-4 py-4 font-semibold">회의실에서 들리는 말</th>
-                        <th className="border-b border-[#d6d0c7] px-4 py-4 font-semibold">현장의 질문</th>
-                        <th className="border-b border-[#d6d0c7] px-4 py-4 font-semibold">MAEK의 기준</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {glossaryRows.map((row) => (
-                        <tr key={row.term} className="border-b border-[#d6d0c7] last:border-b-0">
-                          <td className="px-4 py-4 font-mono font-semibold text-[#9b6b35]">{row.term}</td>
-                          <td className="px-4 py-4 leading-6 text-[#514c44]">{row.heard}</td>
-                          <td className="px-4 py-4 leading-6 text-[#514c44]">{row.question}</td>
-                          <td className="px-4 py-4 leading-6 text-[#514c44]">{row.maek}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-
-              <section id="night" className="scroll-mt-24 pt-8">
-                <SectionHeading eyebrow="04 / Night" title="밤의 질문" />
-                <p className="text-lg leading-9 text-[#514c44]">
-                  밤늦게 다시 묻습니다. 우리가 오늘 만든 것은 내일도 쓸 수 있을까. 직원이 만든 도구는 회사의
-                  자산이 될 수 있을까. 교육에서 배운 말들이 우리 자료와 연결될 수 있을까.
-                </p>
-                <p className="mt-6 text-lg leading-9 text-[#514c44]">
-                  위로는 “AI가 다 해줄 것”이라는 말에서 오지 않습니다. 어디서 왔는지 보이는 자료, 틀렸을 때
-                  멈출 수 있는 흐름, 사람이 판단을 놓치지 않는 인터페이스에서 옵니다. 이 페이지의 홈은 그
-                  감각을 먼저 전달해야 합니다.
-                </p>
-
-                <blockquote className="my-12 border-l-2 border-[#171717] pl-6 text-[clamp(1.8rem,3.8vw,3.6rem)] font-semibold leading-[1.1] text-[#171717]">
-                  복잡한 전환을 조금 덜 외롭게. 기능보다 먼저, 오늘의 일을 이해하는 페이지.
-                </blockquote>
-              </section>
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 py-14 sm:px-6 md:py-20 lg:px-8">
-          <div className="mx-auto max-w-[1320px]">
-            <div className="mb-8 flex flex-col gap-3 border-b border-[#d6d0c7] pb-6 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-sm font-semibold text-[#6d675f]">Keep reading</p>
-                <h2 className="mt-3 text-[clamp(2.2rem,4.2vw,4.6rem)] font-semibold leading-none tracking-normal">
-                  다음에 이어질 페이지들
-                </h2>
-              </div>
-              <a href="/stories" className="text-sm font-semibold text-[#514c44]">
-                MAEK Stories
+                <p className="mt-5 text-sm font-semibold text-[#0f766e]">{item.eyebrow}</p>
+                <h3 className="mt-2 text-2xl font-semibold leading-tight">{item.title}</h3>
               </a>
-            </div>
-
-            <div className="grid gap-px overflow-hidden rounded-[8px] border border-[#d6d0c7] bg-[#d6d0c7] md:grid-cols-3">
-              {relatedPages.map((page) => (
-                <a key={page.href} href={page.href} className="group bg-[#fffdf8]">
-                  <div className="aspect-[4/3] overflow-hidden bg-[#ebe4d8]">
-                    <Image
-                      src={page.image}
-                      alt=""
-                      width={720}
-                      height={840}
-                      loading="eager"
-                      sizes="(min-width: 768px) 33vw, 100vw"
-                      className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-                    />
-                  </div>
-                  <div className="p-5 md:p-6">
-                    <p className="text-sm font-semibold text-[#9b6b35]">{page.eyebrow}</p>
-                    <h3 className="mt-3 text-2xl font-semibold leading-tight text-[#171717]">{page.title}</h3>
-                  </div>
-                </a>
-              ))}
-            </div>
+            ))}
           </div>
-        </section>
-      </article>
+        </div>
+      </section>
 
-      <footer className="border-t border-[#d6d0c7] bg-[#f7f4ee] px-4 py-8 text-sm text-[#625c54] sm:px-6 lg:px-8">
+      <section className="px-4 pb-16 sm:px-6 md:pb-24 lg:px-8">
+        <div className="mx-auto max-w-[1180px] rounded-[8px] bg-[#f3f3f3] px-5 py-14 text-center sm:px-8 md:py-20">
+          <h2 className="text-[clamp(2.5rem,5vw,5.2rem)] font-semibold leading-[1] tracking-normal">
+            AI 전환의 불안을 업무 기준으로 바꾸기
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#5a6168]">
+            MAEK은 현장의 피로를 소설처럼 전시하지 않고, 반복되는 불편함을 회사가 운영할 수 있는 구조로 정리합니다.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <a
+              href="/system-flow"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#171717] px-5 text-sm font-semibold text-white transition hover:bg-[#27313a]"
+              style={{ color: "#ffffff" }}
+            >
+              시스템 흐름 보기
+              <ArrowIcon />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-[#e7e2d9] bg-white px-4 py-8 text-sm text-[#5f6470] sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <MaekLogo />
-          <p>AI 전환의 애환을 자료와 구조로 정리하는 MAEK 이야기.</p>
-          <a href="/system-flow" className="font-semibold text-[#171717]">
-            시스템 흐름 보기
+          <p>현장 상황, 반복 이슈, Needs, 운영 구조를 연결하는 MAEK 홈.</p>
+          <a href="/design-system" className="font-semibold text-[#171717]">
+            디자인 시스템
           </a>
         </div>
       </footer>
