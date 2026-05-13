@@ -14,20 +14,38 @@ type LocaleContextValue = {
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 const storageKey = "maek-locale";
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("ko");
-
-  useEffect(() => {
+function readStoredLocale(): Locale | null {
+  try {
     const storedLocale = window.localStorage.getItem(storageKey);
 
-    if (storedLocale === "en" || storedLocale === "ko") {
+    return storedLocale === "en" || storedLocale === "ko" ? storedLocale : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredLocale(locale: Locale) {
+  try {
+    window.localStorage.setItem(storageKey, locale);
+  } catch {
+    // Keep the visible language switch working even when storage is blocked.
+  }
+}
+
+export function LocaleProvider({ children }: { children: ReactNode }) {
+  const [locale, setLocaleState] = useState<Locale>("en");
+
+  useEffect(() => {
+    const storedLocale = readStoredLocale();
+
+    if (storedLocale) {
       setLocaleState(storedLocale);
     }
   }, []);
 
   const setLocale = useCallback((nextLocale: Locale) => {
     setLocaleState(nextLocale);
-    window.localStorage.setItem(storageKey, nextLocale);
+    writeStoredLocale(nextLocale);
     document.documentElement.lang = nextLocale;
   }, []);
 

@@ -7,7 +7,6 @@ import { MaekLogo } from "../components/MaekLogo";
 
 const stageMapCopy = {
   en: {
-    navHome: "Home",
     navSystemFlow: "System Flow",
     heroTitle: "Where is your company in the AI transition?",
     heroLead: "This change is not a vague future. It is a sequence already unfolding inside companies.",
@@ -108,7 +107,6 @@ const stageMapCopy = {
     ],
   },
   ko: {
-    navHome: "홈",
     navSystemFlow: "시스템 흐름",
     heroTitle: "당신 회사는 AI 전환의 어느 단계에 있습니까?",
     heroLead: "이 변화는 막연한 미래가 아니라 기업 안에서 이미 벌어지는 순서입니다.",
@@ -219,14 +217,12 @@ export function AiStageMapExperience() {
       <section className="border-b border-[#0a2a57]/12 px-4 py-5 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5">
           <MaekLogo />
-          <nav className="flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#10251a]/58" aria-label="Primary navigation">
-            <a href="/" className="transition hover:text-[#087a45]">
-              {copy.navHome}
-            </a>
-            <a href="/system-flow" className="transition hover:text-[#087a45]">
-              {copy.navSystemFlow}
-            </a>
-          </nav>
+          <a
+            href="/system-flow"
+            className="text-xs font-semibold uppercase tracking-[0.18em] text-[#10251a]/58 transition hover:text-[#087a45]"
+          >
+            {copy.navSystemFlow}
+          </a>
         </div>
       </section>
 
