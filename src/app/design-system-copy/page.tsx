@@ -116,7 +116,7 @@ export default function DesignSystemPage() {
       <header className="sticky top-0 z-20 border-b border-[#e7e2d9]/80 bg-white/92 px-4 py-4 backdrop-blur-md sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5">
           <MaekLogo />
-          <nav className="hidden items-center gap-7 text-[0.78rem] font-semibold text-[#171717]/72 md:flex">
+          <nav className="hidden">
             <a href="#references" className="transition hover:text-[#171717]">
               References
             </a>
@@ -129,7 +129,7 @@ export default function DesignSystemPage() {
           </nav>
           <a
             href="/system-flow"
-            className="rounded-full bg-[#171717] px-4 py-2 text-[0.78rem] font-semibold text-white transition hover:bg-[#27313a]"
+            className="hidden"
             style={{ color: "#ffffff" }}
           >
             System flow

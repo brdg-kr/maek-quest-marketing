@@ -43,49 +43,57 @@ const adoptionFriction = [
   },
 ];
 
-const colorTokens = [
-  ["Canvas", "#ffffff", "Page background"],
-  ["Soft canvas", "#f7f5f0", "Secondary surface"],
-  ["Ink", "#171717", "Primary text"],
-  ["Muted", "#5f6470", "Secondary text"],
-  ["Line", "#e7e2d9", "Hairline borders"],
-  ["Signal", "#0f766e", "Primary accent"],
-  ["Sage", "#edf4ef", "Quiet proof panels"],
-  ["Steel", "#edf3f4", "Technical diagrams"],
+const solutionAreas = [
+  ["보고서", "회의록과 자료를 넣으면 요약, 목차, 핵심 주장, 근거 문장을 함께 정리합니다."],
+  ["기획", "아이디어가 흐릿할 때 목표, 대상, 기능, 일정, 우선순위를 질문하며 기획안 형태로 바꿉니다."],
+  ["고객 대응", "자주 들어오는 문의를 상황별 답변 템플릿으로 만들고, 말투와 책임 범위를 맞춥니다."],
+  ["개발 요청", "footer, modal, API key처럼 낯선 단어가 나와도 수정 요청을 개발자가 이해할 문장으로 바꿉니다."],
+  ["운영 체크", "반복 업무를 체크리스트, 승인 흐름, 담당자 메모로 정리해 놓치는 일을 줄입니다."],
+  ["교육 자료", "부서별 수준에 맞춰 실습 예제, 용어 설명, 따라 해볼 과제를 작게 나눕니다."],
+  ["배포 준비", "도메인, 환경 변수, 저장소, 권한, 테스트 URL처럼 배포 전에 필요한 항목을 점검합니다."],
+  ["내부 확산", "잘 된 예시를 사내 템플릿으로 남기고, 다음 팀이 그대로 시작할 수 있게 만듭니다."],
 ];
 
-const components = [
+const supportTools = [
   {
-    title: "Hero",
-    body: "One message, centered. Use a date or context line above, one large headline, one plain lead, and one media asset below.",
+    title: "쉬운 용어집",
+    body: "header, footer, popup, modal, API, prompt 같은 단어를 업무 상황 안에서 바로 찾아볼 수 있게 정리합니다.",
   },
   {
-    title: "Media",
-    body: "Use actual product, workflow, or customer evidence. Keep it wide, unframed, and separated by generous whitespace.",
+    title: "그림 용어집",
+    body: "말로만 들으면 헷갈리는 흐름을 화면, 화살표, 전후 비교로 보여줘 비개발자도 맥락을 잡게 합니다.",
   },
   {
-    title: "Proof",
-    body: "Use logo rows, architecture diagrams, tables, quotes, and short tabs. Avoid stacked decorative cards.",
+    title: "업무 템플릿",
+    body: "보고서, 기획안, 고객 답변, 회의 정리, 개발 수정 요청을 바로 복사해 쓸 수 있는 형태로 제공합니다.",
   },
   {
-    title: "Story",
-    body: "Long-form sections can breathe. Pair paragraphs with images, prompt examples, and short pull quotes.",
+    title: "역방향 프롬프팅",
+    body: "내가 뭘 원하는지 설명하지 못할 때 AI가 목적, 대상, 제약, 결과물 형식을 먼저 물어보게 만듭니다.",
   },
 ];
 
-const prompts = [
+const promptExamples = [
   {
-    title: "Question",
-    text: "What evidence supports this answer, and where did it come from?",
+    title: "무엇을 만들지 모를 때",
+    text: "AI가 먼저 묻습니다. 누구를 위한 결과물인가요? 오늘 바로 필요한 건 초안인가요, 의사결정인가요, 실행 체크리스트인가요?",
   },
   {
-    title: "System answer",
-    text: "Show the source package, linked entities, exact passage, and workflow output in one traceable view.",
+    title: "용어가 막힐 때",
+    text: "AI가 단어를 설명하는 데서 멈추지 않고, 지금 화면에서 그 단어가 어디에 있고 무엇을 바꾸는지 함께 보여줍니다.",
   },
   {
-    title: "Design rule",
-    text: "Make the evidence visible before describing the interface.",
+    title: "배포가 어려울 때",
+    text: "AI가 회사의 도메인, 저장소, 보안 규칙, 승인 절차를 확인하고 지금 환경에서 가능한 배포 경로를 제안합니다.",
   },
+];
+
+const deploymentSteps = [
+  "먼저 회사가 이미 쓰는 도구를 확인합니다: GitHub, Vercel, Cloudflare, 사내 서버, 도메인, 계정 권한.",
+  "테스트 URL을 만들고, 실제 화면에서 깨지는 지점과 수정해야 할 문구를 함께 점검합니다.",
+  "환경 변수, API key, 이미지, sitemap, 검색 등록 파일처럼 배포에서 자주 막히는 항목을 체크합니다.",
+  "대표님과 실무자가 같은 화면을 보며 승인할 수 있도록 변경 내역과 확인 기준을 짧게 남깁니다.",
+  "배포 후에도 수정, 롤백, 검색 등록, 내부 공유까지 이어지는 운영 절차를 정리합니다.",
 ];
 
 const principles = [
@@ -121,20 +129,20 @@ export default function DesignSystemPage() {
       <header className="sticky top-0 z-20 border-b border-[#e7e2d9]/80 bg-white/92 px-4 py-4 backdrop-blur-md sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5">
           <MaekLogo />
-          <nav className="hidden items-center gap-7 text-[0.78rem] font-semibold text-[#171717]/72 md:flex">
+          <nav className="hidden">
             <a href="#references" className="transition hover:text-[#171717]">
-              References
+              Context
             </a>
             <a href="#tokens" className="transition hover:text-[#171717]">
-              Tokens
+              Examples
             </a>
             <a href="#components" className="transition hover:text-[#171717]">
-              Components
+              Toolkit
             </a>
           </nav>
           <a
             href="/system-flow"
-            className="rounded-full bg-[#171717] px-4 py-2 text-[0.78rem] font-semibold text-white transition hover:bg-[#27313a]"
+            className="hidden"
             style={{ color: "#ffffff" }}
           >
             System flow
@@ -161,13 +169,13 @@ export default function DesignSystemPage() {
                 className="rounded-full bg-[#171717] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#27313a]"
                 style={{ color: "#ffffff" }}
               >
-                View tokens
+                사례 보기
               </a>
               <a
                 href="#references"
                 className="rounded-full bg-[#f7f5f0] px-5 py-3 text-sm font-semibold text-[#171717] transition hover:bg-[#eee9df]"
               >
-                Reference signals
+                전환 맥락
               </a>
             </div>
           </div>
@@ -216,23 +224,25 @@ export default function DesignSystemPage() {
       <section id="tokens" className="bg-[#f7f5f0] px-4 py-14 sm:px-6 md:py-20 lg:px-8">
         <div className="mx-auto max-w-[1440px]">
           <div className="mx-auto max-w-[820px] text-center">
-            <SectionLabel>Design tokens</SectionLabel>
+            <SectionLabel>What teams can build</SectionLabel>
             <h2 className="mt-5 text-[clamp(2rem,2.8vw,3rem)] font-semibold leading-[1.08] tracking-normal">
-              White space first. Color second.
+              작은 사례를 많이 보면서 감을 잡습니다.
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#5a6168]">
-              The system should feel editorial and inspectable: black text, calm signal color, thin borders,
-              and only enough UI chrome to support the story.
+              AI를 어디에 써야 할지 모를 때는 거창한 전략보다 바로 눈앞의 예시가 먼저 필요합니다.
+              보고서, 기획, 고객 대응, 개발 요청, 배포까지 실제 업무 단위로 쪼개 보여줍니다.
             </p>
           </div>
 
           <div className="mt-12 grid gap-px overflow-hidden rounded-[8px] border border-[#e7e2d9] bg-[#e7e2d9] sm:grid-cols-2 lg:grid-cols-4">
-            {colorTokens.map(([name, value, use]) => (
+            {solutionAreas.map(([name, body], index) => (
               <div key={name} className="bg-white p-5">
-                <span className="block h-14 w-14 rounded-[8px] border border-[#e7e2d9]" style={{ backgroundColor: value }} />
+                <span className="grid h-10 w-10 place-items-center rounded-[8px] border border-[#e7e2d9] bg-[#f7f5f0] font-mono text-xs text-[#0f766e]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
                 <p className="mt-5 font-semibold">{name}</p>
-                <p className="mt-1 font-mono text-xs text-[#5f6470]">
-                  {value} / {use}
+                <p className="mt-2 text-sm leading-6 text-[#5f6470]">
+                  {body}
                 </p>
               </div>
             ))}
@@ -241,18 +251,18 @@ export default function DesignSystemPage() {
           <div className="mx-auto mt-16 grid max-w-5xl gap-6 border-t border-[#e7e2d9] pt-8 lg:grid-cols-[minmax(0,0.44fr)_minmax(0,0.56fr)]">
             <div>
               <p className="text-[clamp(1.9rem,2.8vw,3rem)] font-semibold leading-[1.08] tracking-normal">
-                Use type as the visual system.
+                모르는 단어를 넘기지 않게 합니다.
               </p>
             </div>
             <div className="grid gap-4 text-[#4f555b]">
-              <p className="text-xl font-semibold leading-tight text-[#171717]">Scale</p>
+              <p className="text-xl font-semibold leading-tight text-[#171717]">Living glossary</p>
               <p className="text-base leading-7">
-                Hero headlines now use a lower viewport multiplier and a 5rem cap. Section titles use a smaller
-                cap so the rhythm stays closer to OpenAI Careers than to a poster layout.
+                용어집은 사전처럼 멀리 떨어져 있으면 잘 쓰이지 않습니다. 직원이 막히는 순간 바로 찾고,
+                지금 보고 있는 화면과 연결해서 이해할 수 있어야 합니다.
               </p>
               <p className="text-base leading-7">
-                Body copy should use high line-height and narrow measure. Do not explain the UI in the UI;
-                let the evidence, media, and component shape carry meaning.
+                그래서 footer, header, popup, modal, API key, Next.js 같은 기본 단어를 짧은 설명,
+                그림, 실제 수정 사례와 함께 보여주는 방식이 필요합니다.
               </p>
             </div>
           </div>
@@ -263,19 +273,19 @@ export default function DesignSystemPage() {
         <div className="mx-auto max-w-[1440px]">
           <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
-              <SectionLabel>Component System</SectionLabel>
+              <SectionLabel>Support toolkit</SectionLabel>
               <h2 className="mt-4 max-w-4xl text-[clamp(2rem,2.8vw,3rem)] font-semibold leading-[1.08] tracking-normal">
-                Components that prove, not decorate.
+                설명보다 바로 써볼 수 있는 도구가 필요합니다.
               </h2>
             </div>
             <p className="max-w-xl text-base leading-7 text-[#5a6168] md:text-right">
-              Each component must answer one evidence question: what happened, what supports it, who trusts it,
-              or what action follows.
+              교육 자료만 쌓이면 다시 막막해집니다. 용어, 그림, 템플릿, 질문 흐름을 한 화면에서 연결해
+              다음 행동으로 넘어가게 만듭니다.
             </p>
           </div>
 
           <div className="grid gap-px overflow-hidden rounded-[8px] border border-[#e7e2d9] bg-[#e7e2d9] md:grid-cols-4">
-            {components.map((item) => (
+            {supportTools.map((item) => (
               <article key={item.title} className="bg-[#f7f5f0] p-6">
                 <h3 className="text-xl font-semibold leading-tight">{item.title}</h3>
                 <p className="mt-5 text-sm leading-6 text-[#5a6168]">{item.body}</p>
@@ -294,12 +304,12 @@ export default function DesignSystemPage() {
                 className="h-auto w-full"
               />
               <figcaption className="border-t border-[#e7e2d9] px-5 py-4 text-sm text-[#5f6470]">
-                Media block: a real workflow asset, not a decorative illustration.
+                그림으로 보는 용어집: 데이터, 화면, 질문, 결과물이 어떻게 이어지는지 한 장에서 확인합니다.
               </figcaption>
             </figure>
 
             <div className="grid gap-3">
-              {prompts.map((item) => (
+              {promptExamples.map((item) => (
                 <article key={item.title} className="rounded-[8px] border border-[#e7e2d9] bg-white p-5">
                   <p className="text-sm font-semibold text-[#0f766e]">{item.title}</p>
                   <p className="mt-3 text-base leading-7 text-[#27313a]">{item.text}</p>
@@ -314,19 +324,14 @@ export default function DesignSystemPage() {
         <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[minmax(0,0.44fr)_minmax(0,0.56fr)]">
           <div>
             <p className="text-[0.72rem] font-semibold uppercase leading-none tracking-[0.18em] text-white/58">
-              Page Template
+              Deployment support
             </p>
             <h2 className="mt-4 text-[clamp(2rem,2.8vw,3rem)] font-semibold leading-[1.08] tracking-normal">
-              Build pages as evidence essays.
+              회사 환경에 맞게 끝까지 올리는 절차.
             </h2>
           </div>
           <ol className="grid gap-px overflow-hidden rounded-[8px] border border-white/18 bg-white/18">
-            {[
-              "Start with one clear thesis and one real media object.",
-              "Move into a proof section: customer logos, architecture, table, or tabs.",
-              "Use prompt-response cards only where they reveal actual workflow behavior.",
-              "End with one focused action, not a generic feature grid.",
-            ].map((item, index) => (
+            {deploymentSteps.map((item, index) => (
               <li key={item} className="grid grid-cols-[4rem_minmax(0,1fr)] bg-[#171717]">
                 <span className="border-r border-white/18 p-5 font-mono text-sm text-[#5eead4]">
                   {String(index + 1).padStart(2, "0")}

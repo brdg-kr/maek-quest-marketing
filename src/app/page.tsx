@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { StoryHomeExperience } from "./StoryHomeExperience";
+import { AiStageMapExperience } from "./ai-stage-map/AiStageMapExperience";
 
 export const metadata: Metadata = {
-  title: "AI Transition Stories",
+  title: "Where is your company in the AI transition?",
   description:
-    "A softer MAEK home about the human strain of AI transition, vibe coding, late-night learning, and turning company materials into a grounded structure.",
+    "A stage map for diagnosing AI adoption pressure, vibe coding growth, data connection bottlenecks, and MAEK's transition structure.",
   alternates: {
     canonical: "/",
   },
 };
 
 export default function Home() {
-  return <StoryHomeExperience />;
+  return <AiStageMapExperience />;
 }
