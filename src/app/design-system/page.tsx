@@ -6,7 +6,7 @@ import { TopNavigation } from "../components/TopNavigation";
 export const metadata: Metadata = {
   title: "Editorial Intelligence Design System",
   description:
-    "A MAEK subpage defining an editorial, OpenAI-reference-informed design system for explaining evidence intelligence.",
+    "A MAEK design system page for source-grounded AI screens, evidence-first communication, and practical enterprise AI workflows.",
   alternates: {
     canonical: "/design-system",
   },
@@ -99,19 +99,19 @@ const deploymentSteps = [
 
 const principles = [
   {
-    title: "People before tools.",
+    title: "도구보다 사람의 판단",
     body: "AI 전환의 시작점은 기술이 아니라 사람입니다. 직원들은 낯선 프롬프트와 바이브코딩 사이에서 매일 새로운 방식을 익히고, 리더는 뒤처지지 않기 위해 빠르게 판단해야 합니다. 우리는 조직 구성원이 불안이 아니라 이해를 바탕으로 AI를 사용할 수 있도록 돕습니다.",
   },
   {
-    title: "Make AI practical.",
+    title: "데모보다 실제 업무",
     body: "AI는 멋진 데모보다 실제 업무에서 작동해야 합니다. 보고서, 기획, 개발, 고객 대응, 운영 업무처럼 반복되는 일 속에서 AI가 어디에 도움이 되는지 찾고, 바로 사용할 수 있는 워크플로우로 바꿉니다.",
   },
   {
-    title: "Align leaders and teams.",
+    title: "리더와 팀의 기준 정렬",
     body: "CEO는 방향을 고민하고, 실무자는 기준을 묻습니다. AI를 어디까지 도입할지, 어떤 결과물을 신뢰할지, 누가 검토하고 책임질지를 함께 정리해야 조직이 같은 속도로 움직일 수 있습니다.",
   },
   {
-    title: "Build calm momentum.",
+    title: "작게 검증하고 확장",
     body: "AI 변화는 너무 빠르고, 정보는 너무 많습니다. 우리는 조직이 유행을 따라가기보다 필요한 것부터 작게 시작하고, 검증하고, 확장할 수 있도록 돕습니다. 빠르지만 무리하지 않고, 신중하지만 멈추지 않는 전환을 만듭니다.",
   },
 ];
@@ -138,28 +138,36 @@ export default function DesignSystemPage() {
         <div className="mx-auto max-w-[1440px]">
           <div className="mx-auto max-w-[880px] text-center">
             <p className="text-[0.78rem] font-semibold text-[#5f6470]">
-              Design system
+              MAEK 디자인 시스템
             </p>
-            <h1 className="mt-7 text-[clamp(3rem,4.4vw,5rem)] font-semibold leading-[1.02] tracking-normal">
-              Design systems that make evidence easier to trust.
+            <h1
+              className="mt-7 text-[clamp(2.05rem,8.8vw,5rem)] font-semibold leading-[1.02] tracking-normal md:text-[clamp(3rem,4.4vw,5rem)]"
+              aria-label="근거를 보여주고 판단을 돕는 화면 언어."
+            >
+              <span aria-hidden="true" className="block">
+                근거를 보여주고
+              </span>
+              <span aria-hidden="true" className="block">
+                판단을 돕는 화면 언어.
+              </span>
             </h1>
             <p className="mx-auto mt-7 max-w-2xl text-[clamp(1rem,1.25vw,1.18rem)] leading-8 text-[#4f555b]">
-              MAEK pages should feel like evidence essays: restrained, readable, and built around source material
-              people can inspect.
+              MAEK의 화면은 AI가 만든 답을 포장하기보다 원천 자료, 맥락, 검증 기준을 함께 보여줍니다.
+              사용자는 결과를 믿기 전에 그것이 어디서 왔고 어떤 업무 판단에 쓸 수 있는지 확인할 수 있어야 합니다.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <a
-                href="#tokens"
+                href="#references"
                 className="rounded-full bg-[#171717] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#27313a]"
                 style={{ color: "#ffffff" }}
               >
-                사례 보기
+                핵심 원칙 보기
               </a>
               <a
-                href="#references"
+                href="#tokens"
                 className="rounded-full bg-[#f7f5f0] px-5 py-3 text-sm font-semibold text-[#171717] transition hover:bg-[#eee9df]"
               >
-                전환 맥락
+                업무 사례 보기
               </a>
             </div>
           </div>
@@ -169,17 +177,18 @@ export default function DesignSystemPage() {
       <section id="references" className="border-t border-[#e7e2d9] bg-white px-4 py-14 sm:px-6 md:py-20 lg:px-8">
         <div className="mx-auto max-w-[1120px]">
           <div className="mx-auto max-w-[820px] text-center">
-            <SectionLabel>Reference method</SectionLabel>
+            <SectionLabel>핵심 원칙</SectionLabel>
             <h2 className="mt-5 text-[clamp(2rem,2.8vw,3rem)] font-semibold leading-[1.08] tracking-normal">
-              AI pages need restraint, proof, and room for context.
+              AI 화면은 답보다 먼저 근거와 책임 범위를 보여줘야 합니다.
             </h2>
           </div>
 
           <div className="mx-auto mt-14 max-w-[860px] text-lg leading-8 text-[#171717]">
             <p>
-              <strong>AI Transformation:</strong> 우리는 AI 도입을 단순히 새로운 도구를 배우는 일이 아니라, 조직이 더
-              빠른 변화 속에서도 흔들리지 않고 일하는 방식을 다시 정리하는 과정으로 봅니다. AI가 복잡해질수록
-              중요한 것은 더 많은 용어를 아는 것이 아니라, 우리 조직에 맞는 기준과 실행 방식을 갖추는 것입니다.
+              <strong>MAEK의 디자인 기준:</strong> AI 결과는 그 자체로 완성된 답이 아닙니다. 사용자가 원천 자료,
+              판단 맥락, 권한, 다음 행동을 함께 확인할 수 있을 때 업무에 들어갈 수 있습니다. 그래서 MAEK의
+              디자인 시스템은 장식보다 읽기 쉬운 구조, 넓은 여백보다 명확한 근거, 기능 소개보다 실제 실행 흐름을
+              우선합니다.
             </p>
             <ul className="mx-auto mt-8 max-w-[800px] list-disc space-y-5 pl-6 marker:text-[#171717] sm:-translate-x-3">
               {principles.map((item) => (
