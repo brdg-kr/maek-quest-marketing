@@ -4,6 +4,7 @@ import Image from "next/image";
 import { LanguageToggle } from "../components/LanguageToggle";
 import { useLocale } from "../components/LocaleProvider";
 import { MaekLogo } from "../components/MaekLogo";
+import { TopNavigation } from "../components/TopNavigation";
 
 const stageMapCopy = {
   en: {
@@ -215,14 +216,9 @@ export function AiStageMapExperience() {
   return (
     <main className="min-h-screen bg-[#f7f8f4] text-[#07100c]">
       <section className="border-b border-[#0a2a57]/12 px-4 py-5 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5">
+        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-x-5 gap-y-3">
           <MaekLogo />
-          <a
-            href="/system-flow"
-            className="text-xs font-semibold uppercase tracking-[0.18em] text-[#10251a]/58 transition hover:text-[#087a45]"
-          >
-            {copy.navSystemFlow}
-          </a>
+          <TopNavigation current="stage-map" />
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { MaekLogo } from "../components/MaekLogo";
+import { TopNavigation } from "../components/TopNavigation";
 
 export const metadata: Metadata = {
   title: "Editorial Intelligence Design System Copy",
@@ -114,26 +115,9 @@ export default function DesignSystemPage() {
   return (
     <main className="min-h-screen bg-white text-[#171717]">
       <header className="sticky top-0 z-20 border-b border-[#e7e2d9]/80 bg-white/92 px-4 py-4 backdrop-blur-md sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5">
+        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-x-5 gap-y-3">
           <MaekLogo />
-          <nav className="hidden">
-            <a href="#references" className="transition hover:text-[#171717]">
-              References
-            </a>
-            <a href="#tokens" className="transition hover:text-[#171717]">
-              Tokens
-            </a>
-            <a href="#components" className="transition hover:text-[#171717]">
-              Components
-            </a>
-          </nav>
-          <a
-            href="/system-flow"
-            className="hidden"
-            style={{ color: "#ffffff" }}
-          >
-            System flow
-          </a>
+          <TopNavigation current="design-system-copy" variant="neutral" />
         </div>
       </header>
 

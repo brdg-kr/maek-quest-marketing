@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { MaekLogo } from "./components/MaekLogo";
+import { TopNavigation } from "./components/TopNavigation";
 
 const deploymentSteps = [
   {
@@ -102,19 +103,9 @@ export function StoryHomeExperience() {
   return (
     <main className="min-h-screen bg-white text-[#171717]">
       <header className="sticky top-0 z-20 border-b border-[#e7e2d9] bg-white/92 px-4 py-4 backdrop-blur-md sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5">
+        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-x-5 gap-y-3">
           <MaekLogo />
-          <nav className="hidden items-center gap-7 text-sm font-medium text-[#4f555b] md:flex">
-            <a href="/stories" className="transition hover:text-[#171717]">
-              Stories
-            </a>
-            <a href="/design-system" className="transition hover:text-[#171717]">
-              Design system
-            </a>
-            <a href="/system-flow" className="transition hover:text-[#171717]">
-              System flow
-            </a>
-          </nav>
+          <TopNavigation current="stories" includeStories variant="neutral" />
           <a
             href="/system-flow"
             className="inline-flex min-h-10 items-center rounded-full bg-[#171717] px-4 text-sm font-semibold text-white transition hover:bg-[#27313a]"

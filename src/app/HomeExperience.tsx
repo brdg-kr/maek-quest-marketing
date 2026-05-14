@@ -6,6 +6,7 @@ import type { CSSProperties, PointerEvent, ReactNode } from "react";
 import { LanguageToggle } from "./components/LanguageToggle";
 import { useLocale } from "./components/LocaleProvider";
 import { MaekLogo } from "./components/MaekLogo";
+import { TopNavigation } from "./components/TopNavigation";
 
 type Hotspot = {
   id: string;
@@ -491,13 +492,9 @@ export function HomeExperience() {
     <main className="min-h-screen overflow-hidden bg-white text-[#07100c]">
       <section aria-labelledby="page-five-title" className="relative isolate px-4 py-5 sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4">
-          <header className="flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#10251a]/58">
+          <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
             <MaekLogo />
-            <nav className="flex items-center gap-4 text-right" aria-label="Primary navigation">
-              <a href="/" className="transition hover:text-[#087a45]">
-                {copy.navStageMap}
-              </a>
-            </nav>
+            <TopNavigation current="system-flow" />
           </header>
 
           <div className="md:hidden">
