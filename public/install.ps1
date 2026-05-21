@@ -26,7 +26,12 @@ function Get-CurrentScriptRoot {
 }
 
 function Download-Installer([string]$Url, [string]$Name) {
-  $target = Join-Path ([System.IO.Path]::GetTempPath()) ("maek-$Name-" + [guid]::NewGuid())
+  $extension = [System.IO.Path]::GetExtension($Name)
+  $baseName = [System.IO.Path]::GetFileNameWithoutExtension($Name)
+  if (-not $baseName) {
+    $baseName = "installer"
+  }
+  $target = Join-Path ([System.IO.Path]::GetTempPath()) ("maek-$baseName-" + [guid]::NewGuid() + $extension)
   Invoke-WebRequest -UseBasicParsing -Uri $Url -OutFile $target
   $target
 }
