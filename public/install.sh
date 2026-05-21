@@ -67,9 +67,15 @@ translate_windows_args() {
     case "$1" in
       --prefix) out+=("-Prefix" "$2"); shift 2 ;;
       --install-method|--method) out+=("-InstallMethod" "$2"); shift 2 ;;
+      --release) out+=("-InstallMethod" "release"); shift ;;
       --git|--github) out+=("-InstallMethod" "git"); shift ;;
       --npm) out+=("-InstallMethod" "npm"); shift ;;
       --version) out+=("-Version" "$2"); shift 2 ;;
+      --release-url) out+=("-ReleaseUrl" "$2"); shift 2 ;;
+      --release-sha256) out+=("-ReleaseSha256" "$2"); shift 2 ;;
+      --release-sha256-url) out+=("-ReleaseSha256Url" "$2"); shift 2 ;;
+      --release-base-url) out+=("-ReleaseBaseUrl" "$2"); shift 2 ;;
+      --release-manifest-url) out+=("-ReleaseManifestUrl" "$2"); shift 2 ;;
       --node-version) out+=("-NodeVersion" "$2"); shift 2 ;;
       --bun-version) out+=("-BunVersion" "$2"); shift 2 ;;
       --python-version) out+=("-PythonVersion" "$2"); shift 2 ;;
@@ -79,6 +85,12 @@ translate_windows_args() {
       --api-url) out+=("-ApiUrl" "$2"); shift 2 ;;
       --gbrain-url) out+=("-GbrainUrl" "$2"); shift 2 ;;
       --gbrain-ref) out+=("-GbrainRef" "$2"); shift 2 ;;
+      --api-host|--host) out+=("-ApiHost" "$2"); shift 2 ;;
+      --api-port|--port) out+=("-ApiPort" "$2"); shift 2 ;;
+      --lan-access) out+=("-LanAccess"); shift ;;
+      --public-access) out+=("-PublicAccess"); shift ;;
+      --open-firewall) out+=("-OpenFirewall"); shift ;;
+      --firewall-remote-address) out+=("-FirewallRemoteAddress" "$2"); shift 2 ;;
       --skip-api-venv) out+=("-SkipApiVenv"); shift ;;
       --skip-gbrain-deps) out+=("-SkipGbrainDeps"); shift ;;
       --skip-postgres) out+=("-SkipPostgres"); shift ;;

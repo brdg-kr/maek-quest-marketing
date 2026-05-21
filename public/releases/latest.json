@@ -1,0 +1,21 @@
+{
+    "version":  "0.1.0",
+    "artifact":  "maek-brain-v0.1.0.zip",
+    "url":  "https://maek.quest/releases/maek-brain-v0.1.0.zip",
+    "sha256":  "cab552bbf64a5024b735a1a9f9f734fd7f670cefeef67135a427bafff1fbc889",
+    "sha256Url":  "https://maek.quest/releases/maek-brain-v0.1.0.zip.sha256",
+    "createdAt":  "2026-05-21T06:48:03Z",
+    "contents":  {
+                     "brain":  "maek-brain/",
+                     "api":  "maek-brain-api/",
+                     "gbrain":  "maek-brain/gbrain-src/"
+                 },
+    "sources":  {
+                    "brainCommit":  "35875c0",
+                    "brainDirty":  true,
+                    "apiCommit":  "eb2441b",
+                    "apiDirty":  true,
+                    "gbrainCommit":  "772253ef",
+                    "gbrainDirty":  false
+                }
+}

@@ -29,8 +29,13 @@ NODE_VERSION="${MAEK_NODE_VERSION:-22.22.0}"
 BUN_VERSION="${MAEK_BUN_VERSION:-1.3.14}"
 PYTHON_VERSION="${MAEK_PYTHON_VERSION:-3.12.13}"
 PYTHON_BUILD_TAG="${MAEK_PYTHON_BUILD_TAG:-20260510}"
-INSTALL_METHOD="${MAEK_INSTALL_METHOD:-git}"
+INSTALL_METHOD="${MAEK_INSTALL_METHOD:-release}"
 MAEK_VERSION="${MAEK_VERSION:-main}"
+MAEK_RELEASE_BASE_URL="${MAEK_RELEASE_BASE_URL:-https://maek.quest/releases}"
+MAEK_RELEASE_MANIFEST_URL="${MAEK_RELEASE_MANIFEST_URL:-${MAEK_RELEASE_BASE_URL}/latest.json}"
+MAEK_RELEASE_URL="${MAEK_RELEASE_URL:-}"
+MAEK_RELEASE_SHA256="${MAEK_RELEASE_SHA256:-}"
+MAEK_RELEASE_SHA256_URL="${MAEK_RELEASE_SHA256_URL:-}"
 MAEK_BRAIN_GIT_URL="${MAEK_BRAIN_GIT_URL:-https://github.com/brdg-kr/maek-brain.git}"
 MAEK_BRAIN_API_GIT_URL="${MAEK_BRAIN_API_GIT_URL:-https://github.com/brdg-kr/maek-brain-api.git}"
 GBRAIN_GIT_URL="${GBRAIN_GIT_URL:-https://github.com/garrytan/gbrain.git}"
@@ -44,6 +49,11 @@ GIT_UPDATE="${MAEK_GIT_UPDATE:-1}"
 NPM_LOGLEVEL="${MAEK_NPM_LOGLEVEL:-error}"
 SETUP_API_VENV="${MAEK_SETUP_API_VENV:-1}"
 SETUP_GBRAIN_DEPS="${MAEK_SETUP_GBRAIN_DEPS:-1}"
+API_HOST="${MAEK_API_HOST:-}"
+API_PORT="${MAEK_API_PORT:-}"
+PUBLIC_ACCESS="${MAEK_LAN_ACCESS:-${MAEK_PUBLIC_ACCESS:-0}}"
+OPEN_FIREWALL="${MAEK_OPEN_FIREWALL:-}"
+FIREWALL_REMOTE_ADDRESS="${MAEK_FIREWALL_REMOTE_ADDRESS:-local-subnet}"
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" 2>/dev/null && pwd || true)"
 LOCAL_BRAIN_SOURCE=""
@@ -60,10 +70,17 @@ print_usage() {
 Usage: install-cli.sh [options]
   --json                         Emit NDJSON events
   --prefix <path>                Install prefix (default: ~/.maek-brain)
-  --install-method git|npm       Install from GitHub repos (default) or npm
+  --install-method release|git|npm
+                                 Install from release package (default), GitHub repos, or npm
+  --release                      Shortcut for --install-method release
   --git                          Shortcut for --install-method git
   --npm                          Shortcut for --install-method npm
-  --version <ref|tag|version>    Git ref or npm version (default: main)
+  --version <ref|tag|version>    Release version, Git ref, or npm version (default: main/latest)
+  --release-url <url>            Direct release ZIP URL
+  --release-sha256 <sha256>      Direct release ZIP checksum
+  --release-sha256-url <url>     Direct release checksum URL
+  --release-base-url <url>       Release base URL (default: https://maek.quest/releases)
+  --release-manifest-url <url>   Release manifest URL (default: <base>/latest.json)
   --node-version <version>       Node version (default: 22.22.0)
   --bun-version <version>        Bun version (default: 1.3.14)
   --python-version <version>     Python version (default: 3.12.13)
@@ -71,6 +88,13 @@ Usage: install-cli.sh [options]
   --api-url <url>                maek-brain-api git URL
   --gbrain-url <url>             gbrain git URL
   --gbrain-ref <ref>             gbrain ref (default: master)
+  --api-host <host>              API/Admin/MCP bind host passed to onboarding
+  --api-port <port>              API/Admin/MCP port passed to onboarding
+  --lan-access                   Bind API/Admin/MCP to 0.0.0.0 and open LAN firewall when possible
+  --public-access                Alias for --lan-access
+  --open-firewall                Open or print an OS firewall rule for the API port
+  --firewall-remote-address <cidr>
+                                 Source range for firewall rule (default: local-subnet)
   --no-git-update                Do not pull existing git checkouts
   --skip-api-venv                Do not create/update maek-brain-api .venv
   --skip-gbrain-deps             Do not install gbrain-src Bun dependencies
@@ -151,9 +175,15 @@ parse_args() {
       --json) JSON=1; shift ;;
       --prefix) PREFIX="$2"; shift 2 ;;
       --install-method|--method) INSTALL_METHOD="$2"; shift 2 ;;
+      --release) INSTALL_METHOD="release"; shift ;;
       --git|--github) INSTALL_METHOD="git"; shift ;;
       --npm) INSTALL_METHOD="npm"; shift ;;
       --version) MAEK_VERSION="$2"; shift 2 ;;
+      --release-url) MAEK_RELEASE_URL="$2"; shift 2 ;;
+      --release-sha256) MAEK_RELEASE_SHA256="$2"; shift 2 ;;
+      --release-sha256-url) MAEK_RELEASE_SHA256_URL="$2"; shift 2 ;;
+      --release-base-url) MAEK_RELEASE_BASE_URL="${2%/}"; MAEK_RELEASE_MANIFEST_URL="${MAEK_RELEASE_BASE_URL}/latest.json"; shift 2 ;;
+      --release-manifest-url) MAEK_RELEASE_MANIFEST_URL="$2"; shift 2 ;;
       --node-version) NODE_VERSION="$2"; shift 2 ;;
       --bun-version) BUN_VERSION="$2"; shift 2 ;;
       --python-version) PYTHON_VERSION="$2"; shift 2 ;;
@@ -161,6 +191,12 @@ parse_args() {
       --api-url) MAEK_BRAIN_API_GIT_URL="$2"; shift 2 ;;
       --gbrain-url) GBRAIN_GIT_URL="$2"; shift 2 ;;
       --gbrain-ref) GBRAIN_REF="$2"; shift 2 ;;
+      --api-host|--host) API_HOST="$2"; shift 2 ;;
+      --api-port|--port) API_PORT="$2"; shift 2 ;;
+      --lan-access|--public-access) PUBLIC_ACCESS=1; OPEN_FIREWALL=1; shift ;;
+      --open-firewall) OPEN_FIREWALL=1; shift ;;
+      --no-open-firewall) OPEN_FIREWALL=0; shift ;;
+      --firewall-remote-address) FIREWALL_REMOTE_ADDRESS="$2"; shift 2 ;;
       --no-git-update) GIT_UPDATE=0; shift ;;
       --skip-api-venv) SETUP_API_VENV=0; shift ;;
       --skip-gbrain-deps) SETUP_GBRAIN_DEPS=0; shift ;;
@@ -172,6 +208,22 @@ parse_args() {
       *) fail "Unknown option: $1" ;;
     esac
   done
+}
+
+prepare_network_options() {
+  if [[ "$PUBLIC_ACCESS" == "1" && -z "$API_HOST" ]]; then
+    API_HOST="0.0.0.0"
+  fi
+  if [[ -z "$OPEN_FIREWALL" ]]; then
+    if [[ "$PUBLIC_ACCESS" == "1" ]]; then
+      OPEN_FIREWALL=1
+    else
+      OPEN_FIREWALL=0
+    fi
+  fi
+  if [[ -n "$API_PORT" && ! "$API_PORT" =~ ^[0-9]+$ ]]; then
+    fail "Invalid API port: ${API_PORT}"
+  fi
 }
 
 os_detect() {
@@ -575,6 +627,90 @@ install_from_npm() {
   emit_json "{\"event\":\"step\",\"name\":\"maek-brain\",\"status\":\"ok\",\"method\":\"npm\"}"
 }
 
+resolve_release_package() {
+  local requested version sha_url sha_file manifest_file
+  requested="$MAEK_VERSION"
+  if [[ -n "$MAEK_RELEASE_URL" ]]; then
+    printf '%s\t%s\n' "$MAEK_RELEASE_URL" "$MAEK_RELEASE_SHA256"
+    return
+  fi
+
+  if [[ "$requested" == "main" || "$requested" == "master" || "$requested" == "latest" ]]; then
+    manifest_file="$(mktemp)"
+    download_file "$MAEK_RELEASE_MANIFEST_URL" "$manifest_file"
+    "$(node_bin)" - "$manifest_file" <<'JS'
+const fs = require("node:fs");
+const manifest = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+const url = manifest.url || manifest.zipUrl || manifest.artifactUrl;
+const sha256 = manifest.sha256 || "";
+if (!url) {
+  throw new Error("Release manifest is missing url");
+}
+process.stdout.write(`${url}\t${sha256}\n`);
+JS
+    rm -f "$manifest_file"
+    return
+  fi
+
+  version="${requested#v}"
+  printf '%s\t%s\n' "${MAEK_RELEASE_BASE_URL}/maek-brain-v${version}.zip" "$MAEK_RELEASE_SHA256"
+}
+
+find_release_root() {
+  local extract_dir="$1"
+  local child
+  if [[ -d "${extract_dir}/maek-brain" && -d "${extract_dir}/maek-brain-api" ]]; then
+    echo "$extract_dir"
+    return
+  fi
+  while IFS= read -r child; do
+    if [[ -d "${child}/maek-brain" && -d "${child}/maek-brain-api" ]]; then
+      echo "$child"
+      return
+    fi
+  done < <(find "$extract_dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+  fail "Release package must contain maek-brain/ and maek-brain-api/"
+}
+
+install_from_release() {
+  emit_json "{\"event\":\"step\",\"name\":\"maek-brain\",\"status\":\"start\",\"method\":\"release\",\"version\":\"${MAEK_VERSION}\"}"
+  local release_url release_sha archive sha_file actual expected tmp extract_dir root app_dir
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    log "Would download and install MAEK Brain release package from ${MAEK_RELEASE_URL:-${MAEK_RELEASE_MANIFEST_URL}}"
+    emit_json '{"event":"step","name":"maek-brain","status":"ok","method":"release","dryRun":true}'
+    return
+  fi
+
+  IFS=$'\t' read -r release_url release_sha < <(resolve_release_package)
+  [[ -n "$release_url" ]] || fail "Release URL is empty"
+  tmp="$(mktemp -d)"
+  archive="${tmp}/maek-brain.zip"
+  log "Installing MAEK Brain release package"
+  download_file "$release_url" "$archive"
+  if [[ -z "$release_sha" ]]; then
+    sha_file="${tmp}/maek-brain.zip.sha256"
+    download_file "${MAEK_RELEASE_SHA256_URL:-${release_url}.sha256}" "$sha_file"
+    release_sha="$(awk '{print $1; exit}' "$sha_file")"
+  fi
+  [[ -n "$release_sha" ]] || fail "Release checksum is empty"
+  actual="$(sha256_file "$archive" | tr 'A-F' 'a-f')"
+  expected="$(printf '%s' "$release_sha" | tr 'A-F' 'a-f')"
+  [[ "$actual" == "$expected" ]] || fail "Release checksum mismatch"
+
+  extract_dir="${tmp}/extract"
+  mkdir -p "$extract_dir"
+  command -v unzip >/dev/null 2>&1 || fail "unzip is required to install MAEK Brain release packages"
+  unzip -q "$archive" -d "$extract_dir"
+  root="$(find_release_root "$extract_dir")"
+  app_dir="${PREFIX}/app"
+  run mkdir -p "$app_dir"
+  run rm -rf "${app_dir}/maek-brain" "${app_dir}/maek-brain-api"
+  run cp -R "${root}/maek-brain" "${app_dir}/maek-brain"
+  run cp -R "${root}/maek-brain-api" "${app_dir}/maek-brain-api"
+  rm -rf "$tmp"
+  emit_json "{\"event\":\"step\",\"name\":\"maek-brain\",\"status\":\"ok\",\"method\":\"release\",\"url\":\"${release_url//\"/\\\"}\"}"
+}
+
 setup_api_venv() {
   if [[ "$SETUP_API_VENV" != "1" ]]; then
     emit_json '{"event":"step","name":"api-venv","status":"skip"}'
@@ -651,11 +787,92 @@ EOF
   emit_json "{\"event\":\"step\",\"name\":\"wrapper\",\"status\":\"ok\",\"path\":\"${target//\"/\\\"}\"}"
 }
 
+configured_api_port() {
+  if [[ -n "$API_PORT" ]]; then
+    echo "$API_PORT"
+    return
+  fi
+  if [[ -f "${PREFIX}/config/maek-brain.json" && -x "$(node_bin)" ]]; then
+    "$(node_bin)" -e "const fs=require('fs'); const c=JSON.parse(fs.readFileSync(process.argv[1], 'utf8')); console.log(c?.api?.port || 8790)" "${PREFIX}/config/maek-brain.json" 2>/dev/null || echo 8790
+    return
+  fi
+  echo 8790
+}
+
+firewall_sources() {
+  if [[ "$FIREWALL_REMOTE_ADDRESS" != "local-subnet" ]]; then
+    echo "$FIREWALL_REMOTE_ADDRESS"
+    return
+  fi
+  if command -v ip >/dev/null 2>&1; then
+    ip -o route show scope link 2>/dev/null | awk '$1 ~ /\// {print $1}' | sort -u
+    return
+  fi
+}
+
+open_firewall() {
+  local port os_name sources source
+  port="$(configured_api_port)"
+  os_name="$(os_detect)"
+  sources="$(firewall_sources)"
+  if [[ "$API_HOST" == "127.0.0.1" || "$API_HOST" == "localhost" ]]; then
+    log "WARNING: firewall is open, but API_HOST=${API_HOST}; use --api-host 0.0.0.0 or a LAN IP for external access."
+  fi
+  if [[ -z "$sources" ]]; then
+    log "WARNING: could not resolve local subnet firewall sources; pass --firewall-remote-address <cidr> explicitly."
+  fi
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    log "+ open firewall for tcp/${port} from ${sources:-<explicit-cidr-required>}"
+    return
+  fi
+  case "$os_name" in
+    linux)
+      if [[ "$(id -u)" == "0" ]]; then
+        if [[ -n "$sources" ]] && command -v ufw >/dev/null 2>&1; then
+          while IFS= read -r source; do
+            [[ -n "$source" ]] || continue
+            run ufw allow from "$source" to any port "$port" proto tcp
+          done <<< "$sources"
+          return
+        fi
+        if [[ -n "$sources" ]] && command -v firewall-cmd >/dev/null 2>&1; then
+          while IFS= read -r source; do
+            [[ -n "$source" ]] || continue
+            if [[ "$source" == "any" ]]; then
+              run firewall-cmd --permanent --add-port="${port}/tcp"
+            else
+              run firewall-cmd --permanent --add-rich-rule="rule family=ipv4 source address=${source} port port=${port} protocol=tcp accept"
+            fi
+          done <<< "$sources"
+          run firewall-cmd --reload
+          return
+        fi
+      fi
+      log "Firewall rule requires elevated privileges. Run one of these on the server:"
+      if [[ -n "$sources" ]]; then
+        while IFS= read -r source; do
+          [[ -n "$source" ]] || continue
+          log "  sudo ufw allow from ${source} to any port ${port} proto tcp"
+          log "  sudo firewall-cmd --permanent --add-rich-rule='rule family=ipv4 source address=${source} port port=${port} protocol=tcp accept'"
+        done <<< "$sources"
+        log "  sudo firewall-cmd --reload"
+      else
+        log "  sudo ufw allow from <cidr> to any port ${port} proto tcp"
+      fi
+      ;;
+    darwin)
+      log "macOS firewall is application-based. Allow incoming connections for the MAEK service process or expose MAEK through a controlled reverse proxy."
+      log "API/Admin/MCP port: ${port}"
+      ;;
+  esac
+}
+
 main() {
   if is_windows_shell; then
     delegate_windows_install "$@"
   fi
   parse_args "$@"
+  prepare_network_options
   init_install_log
   PATH="$(node_dir)/bin:${PREFIX}/bin:${PATH}"
   export PATH
@@ -664,6 +881,7 @@ main() {
   install_bun
   install_python
   case "$INSTALL_METHOD" in
+    release) install_from_release ;;
     git) install_from_git ;;
     npm) install_from_npm ;;
     *) fail "Unknown install method: ${INSTALL_METHOD}" ;;
@@ -680,17 +898,32 @@ main() {
   log ""
   log "Next actions:"
   log "1. Run onboarding:"
-  log "   ${PREFIX}/bin/maek-brain onboard --install-daemon"
+  if [[ -n "$API_HOST" || -n "$API_PORT" ]]; then
+    log "   ${PREFIX}/bin/maek-brain onboard --install-daemon${API_HOST:+ --host ${API_HOST}}${API_PORT:+ --port ${API_PORT}}"
+  else
+    log "   ${PREFIX}/bin/maek-brain onboard --install-daemon"
+  fi
   log "2. Check status:"
   log "   ${PREFIX}/bin/maek-brain doctor"
   log "3. Optional shell PATH:"
   log "   export PATH=\"${PREFIX}/bin:\$PATH\""
   if [[ "$RUN_ONBOARD" == "1" && "$DRY_RUN" -eq 0 ]]; then
     local onboard_args=(onboard --install-daemon)
+    if [[ -n "$API_HOST" ]]; then
+      onboard_args+=(--host "$API_HOST")
+    fi
+    if [[ -n "$API_PORT" ]]; then
+      onboard_args+=(--port "$API_PORT")
+    fi
     if [[ "$VERBOSE" == "1" ]]; then
       onboard_args+=(--verbose)
     fi
     "${PREFIX}/bin/maek-brain" "${onboard_args[@]}"
+    if [[ "$OPEN_FIREWALL" == "1" ]]; then
+      open_firewall
+    fi
+  elif [[ "$OPEN_FIREWALL" == "1" ]]; then
+    open_firewall
   fi
 }
 

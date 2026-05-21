@@ -1,8 +1,13 @@
 param(
   [string]$Prefix = $(if ($env:MAEK_PREFIX) { $env:MAEK_PREFIX } else { Join-Path $env:USERPROFILE ".maek-brain" }),
-  [ValidateSet("git", "npm")]
-  [string]$InstallMethod = $(if ($env:MAEK_INSTALL_METHOD) { $env:MAEK_INSTALL_METHOD } else { "git" }),
+  [ValidateSet("release", "git", "npm")]
+  [string]$InstallMethod = $(if ($env:MAEK_INSTALL_METHOD) { $env:MAEK_INSTALL_METHOD } else { "release" }),
   [string]$Version = $(if ($env:MAEK_VERSION) { $env:MAEK_VERSION } else { "main" }),
+  [string]$ReleaseBaseUrl = $(if ($env:MAEK_RELEASE_BASE_URL) { $env:MAEK_RELEASE_BASE_URL.TrimEnd("/") } else { "https://maek.quest/releases" }),
+  [string]$ReleaseManifestUrl = $(if ($env:MAEK_RELEASE_MANIFEST_URL) { $env:MAEK_RELEASE_MANIFEST_URL } else { "" }),
+  [string]$ReleaseUrl = $(if ($env:MAEK_RELEASE_URL) { $env:MAEK_RELEASE_URL } else { "" }),
+  [string]$ReleaseSha256 = $(if ($env:MAEK_RELEASE_SHA256) { $env:MAEK_RELEASE_SHA256 } else { "" }),
+  [string]$ReleaseSha256Url = $(if ($env:MAEK_RELEASE_SHA256_URL) { $env:MAEK_RELEASE_SHA256_URL } else { "" }),
   [string]$NodeVersion = $(if ($env:MAEK_NODE_VERSION) { $env:MAEK_NODE_VERSION } else { "22.22.0" }),
   [string]$BunVersion = $(if ($env:MAEK_BUN_VERSION) { $env:MAEK_BUN_VERSION } else { "1.3.14" }),
   [string]$PythonVersion = $(if ($env:MAEK_PYTHON_VERSION) { $env:MAEK_PYTHON_VERSION } else { "3.12.10" }),
@@ -18,6 +23,12 @@ param(
   [string]$ApiUrl = $(if ($env:MAEK_BRAIN_API_GIT_URL) { $env:MAEK_BRAIN_API_GIT_URL } else { "https://github.com/brdg-kr/maek-brain-api.git" }),
   [string]$GbrainUrl = $(if ($env:GBRAIN_GIT_URL) { $env:GBRAIN_GIT_URL } else { "https://github.com/garrytan/gbrain.git" }),
   [string]$GbrainRef = $(if ($env:GBRAIN_REF) { $env:GBRAIN_REF } else { "master" }),
+  [string]$ApiHost = $(if ($env:MAEK_API_HOST) { $env:MAEK_API_HOST } else { "" }),
+  [int]$ApiPort = $(if ($env:MAEK_API_PORT) { [int]$env:MAEK_API_PORT } else { 0 }),
+  [switch]$LanAccess,
+  [switch]$PublicAccess,
+  [switch]$OpenFirewall,
+  [string]$FirewallRemoteAddress = $(if ($env:MAEK_FIREWALL_REMOTE_ADDRESS) { $env:MAEK_FIREWALL_REMOTE_ADDRESS } else { "LocalSubnet" }),
   [switch]$SkipApiVenv,
   [switch]$SkipGbrainDeps,
   [switch]$SkipPostgres,
@@ -37,6 +48,11 @@ if (-not $IsWindowsOs) {
 $ScriptPath = if ($PSCommandPath) { $PSCommandPath } else { $MyInvocation.MyCommand.Path }
 $ScriptRoot = if ($ScriptPath) { Split-Path -Parent $ScriptPath } else { "" }
 $script:MaekVerbose = [bool]$Verbose -or ($env:MAEK_VERBOSE -eq "1")
+$PublicAccessRequested = [bool]$LanAccess -or [bool]$PublicAccess -or ($env:MAEK_LAN_ACCESS -eq "1") -or ($env:MAEK_PUBLIC_ACCESS -eq "1")
+$OpenFirewallRequested = [bool]$OpenFirewall -or ($env:MAEK_OPEN_FIREWALL -eq "1") -or $PublicAccessRequested
+if ([string]::IsNullOrWhiteSpace($ApiHost) -and $PublicAccessRequested) {
+  $ApiHost = "0.0.0.0"
+}
 if ($script:MaekVerbose) {
   $env:MAEK_VERBOSE = "1"
 } else {
@@ -54,6 +70,66 @@ if ($ScriptRoot -and (Test-Path (Join-Path $ScriptRoot "..\maek-brain.mjs"))) {
 
 function Write-Step([string]$Message) {
   Write-Host "==> $Message"
+}
+
+function Test-IsAdministrator {
+  $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+  $principal = [Security.Principal.WindowsPrincipal]::new($identity)
+  $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+function Get-ConfiguredApiPort {
+  if ($ApiPort -gt 0) {
+    return $ApiPort
+  }
+  $configPath = Join-Path $Prefix "config\maek-brain.json"
+  if (Test-Path $configPath) {
+    try {
+      $config = Get-Content -Raw -Path $configPath | ConvertFrom-Json
+      if ($config.api.port) {
+        return [int]$config.api.port
+      }
+    } catch {
+      Write-Host "WARNING: Could not read configured API port from $configPath"
+    }
+  }
+  8790
+}
+
+function Ensure-WindowsFirewallRule([int]$Port, [string]$RemoteAddress) {
+  if ($Port -le 0) {
+    throw "Invalid API port for firewall rule: $Port"
+  }
+  $displayName = "MAEK Brain API $Port"
+  $commandText = "New-NetFirewallRule -DisplayName `"$displayName`" -Direction Inbound -Action Allow -Protocol TCP -LocalPort $Port -Profile Domain,Private -RemoteAddress `"$RemoteAddress`""
+  if ($DryRun) {
+    Write-Host "+ $commandText"
+    return
+  }
+  if (-not (Get-Command New-NetFirewallRule -ErrorAction SilentlyContinue)) {
+    Write-Host "WARNING: Windows firewall cmdlets are not available on this machine."
+    Write-Host "Run manually as Administrator:"
+    Write-Host "  $commandText"
+    return
+  }
+  if (-not (Test-IsAdministrator)) {
+    Write-Host "WARNING: Opening Windows Defender Firewall requires an elevated PowerShell session."
+    Write-Host "Run manually as Administrator:"
+    Write-Host "  $commandText"
+    return
+  }
+
+  $existing = Get-NetFirewallRule -DisplayName $displayName -ErrorAction SilentlyContinue
+  if ($existing) {
+    Set-NetFirewallRule -DisplayName $displayName -Enabled True -Profile Domain,Private -Action Allow
+    $existing | Get-NetFirewallPortFilter | Set-NetFirewallPortFilter -Protocol TCP -LocalPort $Port
+    $existing | Get-NetFirewallAddressFilter | Set-NetFirewallAddressFilter -RemoteAddress $RemoteAddress
+    Write-Step "Updated Windows firewall rule: $displayName"
+    return
+  }
+
+  New-NetFirewallRule -DisplayName $displayName -Direction Inbound -Action Allow -Protocol TCP -LocalPort $Port -Profile Domain,Private -RemoteAddress $RemoteAddress | Out-Null
+  Write-Step "Created Windows firewall rule: $displayName"
 }
 
 function Invoke-Step([scriptblock]$Block, [string]$Text, [switch]$AllowFailure) {
@@ -470,6 +546,91 @@ function Install-FromNpm {
   Clone-Or-Update "maek-brain-api" $ApiUrl (Join-Path $appDir "maek-brain-api") $Version
 }
 
+function Resolve-ReleasePackage {
+  if ($ReleaseUrl) {
+    return [pscustomobject]@{
+      Url = $ReleaseUrl
+      Sha256 = $ReleaseSha256
+    }
+  }
+
+  if ($Version -eq "main" -or $Version -eq "master" -or $Version -eq "latest") {
+    $manifestUrl = if ($ReleaseManifestUrl) { $ReleaseManifestUrl } else { "$ReleaseBaseUrl/latest.json" }
+    $tmp = Join-Path (New-TempDir "release-manifest") "latest.json"
+    Download-File $manifestUrl $tmp
+    $manifest = Get-Content -Raw -Path $tmp | ConvertFrom-Json
+    $url = if ($manifest.url) { $manifest.url } elseif ($manifest.zipUrl) { $manifest.zipUrl } else { $manifest.artifactUrl }
+    if (-not $url) {
+      throw "Release manifest is missing url."
+    }
+    return [pscustomobject]@{
+      Url = [string]$url
+      Sha256 = [string]$manifest.sha256
+    }
+  }
+
+  $releaseVersion = $Version.TrimStart("v")
+  [pscustomobject]@{
+    Url = "$ReleaseBaseUrl/maek-brain-v$releaseVersion.zip"
+    Sha256 = $ReleaseSha256
+  }
+}
+
+function Get-ReleaseSha256([string]$Url, [string]$Sha256, [string]$TempDir) {
+  if (-not [string]::IsNullOrWhiteSpace($Sha256)) {
+    return $Sha256
+  }
+  $shaUrl = if ($ReleaseSha256Url) { $ReleaseSha256Url } else { "$Url.sha256" }
+  $shaFile = Join-Path $TempDir "maek-brain.zip.sha256"
+  Download-File $shaUrl $shaFile
+  $content = Get-Content -Raw -Path $shaFile
+  $match = [regex]::Match($content, "[a-fA-F0-9]{64}")
+  if (-not $match.Success) {
+    throw "Release checksum file did not contain a SHA256 value: $shaUrl"
+  }
+  $match.Value
+}
+
+function Find-ReleaseRoot([string]$ExtractDir) {
+  if ((Test-Path (Join-Path $ExtractDir "maek-brain")) -and (Test-Path (Join-Path $ExtractDir "maek-brain-api"))) {
+    return $ExtractDir
+  }
+  foreach ($child in Get-ChildItem -Path $ExtractDir -Directory) {
+    if ((Test-Path (Join-Path $child.FullName "maek-brain")) -and (Test-Path (Join-Path $child.FullName "maek-brain-api"))) {
+      return $child.FullName
+    }
+  }
+  throw "Release package must contain maek-brain\ and maek-brain-api\."
+}
+
+function Install-FromRelease {
+  if ($DryRun) {
+    $source = if ($ReleaseUrl) { $ReleaseUrl } elseif ($ReleaseManifestUrl) { $ReleaseManifestUrl } else { "$ReleaseBaseUrl/latest.json" }
+    Write-Step "Would install MAEK Brain release package from $source"
+    return
+  }
+
+  $release = Resolve-ReleasePackage
+  $tmp = New-TempDir "release"
+  $zipPath = Join-Path $tmp "maek-brain.zip"
+  Write-Step "Installing MAEK Brain release package"
+  Download-File $release.Url $zipPath
+  $sha256 = Get-ReleaseSha256 $release.Url $release.Sha256 $tmp
+  Assert-Sha256 $zipPath $sha256 "MAEK Brain release"
+
+  $extractDir = Join-Path $tmp "extract"
+  Expand-ZipFile $zipPath $extractDir
+  $root = Find-ReleaseRoot $extractDir
+  $appDir = Join-Path $Prefix "app"
+  $brainDir = Join-Path $appDir "maek-brain"
+  $apiDir = Join-Path $appDir "maek-brain-api"
+  New-Item -ItemType Directory -Force -Path $appDir | Out-Null
+  Remove-Item -LiteralPath $brainDir,$apiDir -Recurse -Force -ErrorAction SilentlyContinue
+  Copy-Item -Recurse -Force -LiteralPath (Join-Path $root "maek-brain") -Destination $brainDir
+  Copy-Item -Recurse -Force -LiteralPath (Join-Path $root "maek-brain-api") -Destination $apiDir
+  Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
+}
+
 function Copy-FileIfPresent([string]$Source, [string]$Target) {
   if (Test-Path $Source) {
     New-Item -ItemType Directory -Force -Path (Split-Path $Target) | Out-Null
@@ -640,7 +801,9 @@ Install-Node
 Install-Bun
 Install-Python
 Install-Postgres
-if ($InstallMethod -eq "git") {
+if ($InstallMethod -eq "release") {
+  Install-FromRelease
+} elseif ($InstallMethod -eq "git") {
   Install-FromGit
 } else {
   Install-FromNpm
@@ -656,8 +819,19 @@ Write-Host "Prefix: $Prefix"
 Write-Host "CLI: $Prefix\bin\maek-brain.cmd"
 if (-not $NoOnboard -and -not $DryRun) {
   $onboardArgs = @("onboard", "--install-daemon")
+  if (-not [string]::IsNullOrWhiteSpace($ApiHost)) {
+    $onboardArgs += @("--host", $ApiHost)
+  }
+  if ($ApiPort -gt 0) {
+    $onboardArgs += @("--port", [string]$ApiPort)
+  }
   if ($script:MaekVerbose) {
     $onboardArgs += "--verbose"
   }
   & (Join-Path $Prefix "bin\maek-brain.cmd") @onboardArgs
+  if ($OpenFirewallRequested) {
+    Ensure-WindowsFirewallRule -Port (Get-ConfiguredApiPort) -RemoteAddress $FirewallRemoteAddress
+  }
+} elseif ($OpenFirewallRequested) {
+  Ensure-WindowsFirewallRule -Port (Get-ConfiguredApiPort) -RemoteAddress $FirewallRemoteAddress
 }
