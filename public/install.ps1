@@ -35,7 +35,7 @@ function Invoke-PowerShellInstaller([string]$Path, [string[]]$ForwardArgs) {
   $psExe = (Get-Process -Id $PID).Path
   & $psExe -NoProfile -ExecutionPolicy Bypass -File $Path @ForwardArgs
   if ($LASTEXITCODE) {
-    exit $LASTEXITCODE
+    throw "MAEK Windows installer failed with exit code $LASTEXITCODE."
   }
 }
 
@@ -71,13 +71,18 @@ foreach ($arg in $forwardArgs) {
 }
 if ($localUnixInstaller -and (Test-Path $localUnixInstaller)) {
   & bash $localUnixInstaller @unixForwardArgs
-  exit $LASTEXITCODE
+  if ($LASTEXITCODE) {
+    throw "MAEK Unix installer failed with exit code $LASTEXITCODE."
+  }
+  return
 }
 
 $downloadedUnixInstaller = Download-Installer "$baseUrl/install-cli.sh" "install-cli.sh"
 try {
   & bash $downloadedUnixInstaller @unixForwardArgs
-  exit $LASTEXITCODE
+  if ($LASTEXITCODE) {
+    throw "MAEK Unix installer failed with exit code $LASTEXITCODE."
+  }
 } finally {
   Remove-Item -Force $downloadedUnixInstaller -ErrorAction SilentlyContinue
 }
