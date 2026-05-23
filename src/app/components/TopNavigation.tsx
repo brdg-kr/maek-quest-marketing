@@ -43,8 +43,6 @@ export function TopNavigation({
     ...(includeStories ? [{ key: "stories" as const, href: "/stories", label: copy.stories }] : []),
     { key: "stage-map" as const, href: "/", label: copy.stageMap },
     { key: "system-flow" as const, href: "/system-flow", label: copy.systemFlow },
-    { key: "design-system" as const, href: "/design-system", label: copy.designSystem },
-    { key: "design-system-copy" as const, href: "/design-system-copy", label: copy.designCopy },
   ];
 
   return (
